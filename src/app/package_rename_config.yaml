@@ -2,7 +2,7 @@ package_rename_config:
   android:
     app_name: ApplicationTemplate # (String) The display name of the android app.
     package_name: com.nventive.flutterApplicationTemplate # (String) The package name of the android app.
-    override_old_package: com.example.flutter_application_template # (Optional) (String) Use this to delete the old folder structure of MainActivity or to use the existing code with the new package name.
+    override_old_package: com.nventive.flutterApplicationTemplate # (Optional) (String) Use this to delete the old folder structure of MainActivity or to use the existing code with the new package name.
 
   ios:
     app_name: ApplicationTemplate # (String) The display name of the ios app.
