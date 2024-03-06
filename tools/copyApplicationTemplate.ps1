@@ -27,24 +27,32 @@ function WriteAndPause {
     cmd /c "pause"
 }
 
+# Function used to update a line in a YAML file.
+function UpdateYamlLine {
+    param (
+        [string]$line,
+        [string]$newValue
+    )
+    # Split the line into key and value parts
+    $splitLines = $line -split ":|#", 3
+
+    # Get the original value part.
+    $originalValue = $splitLines[1].Trim()
+
+    # Replace the original value with the new value.
+    $newLine = $line -replace "$originalValue", "$newValue"
+
+    return $newLine
+}
+
 # Main script.
 try {
     Write-Host "Welcome to the Flutter Application Template copy tool!" -ForegroundColor Green
-
-    # Get source directory.
-    if (-not $sourceDir) {
-        $sourceProjectDir = GetUserInput "Enter the source directory path:"
-    }
 
     # Check if source directory exists.
     if (-not (Test-Path $sourceProjectDir)) {
         WriteAndPause -message "Source directory does not exist. Please provide a valid directory." -foregroundColor Red
         exit
-    }
-
-    # Get destination directory.
-    if (-not $sourceDir) {
-        $destDir = GetUserInput "Enter the destination directory path:"
     }
 
     # Check if destination directory exists.
@@ -53,15 +61,8 @@ try {
         exit
     }
 
-    # Get project name.
-    $projectName = GetUserInput "Enter the name of the Flutter project:"
-
-    # TODO: Prompt user for values of 'package_rename_config.yaml' file.
-
     # Construct destination path.
     $destProjectDir = Join-Path -Path $destDir -ChildPath $projectName
-
-    Write-Host $destProjectDir
 
     # Check if project exists in source directory.
     if (-not (Test-Path $sourceProjectDir -PathType Container)) {
@@ -85,12 +86,80 @@ try {
     # Copy the project to the destination directory.
     Copy-Item -Path $sourceProjectDir -Destination $destProjectDir -Recurse
 
-    Set-Location Join-Path -Path $destProjectDir -ChildPath "src\app"
+    # Navigate to the Flutter project folder in the destination directory to run specific commands.
+    $flutterProjectDir = Join-Path -Path $destProjectDir -ChildPath "src\app"
+    Set-Location $flutterProjectDir
 
-    # TODO: Update 'package_rename_config.yaml' file.
-    # TODO: Run 'flutter pub get' command.
-    # TODO: Run 'dart run package_rename' command.
-    # TODO: Update 'override_old_package' in 'package_rename_config.yaml' file.
+    $renameConfigFileName = "package_rename_config.yaml"
+
+    # Load the content of the YAML file.
+    $fileContent = Get-Content -Path $renameConfigFileName
+    
+    # Store the modified lines in an array.
+    $newContent = @()
+
+    # Iterate through each line of the file content.
+    foreach ($line in $fileContent) {
+        # Value to put inside the YAML line.
+        $newValue = $null
+
+        # Check if the line contains one of the keys you want to update.
+        switch -Regex ($line) {
+            ("app_name:") {
+                $newValue = $appName
+            }
+            ("package_name:") {
+                $newValue = $packageName
+            }
+            ("bundle_name:") {
+                $newValue = $appName
+            }
+            ("exe_name:") {
+                $newValue = $appName
+            }
+            ("organization:") {
+                $newValue = $organization
+            }
+            default {
+                $newLine = $line
+            }
+        }
+        # Update the line with the new value.
+        if ($null -ne $newValue) {
+            $newLine = UpdateYamlLine -line $line -newValue $newValue
+        }
+
+        # Add the original/modified line to the new content array.
+        $newContent += $newLine
+    }
+
+    # Save the updated content back to the YAML file.
+    Set-Content -Path $renameConfigFileName -Value $newContent
+
+    Invoke-Expression "flutter pub get"
+    Invoke-Expression "dart run package_rename"
+
+    # Load the content of the YAML file.
+    $fileContent = Get-Content -Path $renameConfigFileName
+
+    # Store the modified lines in an array.
+    $newContent = @()
+
+    # Iterate through each line of the file content.
+    foreach ($line in $fileContent) {
+        if ($line -like "*override_old_package*") {
+            # Update the line with the new value.
+            $newLine = UpdateYamlLine -line $line -newValue $packageName
+        } else {
+            $newLine = $line
+        }
+
+        # Add the original/modified line to the new content array.
+        $newContent += $newLine
+    }
+
+    # Save the updated content back to the YAML file.
+    Set-Content -Path $renameConfigFileName -Value $newContent
 
     WriteAndPause -message "Flutter project '$projectName' has been successfully copied to the destination directory." -foregroundColor Green
 }
