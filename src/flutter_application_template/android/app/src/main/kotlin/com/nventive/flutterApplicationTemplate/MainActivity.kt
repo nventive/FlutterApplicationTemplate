@@ -1,4 +1,4 @@
-package com.example.flutter_application_template
+package com.nventive.flutterApplicationTemplate
 
 import io.flutter.embedding.android.FlutterActivity
 
