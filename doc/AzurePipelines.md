@@ -5,8 +5,6 @@ This project uses CI/CD pipelines that are implemented as yaml code.
 They are declared in the following files.
 - `.azure-pipelines.yml`
 - `.azure-pipelines-api-integration-tests.yml`
-- `build/canary-merge.yml`
-- `.azure-pipelines-canary.yml`
 
 These pipelines are divided in parameterized stages that are defined accross several files, all located under [`build/`](build/).
 The more complex stages are also divided into several steps files, again all located under the build folder.
@@ -86,20 +84,3 @@ Their configuration is simply changed so that they use real endpoint implementat
 This is done by setting the environment variable `USE_REAL_APIS` to `true`.
 
 This pipeline should be setup as a **scheduled pipeline** that runs every night and **should NOT be part of build validation**. PRs should not be blocked when APIs are down.
-
-## Canary Pipelines
-Canary pipelines allow to detect regressions by periodically creating versions of the app in which all the dependencies are updated to their latest version.
-
-This works with 2 pipelines.
-- Canary Merge Pipeline (`build/canary-merge.yml`)
-- Canary Deployment Pipeline (`.azure-pipelines-canary.yml`)
-
-> The term "canary" comes from [_canary in a coal mine_](https://en.wikipedia.org/wiki/Sentinel_species#Historical_examples) and refers to detecting problems before they become too important.
-
-### Canary Merge
-This pipelines creates a branch on which it commits a version of the latest code with all nuget dependencies updated to their latest version. It does so using a custom task called `nventiveCanaryUpdater`, which can be found [here](https://github.com/nventive/nventive-Build-Tools/blob/master/overview.md#canary-updater).
-
-### Canary Deployment
-This pipelines triggers automatically when a new branch is created and pushed by the previous pipeline. It takes the new code, builds it, and deploys so that it can be manually tested.
-
-This pipeline uses the same build and release stages as the main CI/CD pipeline of the app.

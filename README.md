@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](LICENSE) ![Version](https://img.shields.io/nuget/v/NV.Templates.Mobile?style=flat-square) ![Downloads](https://img.shields.io/nuget/dt/NV.Templates.Mobile?style=flat-square)
 
-This is a mobile app project template using [Uno Platform](https://github.com/unoplatform/uno) and the latest .NET practices.
+This is a mobile app project template using [Flutter](https://github.com/flutter) and the latest Flutter/Dart practices.
 
 - It uses the MVVM pattern.
 - Code is organized by [application layer](doc/Architecture.md#Solution-Structure).
@@ -21,13 +21,9 @@ From left to right: WinUI, iOS, and Android.
 
 ## Requirements
 
-Visual Studio 2022 with .Net 7 are required.
+Visual Studio Code with Flutter are required.
 
-This template largely relies on Uno Platform, if you want to make sure you got everything installed correctly on your machine, we encourage you to use `uno-check`, the documentation is available [here](https://platform.uno/docs/articles/uno-check.html)
-
-> 💡 It's also possible to use this template for a pure WinUI application, without any mobile aspect.
-> All you would have to do is remove the `.Mobile` csproj from the generated solution.
-
+This template largely relies on Flutter, if you want to make sure you got everything installed correctly on your machine, we encourage you to use `flutter doctor -v`, the documentation is available [here](https://docs.flutter.dev/)
 
 ## Getting Started
 
@@ -55,11 +51,8 @@ We use a custom PowerShell script and a Dart package to easily create new projec
 ### Next Steps
 
 1. Open the `README.md` and complete the documentation TODOs.
-1. Open the solution file from the generated folder using Visual Studio.
-
-   It's located at `MyProjectName/src/MyProjectName.sln`.
-
-1. In Visual Studio, go to the **VIEW** menu and open the **Task List** to get hints on next steps.
+2. Open the directory with Visual Studio Code.
+3. In Visual Studio Code, go to the **VIEW** menu and open the **Problems** to get hints on next steps.
    
    This template comes with several pointers on what you're most likely to change next.
    
@@ -93,25 +86,6 @@ Design System | [Uno.Material](https://platform.uno/docs/articles/external/uno.t
 
 ## Debugging or Testing the Template
 Here's how to install the template directly from the code, in the case that you want to modify it and would like to test your changes.
-
-### Installing the template
-
-1. Uninstall the template from nuget.org (if applicable).
-   - `dotnet new uninstall NV.Templates.Mobile`
-
-1. Clone this repository on your machine.
-1. Open a command prompt at the root of the cloned repository.
-1. Run the following command.
-
-    - `dotnet new install ./`
-
-[Read this for more information on custom templates](https://docs.microsoft.com/en-us/dotnet/core/tools/custom-templates).
-
-### Uninstalling the template
-1. Open a command prompt at the root of the cloned repository. 
-1. Run the following command.
-
-    - `dotnet new uninstall ./`
 
 ## Changelog
 
