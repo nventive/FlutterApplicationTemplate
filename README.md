@@ -31,31 +31,31 @@ This template largely relies on Uno Platform, if you want to make sure you got e
 
 ## Getting Started
 
-We use `dotnet` project templates to easily create new projects. It simplifies the **project renaming** and supports **conditional inclusions**.
+We use a custom PowerShell script and a Dart package to easily create new projects. It simplifies the **project renaming**.
 
 ### Generate a new project
 
-1. Install the template using this command.
-   
-   `dotnet new install NV.Templates.Mobile`
+1. Make sure you cloned the latest version of this repository.
 
-1. To run the template and create a new project, run the following command in the folder that will contain the new project.
-    
-    `dotnet new nv-mobile -n MyProjectName`
-    
-    > ⚠ The use of periods (`.`) in the project name is not supported and may result in compilation issues later on.
+2. Make sure you have PowerShell installed.
 
-   > 💡 If all your projects are regrouped in a folder like `C:\Repos`, you want to be in that folder.
-   > The command would generate all the project files under `C:\Repos\MyProjectName`.
+   > 💡 For Windows, you can run `powershell` to verify. You can install it with the command `winget install --id Microsoft.Powershell --source winget`.
+   > 💡 For Mac, you can run `pwsh` to verify. You can install it with Homebrew `brew install powershell/tap/powershell`.
+
+3. To run the script and create a new project, run the following command in the cloned `FlutterApplicationTemplate` repository.
+
+   `powershell -File ".\tools\copyApplicationTemplate.ps1" -sourceProjectDir C:\P\FlutterApplicationTemplate -destDir C:\P -projectName TODO -appName TODO -packageName TODO -organization Org`
+
+   > 💡 The organization parameter is optional (Only used for the Windows platform).
 
    The following options are available when running the command.
 
-   - To get help: `dotnet new nv-mobile -h`
+   - To get help: `Get-Help .\tools\copyApplicationTemplate.ps1`
 
 ### Next Steps
 
 1. Open the `README.md` and complete the documentation TODOs.
-1. Open the solution file from the generated folder using Visual Studio. 
+1. Open the solution file from the generated folder using Visual Studio.
 
    It's located at `MyProjectName/src/MyProjectName.sln`.
 

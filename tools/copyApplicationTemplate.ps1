@@ -1,3 +1,36 @@
+<#
+.SYNOPSIS
+    This script create custom Flutter application from a template.
+
+.DESCRIPTION
+    The script copies the Flutter project from the source directory to the destination directory.
+    It then updates the 'package_rename_config.yaml' file with the new application name, package name and other parameters.
+    The script also runs the 'package_rename' command to apply the updated configuration.
+    The script also renames the 'APP_README.md' file to 'README.md' and deletes the template 'README.md' file.
+
+.PARAMETER sourceProjectDir
+    (Required) The source directory path where the Flutter Application Template repository is located.
+
+.PARAMETER destDir
+    (Required) The destination directory path where the new Flutter project will be created.
+
+.PARAMETER projectName
+    (Required) The name of the project that is used to create the project directory.
+
+.PARAMETER appName
+    (Required) The displayed name of the application.
+
+.PARAMETER packageName
+    (Required) The package name of the application.
+
+.PARAMETER organization
+    (Optional) The organization name (company name) of the Windows application.
+
+.EXAMPLE
+    .\copyApplicationTemplate.ps1 -sourceProjectDir C:\P\FlutterApplicationTemplate -destDir C:\P -projectName MyProjectName -appName MyAppName -packageName com.example.myAppName -organization MyOrg
+    This will create a new Flutter project in the 'C:\P' directory with the specified parameters.
+#>
+
 param (
     [string]$sourceProjectDir = $(throw "Please provide a source directory path."),
     [string]$destDir = $(throw "Please provide a destination directory path."),
@@ -160,6 +193,15 @@ try {
 
     # Save the updated content back to the YAML file.
     Set-Content -Path $renameConfigFileName -Value $newContent
+
+    # Navigate back to the root directory.
+    Set-Location "..\.."
+
+    # Delete the template 'README.md' file.
+    Remove-Item "README.md"
+
+    # Rename the 'APP_README.md' file to 'README.md'.
+    Rename-Item -Path "APP_README.md" -NewName "README.md"
 
     WriteAndPause -message "Flutter project '$projectName' has been successfully copied to the destination directory." -foregroundColor Green
 }
