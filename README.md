@@ -1,10 +1,10 @@
-﻿# Uno Platform Application Template
+﻿# Flutter Application Template
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](LICENSE) ![Version](https://img.shields.io/nuget/v/NV.Templates.Mobile?style=flat-square) ![Downloads](https://img.shields.io/nuget/dt/NV.Templates.Mobile?style=flat-square)
 
 This is a mobile app project template using [Flutter](https://github.com/flutter) and the latest Flutter/Dart practices.
 
-- It uses the MVVM pattern.
+- TODO (Pattern used if applicable).
 - Code is organized by [application layer](doc/Architecture.md#Solution-Structure).
 - It comes with [dependency injection](doc/DependencyInjection.md).
 - There are built-in [logs](doc/Logging.md) and [diagnostic tools](doc/Diagnostics.md).
@@ -12,12 +12,10 @@ This is a mobile app project template using [Flutter](https://github.com/flutter
   When you run as-is, you get a _Dad Jokes_ application.
 
 ## Preview
-From left to right: WinUI, iOS, and Android.
-![Platform-Comparison-Preview](https://user-images.githubusercontent.com/39710855/264705525-d070952c-04c7-4f4a-b6af-957f8415fb3e.png)
-> Note that scaling was adjusted to better fit this preview and therefore this image isn't representative of the actual device sizes.
+TODO.
 
 ### Diagnostic Tools
-![Diagnostics-Overlay-Preview](https://user-images.githubusercontent.com/39710855/264691340-dbc9d137-a199-4969-94d7-7dd430e08da7.gif)
+TODO.
 
 ## Requirements
 
@@ -38,9 +36,14 @@ We use a custom PowerShell script and a Dart package to easily create new projec
    > 💡 For Windows, you can run `powershell` to verify. You can install it with the command `winget install --id Microsoft.Powershell --source winget`.
    > 💡 For Mac, you can run `pwsh` to verify. You can install it with Homebrew `brew install powershell/tap/powershell`.
 
-3. To run the script and create a new project, run the following command in the cloned `FlutterApplicationTemplate` repository.
+3. Make sure you have GitVersion installed.
 
-   `powershell -File ".\tools\copyApplicationTemplate.ps1" -sourceProjectDir C:\P\FlutterApplicationTemplate -destDir C:\P -projectName TODO -appName TODO -packageName TODO -organization Org`
+   > 💡 For Windows, you can run `dotnet-gitversion` to verify. You can install it with the command `dotnet tool install --global GitVersion.Tool`.
+   > 💡 For Mac, you can run `gitversion` to verify. You can install it with Homebrew `brew install gitversion`.
+
+4. To run the script and create a new project, run the following command in the cloned `FlutterApplicationTemplate` repository.
+
+   `powershell -File ".\tools\copyApplicationTemplate.ps1" -sourceProjectDir C:\P\FlutterApplicationTemplate -destDir C:\P -projectName MyProjectName -appName MyAppName -packageName com.example.myAppName -organization MyOrg`
 
    > 💡 The organization parameter is optional (Only used for the Windows platform).
 
@@ -68,24 +71,20 @@ The software architecture of the application is documented in the [Architecture]
 ### Summary of Recipes
 | Topic | Recipe/Implementation |
 |-|-|
-UI Framework | [WinUI](https://learn.microsoft.com/en-us/windows/apps/winui/)<br/>[Uno Platform](https://platform.uno/)
-[MVVM](doc/Architecture.md#mvvm---viewmodels) | [Chinook.DynamicMvvm](https://github.com/nventive/Chinook.DynamicMvvm)
-[Dependency Injection](doc/DependencyInjection.md) | [Microsoft.Extensions.Hosting](https://www.nuget.org/packages/Microsoft.Extensions.Hosting)<br/>[Microsoft.Extensions.DependencyInjection](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection)
-[Configuration](doc/Configuration.md) | [Microsoft.Extensions.Configuration](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.configuration)
-[Runtime Environments](doc/Environments.md) | [Microsoft.Extensions.Configuration](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.configuration)
-Design System | [Uno.Material](https://platform.uno/docs/articles/external/uno.themes/doc/material-getting-started.html)<br/>[Material Design](https://m3.material.io/)
-[HTTP](doc/HTTP.md) | [Refit](https://github.com/reactiveui/refit)<br/>[Microsoft.Extensions.Http](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.http)
-[Async Data Loading](doc/DataLoading.md) | [Chinook.DataLoader](https://github.com/nventive/Chinook.DataLoader)
-[Logging](doc/Logging.md) | [Serilog](https://serilog.net/)<br/>[Microsoft.Extensions.Logging](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging)
-[Testing](doc/Testing.md) | [xUnit](https://github.com/xunit/xunit)
-[Serialization](doc/Serialization.md) | [System.Text.Json](https://docs.microsoft.com/en-us/dotnet/api/system.text.json)
-[Localization](doc/Localization.md) | [Microsoft.Extensions.Localization](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.localization)
-[Navigation](doc/Architecture.md#navigation) | [Chinook.Navigation](https://github.com/nventive/Chinook.Navigation)<br/>[Chinook.BackButtonManager](https://github.com/nventive/Chinook.BackButtonManager)
-[Validation](doc/Validation.md) | [FluentValidation](https://fluentvalidation.net/)
-[App Reviews](doc/Reviews.md) | [ReviewService](https://github.com/nventive/ReviewService)
-
-## Debugging or Testing the Template
-Here's how to install the template directly from the code, in the case that you want to modify it and would like to test your changes.
+UI Framework | [Flutter](https://flutter.dev/)
+[State Management](doc/Architecture.md#mvvm---viewmodels) | TODO.
+[Dependency Injection](doc/DependencyInjection.md) | [get_it](https://pub.dev/packages/get_it)
+[Configuration](doc/Configuration.md) | TODO.
+[Runtime Environments](doc/Environments.md) | TODO.
+Design System | [Material Design for Flutter](https://docs.flutter.dev/ui/design/material)<br/>[Material Design](https://m3.material.io/)
+[HTTP](doc/HTTP.md) | [dio](https://pub.dev/packages/dio)<br/>[retrofit](https://pub.dev/packages/retrofit)
+[Logging](doc/Logging.md) | [logger](https://pub.dev/packages/logger)
+[Testing](doc/Testing.md) | TODO.
+[Serialization](doc/Serialization.md) | TODO.
+[Localization](doc/Localization.md) | [flutter_localization](https://pub.dev/packages/flutter_localization)
+[Navigation](doc/Architecture.md#navigation) | TODO.
+[Validation](doc/Validation.md) | TODO.
+[App Reviews](doc/Reviews.md) | TODO.
 
 ## Changelog
 

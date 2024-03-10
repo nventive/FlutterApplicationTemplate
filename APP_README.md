@@ -9,22 +9,20 @@ e.g. If you decide to change the solution structure, you should mention it in th
 ## Project Template
 
 This repository was generated using the **nventive Mobile Template**.
-- Version: [{{app-template-version}}](https://www.nuget.org/packages/NV.Templates.Mobile/{{app-template-version}})
-- Commit: [{{app-template-commit-short-sha}}](https://github.com/nventive/UnoApplicationTemplate/tree/{{app-template-commit-full-sha}})
+- Version: {{app-template-version}}
+- Commit: [{{app-template-commit-short-sha}}](https://github.com/nventive/FlutterApplicationTemplate/tree/{{app-template-commit-full-sha}})
 - Date: {{app-template-commit-date}}
 
-[**View the template changes since the generation of this project**.](https://github.com/nventive/UnoApplicationTemplate/compare/{{app-template-commit-full-sha}}..main)
+[**View the template changes since the generation of this project**.](https://github.com/nventive/FlutterApplicationTemplate/compare/{{app-template-commit-full-sha}}..main)
 
 ## Environment and Prerequisites
 
 ### Local Development Requirements
-All development is expected to be done from Visual Studio in a Windows environment.
+All development is expected to be done from Visual Studio Code in a Windows or Mac environment.
 
-- .Net 7
-- Visual Studio 2022 (17.4 and above)
-  - We recommend validating your components using this [Uno guide](https://platform.uno/docs/articles/get-started-vs-2022.html).
-- For mobile development, MAUI workloads are required.
-  - You can install them using [`uno-check`](https://platform.uno/docs/articles/external/uno.check/doc/using-uno-check.html).
+- Flutter
+- Visual Studio Code
+  - We recommend validating your components using this [Flutter guide](https://docs.flutter.dev/get-started/install).
 - For local iOS compilation and debugging, you need access to Mac with Xcode 14.2 (more recent versions may work too).
 
 ### Pipelines Requirements
@@ -41,7 +39,7 @@ If you're unfamiliar with Azure Pipeline, you should at least read about the fol
   - You can follow [this guide](https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/pipelines-sign-up?view=azure-devops) for more details.
 - For compilation, access to the the following [Microsoft-hosted agents](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml) is required.
   - `windows-2022`
-  - `macOS-12`
+  - `macOS-13`
 - For deployment, access to Mac agents with the following capabilities is required.
   - `fastlane 2.212.1`
 
@@ -53,15 +51,11 @@ If you're unfamiliar with Azure Pipeline, you should at least read about the fol
 `build/` | Regroups all yaml files used that compose the pipelines defined in `.azure-pipelines.yml`.
 `build/gitversion-config.yml` | Contains the configuration for the GitVersion tool that is used to compute the version number in the pipelines.
 `.azure-pipelines.yml` | Defines the main CI/CD pipeline of the project.
-`.azure-pipelines-canary.yml` | Defines the canary pipeline of the project.<br/>Canary pipelines allow to detect regressions by periodically creating versions of the app in which all the dependencies are updated to their latest version.
 `doc/` | Regroups all the documentation of the project, with the only exception of `README.md`, which is located at the root of the repository.<br/><br/>**There are many topics covered. Make sure you check them out.**
 `README.md` | The entry point of this project's documentation.
 `src/` | Contains all the code of the application, including tests, with the exception of the configuration files located at the root of the repository.
-`src/{YourProjectName}.sln` | The solution file to use with Visual Studio to develop locally.
-`.editorconfig`<br/>& `stylecop.json` | Configure the code formatting rules and analyzers of Visual Studio.
+`analysis_options.yaml` | Configure the code formatting rules and analyzers of Visual Studio Code.
 `.gitignore` | Contains the git ignore rules.
-`Directory.Build.props` | Regroups build configuration that apply to all `.csproj`.
-`nuget.config` | Contains the configuration for NuGet packages.
 `tools/` | Offers a place to put custom tools and scripts. It also contains some information about the version of the template that was used to generate the project.
 
 ## Software Architecture
@@ -82,9 +76,6 @@ TODO: Fill the following table with your own pipelines.
 | [Name of Main Pipeline](link-to-pipeline)| [`.azure-pipelines.yml`](.azure-pipelines.yml)| Build validation during pull request.| Pull requests.
 | [Name of Main Pipeline](link-to-pipeline)| [`.azure-pipelines.yml`](.azure-pipelines.yml)| Build and deploy the application to AppCenter, TestFlight, and GooglePlay. | Changes on the `main` branch.<br/>Manual trigger.
 | [Name of API Integration Tests Pipeline](link-to-pipeline)| [`.azure-pipelines-api-integration-tests.yml`](.azure-pipelines.yml)| Run all tests, including APIs integration tests. | Daily cron job.<br/>Manual trigger.
-| [Name of Canary Merge Pipeline](link-to-pipeline)| [`build/canary-merge.yml`](.azure-pipelines.yml)| Creation of canary branches (`canary/build/*`). | Daily cron job.
-| [Name of Canary Pipeline](link-to-pipeline)| [`.azure-pipelines-canary.yml`](.azure-pipelines.yml)| Build and deploy canary versions of the app to AppCenter and TestFlight. | Upon creation of branches with the `canary/build/*` pattern.
-
 
 ## Additional Information
 

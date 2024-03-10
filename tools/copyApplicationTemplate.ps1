@@ -78,6 +78,30 @@ function UpdateYamlLine {
     return $newLine
 }
 
+# Function to update the 'README.md' file content.
+function UpdateAppReadMe {
+    $gitVersionOutput = $null
+
+    # Run GitVersion and capture the output.
+    if ($env:OS -like "*Windows*") {
+        $gitVersionOutput = dotnet-gitversion /output json
+    } else {
+        $gitVersionOutput = gitversion /output json
+    }
+
+    # Parse the JSON output.
+    $gitVersionJson = $gitVersionOutput | ConvertFrom-Json
+
+    # Extract information from the JSON output.
+    $majorMinorPatch = $gitVersionJson.MajorMinorPatch
+    $commitShortSha = $gitVersionJson.ShortSha
+    $commitFullSha = $gitVersionJson.Sha
+    $commitDate = $gitVersionJson.CommitDate
+
+    # Update the 'README.md' file content by executing a local script.
+    & "$PSScriptRoot\GenerateAppReadme.ps1" -InputPath ..\APP_README.md -VersionNumber $majorMinorPatch -CommitShortSha $commitShortSha -CommitFullSha $commitFullSha -CommitDate $commitDate
+}
+
 # Main script.
 try {
     Write-Host "Welcome to the Flutter Application Template copy tool!" -ForegroundColor Green
@@ -203,6 +227,10 @@ try {
     # Rename the 'APP_README.md' file to 'README.md'.
     Rename-Item -Path "APP_README.md" -NewName "README.md"
 
+    # Update the 'README.md' file content.
+    UpdateAppReadMe
+
+    # Display success message.
     WriteAndPause -message "Flutter project '$projectName' has been successfully copied to the destination directory." -foregroundColor Green
 }
 catch {

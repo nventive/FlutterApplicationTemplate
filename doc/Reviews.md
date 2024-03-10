@@ -1,19 +1,19 @@
 ﻿# Reviews
 
-We use [ReviewService](https://github.com/nventive/ReviewService) for mobile app reviews.
+We use [TODO]() for mobile app reviews.
 
 ## Configuration
 
-It's configured in [ReviewConfiguration.cs](../src/app/ApplicationTemplate.Presentation/Configuration/ReviewConfiguration.cs).
+TODO.
 
 ### Native Review Prompters
 
-The package ReviewService.NativePrompters is installed in the Mobile and Windows projects and provides the implementation of `IReviewPrompter` that actually triggers the store reviews.
+TODO.
 
 ### Review Settings Source
 
-We use a custom implementation of `IReviewSettingsSource` called [DataPersisterReviewSettingsSource](../src/app/ApplicationTemplate.Access/LocalStorage/DataPersisterReviewSettingsSource.cs) to persist the review data on disk.
+TODO.
 
 ## Reference
 
-- [ReviewService](https://github.com/nventive/ReviewService)
+- [TODO]()
