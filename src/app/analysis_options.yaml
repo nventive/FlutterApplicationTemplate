@@ -9,6 +9,10 @@
 # packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
 
+analyzer:
+  exclude:
+    - '**.g.dart'
+
 linter:
   # The lint rules applied to this project can be customized in the
   # section below to disable rules from the `package:flutter_lints/flutter.yaml`
@@ -21,7 +25,11 @@ linter:
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
   rules:
+    annotate_overrides: true
+    avoid_print: true
     always_declare_return_types: true
+    always_use_package_imports: true
+    require_trailing_commas: true
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
