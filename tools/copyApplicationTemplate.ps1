@@ -57,7 +57,12 @@ function WriteAndPause {
         [System.ConsoleColor]$foregroundColor
     )
     Write-Host $message -ForegroundColor $foregroundColor
-    cmd /c "pause"
+
+    if ($env:OS -like "*Windows*") {
+        cmd /c "pause"
+    } else {
+        Read-Host "Press any key to continue..."
+    }
 }
 
 # Function used to update a line in a YAML file.
@@ -99,7 +104,7 @@ function UpdateAppReadMe {
     $commitDate = $gitVersionJson.CommitDate
 
     # Update the 'README.md' file content by executing a local script.
-    & "$PSScriptRoot\GenerateAppReadme.ps1" -InputPath ..\APP_README.md -VersionNumber $majorMinorPatch -CommitShortSha $commitShortSha -CommitFullSha $commitFullSha -CommitDate $commitDate
+    & "$PSScriptRoot\GenerateAppReadme.ps1" -InputPath README.md -VersionNumber $majorMinorPatch -CommitShortSha $commitShortSha -CommitFullSha $commitFullSha -CommitDate $commitDate
 }
 
 # Main script.
@@ -234,6 +239,6 @@ try {
     WriteAndPause -message "Flutter project '$projectName' has been successfully copied to the destination directory." -foregroundColor Green
 }
 catch {
-    WriteAndPause -message "An error occurred." -foregroundColor Red
+    WriteAndPause -message "An error occurred: $_." -foregroundColor Red
     exit
 }

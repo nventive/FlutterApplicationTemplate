@@ -32,6 +32,7 @@ We use a custom PowerShell script and a Dart package to easily create new projec
 
    `powershell -File ".\tools\copyApplicationTemplate.ps1" -sourceProjectDir C:\P\FlutterApplicationTemplate -destDir C:\P -projectName MyProjectName -appName MyAppName -packageName com.example.myAppName -organization MyOrg`
 
+   > 💡 For Mac, you can use `pwsh` instead of `powershell`.
    > 💡 The organization parameter is optional (Only used for the Windows platform).
 
    The following options are available when running the command.
