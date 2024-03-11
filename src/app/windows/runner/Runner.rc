@@ -93,7 +93,7 @@ BEGIN
             VALUE "FileDescription", "ApplicationTemplate" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "ApplicationTemplate" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright © 2024 nventive. All rights reserved." "\0"
             VALUE "OriginalFilename", "ApplicationTemplate.exe" "\0"
             VALUE "ProductName", "ApplicationTemplate" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
