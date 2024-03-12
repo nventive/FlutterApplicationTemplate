@@ -48,15 +48,15 @@ If you're unfamiliar with Azure Pipeline, you should at least read about the fol
 | Folder or File | Description |
 |-:|-|
 `.azuredevops/` | Used to store the pull request template used by Azure DevOps.
-`build/` | Regroups all yaml files used that compose the pipelines defined in `.azure-pipelines.yml`.
+`build/` | Regroups all yaml files used that compose the pipelines defined in `azure-pipelines.yml`.
 `build/gitversion-config.yml` | Contains the configuration for the GitVersion tool that is used to compute the version number in the pipelines.
-`.azure-pipelines.yml` | Defines the main CI/CD pipeline of the project.
+`build/azure-pipelines.yml` | Defines the main CI/CD pipeline of the project.
 `doc/` | Regroups all the documentation of the project, with the only exception of `README.md`, which is located at the root of the repository.<br/><br/>**There are many topics covered. Make sure you check them out.**
 `README.md` | The entry point of this project's documentation.
 `src/` | Contains all the code of the application, including tests, with the exception of the configuration files located at the root of the repository.
 `analysis_options.yaml` | Configure the code formatting rules and analyzers of Visual Studio Code.
 `.gitignore` | Contains the git ignore rules.
-`tools/` | Offers a place to put custom tools and scripts. It also contains some information about the version of the template that was used to generate the project.
+`tools/` | Offers a place to put custom tools and scripts.
 
 ## Software Architecture
 
@@ -73,9 +73,8 @@ TODO: Fill the following table with your own pipelines.
 
 | Link | Code Entry Point | Goal | Triggers |
 |-|-|-|-|
-| [Name of Main Pipeline](link-to-pipeline)| [`.azure-pipelines.yml`](.azure-pipelines.yml)| Build validation during pull request.| Pull requests.
-| [Name of Main Pipeline](link-to-pipeline)| [`.azure-pipelines.yml`](.azure-pipelines.yml)| Build and deploy the application to AppCenter, TestFlight, and GooglePlay. | Changes on the `main` branch.<br/>Manual trigger.
-| [Name of API Integration Tests Pipeline](link-to-pipeline)| [`.azure-pipelines-api-integration-tests.yml`](.azure-pipelines.yml)| Run all tests, including APIs integration tests. | Daily cron job.<br/>Manual trigger.
+| [Name of Main Pipeline](link-to-pipeline)| [`build/azure-pipelines.yml`](.azure-pipelines.yml)| Build validation during pull request.| Pull requests.
+| [Name of Main Pipeline](link-to-pipeline)| [`build/azure-pipelines.yml`](.azure-pipelines.yml)| Build and deploy the application to AppCenter, TestFlight, and GooglePlay. | Changes on the `main` branch.<br/>Manual trigger.
 
 ## Additional Information
 

@@ -1,0 +1,122 @@
+﻿parameters:
+- name: applicationEnvironment
+  type: string
+  default: ''
+- name: androidKeyStoreFile
+  type: string
+  default: ''
+- name: androidKeyPropertiesFile
+  type: string
+  default: ''
+- name: androidVariableGroup
+  type: string
+  default: ''
+- name: iosCertificateFile
+  type: string
+  default: ''
+- name: iosProvisioningProfileFile
+  type: string
+  default: ''
+- name: iosExportOptionsFile
+  type: string
+  default: ''
+- name: iosCertificatePassword
+  type: string
+  default: ''
+- name: iosVariableGroup
+  type: string
+  default: ''
+- name: removeHyperlinksFromReleaseNotes
+  type: boolean
+  default: false
+- name: pathToSrc
+  type: string
+  default: '$(Build.SourcesDirectory)/src'
+- name: projectName
+  type: string
+  default: ''
+- name: BannerVersionNameText
+  type: string
+  default: ''
+
+jobs:
+  - job: OnWindows_ReleaseNotes
+    pool:
+      vmImage : $(windowsHostedAgentImage)
+    variables:
+      ArtifactName: ReleaseNotes_${{ parameters.applicationEnvironment }}
+      ApplicationEnvironment: ${{ parameters.applicationEnvironment }}
+    steps:
+      - template: steps-build-release-notes.yml
+        parameters:
+          removeHyperlinksFromReleaseNotes: ${{ parameters.removeHyperlinksFromReleaseNotes }}
+
+  - job: OnWindows_Windows
+    pool:
+      vmImage : $(windowsHostedAgentImage)
+    variables:
+    - name: ApplicationConfiguration
+      value: Release
+    - name: ArtifactName
+      value: $(WindowsArtifactName)_${{ parameters.applicationEnvironment }}
+    - name: ApplicationEnvironment
+      value: ${{ parameters.applicationEnvironment }}
+
+    steps:
+      - template: steps-build-windows.yml
+        parameters:
+          pathToSrc: ${{ parameters.pathToSrc }}
+          projectName: ${{ parameters.projectName }}
+
+  - job: OnWindows_Tests
+    pool:
+      vmImage : $(windowsHostedAgentImage)
+    variables:
+      ArtifactName: $(TestsArtifactName)_${{ parameters.applicationEnvironment }}
+      ApplicationEnvironment: ${{ parameters.applicationEnvironment }}
+    steps:
+      - template: steps-build-tests.yml
+        parameters:
+          pathToSrc: ${{ parameters.pathToSrc }}
+          projectName: ${{ parameters.projectName }}
+
+  - job: OnWindows_Android
+    pool:
+      vmImage : $(windowsHostedAgentImage)
+    variables:
+    - name: ApplicationEnvironment
+      value: ${{ parameters.applicationEnvironment }}
+    - name: ArtifactName
+      value: $(AndroidArtifactName)_${{ parameters.applicationEnvironment }}
+
+    - group: ${{ parameters.androidVariableGroup }}
+
+    steps:
+    - template: steps-build-android.yml
+      parameters:
+        pathToSrc: ${{ parameters.pathToSrc }}
+        projectName: ${{ parameters.projectName }}
+        androidKeystoreFile: ${{ parameters.androidKeyStoreFile }}
+        androidKeyStorePropertiesFile: ${{ parameters.androidKeyPropertiesFile }}
+
+  - job: OnMac_iOS
+    pool:
+      vmImage: $(macOSHostedAgentImage)
+    variables:
+    - name: ApplicationEnvironment
+      value: ${{ parameters.applicationEnvironment }}
+    - name: ArtifactName
+      value: $(iOSArtifactName)_${{ parameters.applicationEnvironment }}
+
+    - group: ${{ parameters.iosVariableGroup }}
+
+    steps:
+    - template: steps-build-ios.yml
+      parameters:
+        pathToSrc: ${{ parameters.pathToSrc }}
+        projectName: ${{ parameters.projectName }}
+        iosCertificateFile: ${{ parameters.iosCertificateFile }}
+        iosCertificatePassword: ${{ parameters.iosCertificatePassword }}
+        iosProvisioningProfileFile: ${{ parameters.iosProvisioningProfileFile }}
+        iosExportOptionsFile: ${{ parameters.iosExportOptionsFile }}
+        BannerVersionNameText: ${{ parameters.BannerVersionNameText }}

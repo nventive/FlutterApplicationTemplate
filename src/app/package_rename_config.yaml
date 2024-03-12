@@ -1,22 +1,56 @@
+# Default package rename configuration file for the application.
 package_rename_config:
   android:
     app_name: ApplicationTemplate # (String) The display name of the android app.
-    package_name: com.nventive.flutterApplicationTemplate # (String) The package name of the android app.
-    override_old_package: com.nventive.flutterApplicationTemplate # (Optional) (String) Use this to delete the old folder structure of MainActivity or to use the existing code with the new package name.
+    package_name: com.nventive.internal.flutterapptemplate # (String) The package name of the android app.
+    override_old_package: com.nventive.internal.flutterapptemplate # (Optional) (String) Use this to delete the old folder structure of MainActivity or to use the existing code with the new package name.
 
   ios:
     app_name: ApplicationTemplate # (String) The display name of the ios app.
     bundle_name: ApplicationTemplate # (String) The bundle name of the ios app.
-    package_name: com.nventive.flutterApplicationTemplate # (String) The product bundle identifier of the ios app.
+    package_name: com.nventive.internal.flutterapptemplate # (String) The product bundle identifier of the ios app.
 
   linux:
     app_name: ApplicationTemplate # (String) The window title of the linux app.
-    package_name: com.nventive.flutterApplicationTemplate # (String) The application id of the linux app.
+    package_name: com.nventive.internal.flutterapptemplate # (String) The application id of the linux app.
     exe_name: ApplicationTemplate # (String) The executable name (binary name) of the linux app.
 
   macos:
     app_name: ApplicationTemplate # (String) The product name of the macos app.
-    package_name: com.nventive.flutterApplicationTemplate # (String) The product bundle identifier of the macos app.
+    package_name: com.nventive.internal.flutterapptemplate # (String) The product bundle identifier of the macos app.
+    copyright_notice: Copyright © 2024 nventive. All rights reserved. # (String) The product copyright of the macos app.
+
+  web:
+    app_name: ApplicationTemplate # (String) The title and display name of the web app and PWA.
+    description: Application Template for Flutter # (String) The description of the web app and PWA.
+
+  windows:
+    app_name: ApplicationTemplate # (String) The window title & software name of the windows app.
+    organization: nventive # (String) The organization name (company name) of the windows app.
+    copyright_notice: Copyright © 2024 nventive. All rights reserved. # (String) The legal copyright of the windows app.
+    exe_name: ApplicationTemplate # (String) The executable name (binary name) of the windows app.
+
+# Production package rename configuration file for the application.
+# Useful for the production environment when built from the CI.
+package_rename_config-Production:
+  android:
+    app_name: ApplicationTemplate # (String) The display name of the android app.
+    package_name: com.nventive.flutterapptemplate # (String) The package name of the android app.
+    override_old_package: com.nventive.internal.flutterapptemplate # (Optional) (String) Use this to delete the old folder structure of MainActivity or to use the existing code with the new package name.
+
+  ios:
+    app_name: ApplicationTemplate # (String) The display name of the ios app.
+    bundle_name: ApplicationTemplate # (String) The bundle name of the ios app.
+    package_name: com.nventive.flutterapptemplate # (String) The product bundle identifier of the ios app.
+
+  linux:
+    app_name: ApplicationTemplate # (String) The window title of the linux app.
+    package_name: com.nventive.flutterapptemplate # (String) The application id of the linux app.
+    exe_name: ApplicationTemplate # (String) The executable name (binary name) of the linux app.
+
+  macos:
+    app_name: ApplicationTemplate # (String) The product name of the macos app.
+    package_name: com.nventive.flutterapptemplate # (String) The product bundle identifier of the macos app.
     copyright_notice: Copyright © 2024 nventive. All rights reserved. # (String) The product copyright of the macos app.
 
   web:

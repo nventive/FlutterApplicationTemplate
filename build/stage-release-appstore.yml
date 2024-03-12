@@ -1,0 +1,45 @@
+﻿parameters:
+  applicationEnvironment: '' # e.g. "Staging", "Production"
+  deploymentEnvironment: '' # e.g. "GooglePlay", "AppStore", "AppCenter"
+
+jobs:
+- deployment: AppStore_iOS_${{ parameters.deploymentEnvironment}}
+
+  pool:
+    vmImage: $(macOSHostedAgentImage)
+
+  environment: ${{ parameters.deploymentEnvironment }}
+
+  variables:
+  - group: FlutterApplicationTemplate.Distribution.AppStore
+  - name: artifactName
+    value: $(iOSArtifactName)_${{ parameters.applicationEnvironment }}
+
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - download: current
+          artifact: $(artifactName)
+
+        - task: AppStoreRelease@1
+          displayName: 'Publish to AppStore'
+          inputs:
+            serviceEndpoint: $(AppStoreServiceConnection)
+            appIdentifier: $(ApplicationIdentifier)
+            appType: 'iOS'
+            ipaPath: '$(Pipeline.Workspace)/$(artifactName)/*.ipa'
+            releaseTrack: 'TestFlight'
+            shouldSkipWaitingForProcessing: true
+            teamId: $(AppleTeamId)
+            teamName: $(AppleTeamName)
+            appSpecificPassword: '$(AppleAppSpecificPasswordFastLane)'
+            appSpecificId: '$(AppleStoreConnectIdentifier)' # Allows to bypass 2FA when specified with 'appSpecificPassword'.
+
+        - task: DeleteFiles@1
+          displayName: "Remove downloaded artifacts"
+          condition: always()
+          inputs:
+            SourceFolder: $(Pipeline.Workspace)/$(artifactName)
+            RemoveSourceFolder: True
+            Contents: '**'
