@@ -56,14 +56,11 @@ steps:
       Copy-Item -Path '$(keyStore.secureFilePath)' -Destination '${{ parameters.pathToSrc }}\app\android\app\${{ parameters.androidKeystoreFile }}'
       Write-Host 'Key store copied to ${{ parameters.pathToSrc }}/app/android/app/${{ parameters.androidKeystoreFile }}.'
 
-#-if false
-# Workaround for the issue with the Flutter build runner not working sometimes.
 - task: FlutterCommand@0
   displayName: "Run Flutter Pub Get"
   inputs:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
     arguments: 'pub get'
-#-endif
 
 - task: PowerShell@2
   displayName: 'Execute Package Rename'
@@ -80,7 +77,6 @@ steps:
     targetType: 'inline'
     script: |
       Set-Location '${{ parameters.pathToSrc }}/app'
-      flutter pub get
       $(DartToolPath)/dart run build_runner build --delete-conflicting-outputs
 
 - task: FlutterBuild@0

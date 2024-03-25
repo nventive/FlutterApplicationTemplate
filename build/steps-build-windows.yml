@@ -17,6 +17,20 @@ steps:
   artifact: GeneratedApp
 #-endif
 
+- task: FlutterCommand@0
+  displayName: "Run Flutter Clean"
+  inputs:
+    projectDirectory: '${{ parameters.pathToSrc }}/app'
+    arguments: 'clean'
+
+- task: PowerShell@2
+  displayName: 'Execute Build Runner'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Set-Location '${{ parameters.pathToSrc }}/app'
+      $(DartToolPath)/dart run build_runner build --delete-conflicting-outputs
+
 - task: FlutterBuild@0
   displayName: 'Build solution in $(ApplicationConfiguration)'
   inputs:
