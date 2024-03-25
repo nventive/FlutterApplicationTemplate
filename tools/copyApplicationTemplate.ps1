@@ -104,7 +104,39 @@ function UpdateAppReadMe {
     $commitDate = $gitVersionJson.CommitDate
 
     # Update the 'README.md' file content by executing a local script.
-    & "$PSScriptRoot\GenerateAppReadme.ps1" -InputPath README.md -VersionNumber $majorMinorPatch -CommitShortSha $commitShortSha -CommitFullSha $commitFullSha -CommitDate $commitDate
+    & "$PSScriptRoot\generateAppReadme.ps1" -InputPath README.md -VersionNumber $majorMinorPatch -CommitShortSha $commitShortSha -CommitFullSha $commitFullSha -CommitDate $commitDate
+
+    Write-Host "Application README updated successfully." -ForegroundColor Green
+}
+
+# Function to remove commented-out blocks from the specified folder and its subfolders.
+function RemoveCommentedOutBlocks {
+    param(
+        [string]$folderPath
+    )
+
+    # Get all files in the specified folder and its subfolders.
+    $files = Get-ChildItem -Path $FolderPath -Recurse -File
+
+    # Iterate through each file.
+    foreach ($file in $files) {
+        # Read the content of the file.
+        $content = Get-Content -Path $file.FullName -Raw
+
+        # Define regex pattern to match the comment blocks.
+        $pattern = '(?s)#-if false.*?#-endif'
+
+        # Remove the comment blocks.
+        $content = $content -replace $pattern, ''
+
+        # Remove empty lines.
+        $content = $content -replace '^\s*$', ''
+
+        # Write the modified content back to the file.
+        Set-Content -Path $file.FullName -Value $content
+    }
+
+    Write-Host "Commented-out blocks removed successfully." -ForegroundColor Green
 }
 
 # Main script.
@@ -165,6 +197,10 @@ try {
         # Value to put inside the YAML line.
         $newValue = $null
 
+        if ($line -like "*package_rename_config-production:*") {
+            break
+        }
+
         # Check if the line contains one of the keys you want to update.
         switch -Regex ($line) {
             ("app_name:") {
@@ -209,7 +245,10 @@ try {
 
     # Iterate through each line of the file content.
     foreach ($line in $fileContent) {
-        if ($line -like "*override_old_package*") {
+        if ($line -like "*package_rename_config-production:*") {
+            break
+        }
+        elseif ($line -like "*override_old_package*") {
             # Update the line with the new value.
             $newLine = UpdateYamlLine -line $line -newValue $packageName
         } else {
@@ -229,11 +268,21 @@ try {
     # Delete the template 'README.md' file.
     Remove-Item "README.md"
 
+    # Delete the copy tool stage file.
+    Remove-Item ".\build\stage-copytool.yaml"
+
+    # Delete template tools.
+    Remove-Item ".\tools\generateAppReadme.ps1"
+    Remove-Item ".\tools\copyApplicationTemplate.ps1"
+
     # Rename the 'APP_README.md' file to 'README.md'.
     Rename-Item -Path "APP_README.md" -NewName "README.md"
 
     # Update the 'README.md' file content.
     UpdateAppReadMe
+
+    # Remove commented-out blocks from the project.
+    RemoveCommentedOutBlocks -FolderPath "build"
 
     # Display success message.
     WriteAndPause -message "Flutter project '$projectName' has been successfully copied to the destination directory." -foregroundColor Green

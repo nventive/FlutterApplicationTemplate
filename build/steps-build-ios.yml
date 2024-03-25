@@ -1,0 +1,150 @@
+parameters:
+- name: iosCertificateFile
+  type: string
+  default: ''
+- name: iosCertificatePassword
+  type: string
+  default: ''
+- name: iosProvisioningProfileFile
+  type: string
+  default: ''
+- name: iosExportOptionsFile
+  type: string
+  default: ''
+- name: pathToSrc
+  type: string
+  default: ''
+- name: projectName
+  type: string
+  default: '$(ProjectName)'
+- name: BannerVersionNameText
+  type: string
+  default: ''
+
+steps:
+#-if false
+- download: current
+  condition: eq('GeneratedApp', '${{ parameters.projectName }}')
+  artifact: GeneratedApp
+#-endif
+
+- template: templates/gitversion.yml
+- template: templates/build-number.yml
+- template: templates/flutter-install.yml
+
+- task: InstallAppleCertificate@2
+  displayName: Install Certificate
+  inputs:
+    certSecureFile: ${{ parameters.iosCertificateFile }}
+    certPwd: $(AppleCertificatePassword)
+    keychain: temp
+    deleteCert: true
+
+- task: InstallAppleProvisioningProfile@1
+  displayName: 'Install Apple Provisioning Profile'
+  name: provisioningProfile
+  inputs:
+    provisioningProfileLocation: 'secureFiles'
+    provProfileSecureFile: ${{ parameters.iosProvisioningProfileFile }}
+
+# Flutter project signing process goes through exportOptions.plist file which holds secure information about signing.
+- task: DownloadSecureFile@1
+  name: exportOptions
+  inputs:
+    secureFile: '${{ parameters.iosExportOptionsFile }}'
+
+#-if false
+# Workaround for the issue with the Flutter build runner not working sometimes.
+- task: FlutterCommand@0
+  displayName: "Run Flutter Pub Get"
+  inputs:
+    projectDirectory: '${{ parameters.pathToSrc }}/app'
+    arguments: 'pub get'
+#-endif
+
+- task: PowerShell@2
+  displayName: 'Execute Package Rename'
+  condition: eq(variables['ApplicationEnvironment'], 'Production')
+  inputs:
+    targetType: 'inline'
+    script: |
+      Set-Location '${{ parameters.pathToSrc }}/app'
+      dart run package_rename -f Production
+
+- task: LaunchIconBadge@1
+  condition: and(succeeded(), ne(variables['ApplicationEnvironment'], 'Production'))
+  inputs:
+    bannerVersionNameText: ${{ parameters.BannerVersionNameText }}
+    bannerVersionNameColor: $(BannerVersionNameColor)
+    contents: '${{ parameters.pathToSrc }}/app/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-*.png'
+    bannerVersionNamePosition: 'bottomRight'
+    bannerVersionNumberPosition: 'top'
+    bannerVersionNumberText: '$(MajorMinorPatch)'
+
+- task: PowerShell@2
+  displayName: 'Execute Build Runner'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Set-Location '${{ parameters.pathToSrc }}/app'
+      $(DartToolPath)/dart run build_runner build --delete-conflicting-outputs
+
+- task: FlutterBuild@0
+  displayName:  Build Project for Release
+  inputs:
+    target: 'ios'
+    buildName: '$(MajorMinorPatch)'
+    buildNumber: '$(PreReleaseNumber)'
+    debugMode: false
+    profileMode: false
+    iosCodesign: false
+    projectDirectory: '${{ parameters.pathToSrc }}/app'
+    verboseMode: true
+    exportOptionsPlist: '$(exportOptions.secureFilePath)'
+
+- task: Xcode@5
+  condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'))
+  displayName: 'Xcode Archive iOS'
+  inputs:
+    actions: 'archive'
+    sdk: 'iphoneos'
+    scheme: 'Runner'
+    configuration: 'Release'
+    xcWorkspacePath: '${{ parameters.pathToSrc }}/app/ios/Runner.xcworkspace'
+    packageApp: true
+    signingOption: 'manual'
+    exportOptions: 'plist'
+    exportOptionsPlist: '$(exportOptions.secureFilePath)'
+    archivePath: '${{ parameters.pathToSrc }}/app/build/ios/iphoneos'
+    exportPath: '${{ parameters.pathToSrc }}/app/build/ios/iphoneos'
+    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+    provisioningProfileName: '$(provisioningProfile.provisioningProfileName)'
+
+- task: CopyFiles@2
+  condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'))
+  displayName: 'Copy Binary Files'
+  inputs:
+    sourceFolder: '${{ parameters.pathToSrc }}/app'
+    contents: '**/*.ipa'
+    flattenFolders : true
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- publish: $(Build.ArtifactStagingDirectory)
+  displayName: 'Publish Artifact'
+  condition: always()
+  artifact: $(ArtifactName)
+
+#-if false
+- task: DeleteFiles@1
+  displayName: "Remove Downloaded Artifact (GeneratedApp Folder)"
+  condition: always()
+  inputs:
+    SourceFolder: $(Pipeline.Workspace)/GeneratedApp
+    RemoveSourceFolder: true
+    Contents: '**'
+#-endif
+
+- task: PostBuildCleanup@3
+  displayName: 'Post-Build Cleanup: Cleanup files to keep build server clean!'
+  condition: always()

@@ -9,13 +9,13 @@ What kind of change does this pull request introduce?
 - [ ] Refactoring (no functional changes, no api changes)
 - [ ] Pipeline related changes
 - [ ] Documentation content changes
-- [ ] Other... Please describe:     
+- [ ] Other... Please describe:
 
 ## Description
 [comment]:# (Please describe the changes that this PR introduces.)
 
 ## Checklist
-This pull request fulfills the following requirements :
+This pull request fulfills the following requirements:
 
 [comment]:# (Please strikethrough  non-applicable items \(https://docs.microsoft.com/en-us/azure/devops/project/wiki/markdown-guidance?view=azure-devops#emphasis-bold-italics-strikethrough\))
 

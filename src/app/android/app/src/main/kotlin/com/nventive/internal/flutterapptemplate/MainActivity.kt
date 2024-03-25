@@ -1,4 +1,4 @@
-package com.nventive.flutterApplicationTemplate
+package com.nventive.internal.flutterapptemplate
 
 import io.flutter.embedding.android.FlutterActivity
 

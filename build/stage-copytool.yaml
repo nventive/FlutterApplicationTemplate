@@ -1,0 +1,21 @@
+jobs:
+    # This uses the copy tool to generate a project.
+    # The generated project folder is published to be built in a later stage.
+  - job: OnWindows_CopyTool
+    pool:
+      vmImage : $(windowsHostedAgentImage)
+    steps:
+    - template: templates/gitversion.yml
+    - template: templates/flutter-install.yml
+
+    - task: PowerShell@2
+      displayName: 'Generate Project'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Set-Location '$(Build.SourcesDirectory)/tools'
+          .\copyApplicationTemplate.ps1 -sourceProjectDir $(Build.SourcesDirectory) -destDir $(Pipeline.Workspace) -projectName GeneratedApp -appName GeneratedApp -packageName com.nventive.internal.flutterapptemplate -organization nventive
+
+    - publish: $(Pipeline.Workspace)/GeneratedApp
+      displayName: 'Publish GeneratedApp Folder'
+      artifact: GeneratedApp

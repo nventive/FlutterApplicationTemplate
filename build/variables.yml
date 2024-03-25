@@ -1,0 +1,78 @@
+﻿variables:
+  # Prerequisites - Variable groups
+  # Make sure you have the following variable groups in your Azure pipeline library:
+  #
+  # FlutterApplicationTemplate.Distribution.Internal.Android
+  #   ApplicationIdentifier: This is the internal application id of the app for AppCenter releases. Note that this variable is used by Nimue to automatically change the package name.
+  #   AndroidSigningKeyAlias: This is the keystore alias.
+  #   AndroidSigningKeyPass: This is the keystore keypass (secured).
+  #   AndroidSigningStorePass: This is the keystore storepass (secured).
+  #
+  # FlutterApplicationTemplate.Distribution.GooglePlay
+  #   ApplicationIdentifier: This is the official application id of the app that should go on the store. Note that this variable is used by Nimue to automatically change the package name.
+  #   AndroidSigningKeyAlias: This is the keystore alias.
+  #   AndroidSigningKeyPass: This is the keystore keypass (secured).
+  #   AndroidSigningStorePass: This is the keystore storepass (secured).
+  #
+  # FlutterApplicationTemplate.Distribution.Internal.iOS
+  #   ApplicationIdentifier: This is the internal application id of the app for AppCenter releases. Note that this variable is used by Nimue to automatically change the bundle id.
+  #   AppleCertificatePassword: The certificate password (secured).
+  #
+  # FlutterApplicationTemplate.Distribution.AppStore
+  #   ApplicationIdentifier: The official bundle id of the app that should go on the store; the app will be resigned with this id. Note that this variable is used by Nimue to automatically change the bundle id.
+  #   AppleCertificatePassword: The certificate password (secured).
+  #   AppleTeamId: The developer account team id (secured).
+  #   AppleTeamName: The developer account team name.
+
+  # Prerequisites - Secured files.
+  # Make sure you have the following secured files in your Azure pipeline library.
+  #
+  # Android.
+  InternalKeystore: com.nventive.internal.flutterapptemplate.jks # This is the internal keystore used for internal builds.
+  InternalKeyProperties: com.nventive.internal.flutterapptemplate.key.properties # This is the internal key properties used for internal builds.
+  GooglePlayKeystore: com.nventive.flutterapptemplate.jks # This is the official keystore used for Google Play.
+  GooglePlayKeyProperties: com.nventive.flutterapptemplate.key.properties # This is the official key properties used for Google Play.
+  # iOS.
+  InternalProvisioningProfile: com.nventive.internal.flutterapptemplate.mobileprovision # This is the internal provisioning profile for internal builds.
+  InternalExportOptions: com.nventive.internal.flutterapptemplate.exportOptions.plist # This is the export options file for internal builds.
+  InternalCertificate: nventive.p12 # This is the certificate from the nventive Apple account used to sign internal builds.
+  AppStoreProvisioningProfile: com.nventive.flutterapptemplate.mobileprovision # This is the client provisioning profile for the AppStore (Production distribution).
+  AppStoreExportOptions: com.nventive.flutterapptemplate.exportOptions.plist # This is the export options file for the AppStore (Production distribution) builds.
+  AppStoreCertificate: nventive.p12 # This is the client production certificate used to sign AppStore builds.
+
+  # Prerequisites - Service connections.
+  # Make sure you have the following service connections in your Azure pipeline library.
+  GooglePlayServiceConnection: GooglePlay-nventive-ApplicationTemplate
+  AppCenterServiceConnection: AppCenter-nventive-framework
+  AppStoreServiceConnection: AppStore-nventive
+
+  # AppCenter slugs.
+  # The "app slug" corresponds to the identifiers of the app in AppCenter; to find it, navigate to the app in a browser and;
+  # the URL should look like this: https://appcenter.ms/orgs/{orgId}/apps/{appId}; the slug is simply: "{orgId}/{appId}".
+  AppCenterAndroidSlug: 'nventive-framework/Flutter-Application-Template'
+  AppCenterAndroidSlug_Production: 'nventive-framework/Flutter-Application-Template-Production'
+
+  # AppCenter Distribution Groups.
+  AppCenterDistributionGroup: '00000000-0000-0000-0000-000000000000'
+
+  # Solution to build.
+  projectName: FlutterApplicationTemplate
+
+  # Virtual machine images.
+  windowsHostedAgentImage: 'windows-2022'
+  macOSHostedAgentImage: 'macOS-13'
+
+  # Name of the folder where the artefacts will be placed. Variable used in build and release phases.
+  # We make seperate folders so that releases can each download only the folder they need.
+  AndroidArtifactName: Android
+  iOSArtifactName: iOS
+  WindowsArtifactName: Windows
+  TestsArtifactName: Tests
+
+  # For Application.Building.Light optimizations.
+  IsLightBuild: $[eq(variables['Build.Reason'], 'PullRequest')]
+
+  # Pipeline configuration (Disable shallow fetch).
+  # See https://dev.to/kkazala/azure-devops-pipelines-shallow-fetch-1-is-now-default-4656 for more details.
+  # See https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/pipeline-options-for-git?view=azure-devops&tabs=yaml#shallow-fetch for more details.
+  Agent.Source.Git.ShallowFetchDepth: 0

@@ -1,0 +1,11 @@
+steps:
+# We provide the option to add padding to the build number (PreReleaseNumber)
+# in cases where a branch would generate a build number lower than the latest build on both Google Play and Apple App Stores.
+- task: PowerShell@2
+  displayName: Add Padding to Build Number if necessary
+  inputs:
+    targetType: inline
+    script: |
+      $buildNumberWithPadding = [int]$(PreReleaseNumber) + [int]$(BuildPadding)
+      Write-Host "##vso[task.setvariable variable=BuildNumber]$buildNumberWithPadding"
+      Write-Host "Overridden build number: $buildNumberWithPadding"
