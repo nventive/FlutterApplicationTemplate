@@ -21,11 +21,13 @@ We use a custom PowerShell script and a Dart package to easily create new projec
 2. Make sure you have PowerShell installed.
 
    > 💡 For Windows, you can run `powershell` to verify. You can install it with the command `winget install --id Microsoft.Powershell --source winget`.
+
    > 💡 For Mac, you can run `pwsh` to verify. You can install it with Homebrew `brew install powershell/tap/powershell`.
 
 3. Make sure you have GitVersion installed.
 
    > 💡 For Windows, you can run `dotnet-gitversion` to verify. You can install it with the command `dotnet tool install --global GitVersion.Tool`.
+
    > 💡 For Mac, you can run `gitversion` to verify. You can install it with Homebrew `brew install gitversion`.
 
 4. To run the script and create a new project, run the following command in the cloned `FlutterApplicationTemplate` repository.
@@ -33,6 +35,7 @@ We use a custom PowerShell script and a Dart package to easily create new projec
    `powershell -File ".\tools\copyApplicationTemplate.ps1" -sourceProjectDir C:\P\FlutterApplicationTemplate -destDir C:\P -projectName MyProjectName -appName MyAppName -packageName com.example.myAppName -organization MyOrg`
 
    > 💡 For Mac, you can use `pwsh` instead of `powershell`.
+
    > 💡 The organization parameter is optional (Only used for the Windows platform).
 
    The following options are available when running the command.
