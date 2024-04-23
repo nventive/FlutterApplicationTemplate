@@ -15,6 +15,20 @@ steps:
   artifact: GeneratedApp
 #-endif
 
+- task: FlutterCommand@0
+  displayName: "Run Flutter Pub Get"
+  inputs:
+    projectDirectory: '${{ parameters.pathToSrc }}/app'
+    arguments: 'pub get'
+
+- task: PowerShell@2
+  displayName: 'Execute Build Runner'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Set-Location '${{ parameters.pathToSrc }}/app'
+      $(DartToolPath)/dart run build_runner build --delete-conflicting-outputs
+
 - task: FlutterTest@0
   displayName: "Run Tests"
   inputs:
