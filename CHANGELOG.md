@@ -16,3 +16,4 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Updated Azure Pipelines (Windows, Android, iOS, Tests).
 - Added simple Dad Jokes page.
 - Fixed Azure Pipelines (iOS).
+- Fixed Android missing Internet permission.
