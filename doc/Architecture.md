@@ -84,6 +84,10 @@ Business services are always declared using an interface and implemented in a se
 
 ## Presentation
 
+### Navigation
+
+See [Navigation.md](Navigation.md) for more details.
+
 ### State Management
 
 This application uses [Riverpod](https://pub.dev/packages/riverpod) to implement the MVVM pattern. The `ViewModel` class is used as a base class for all ViewModels.

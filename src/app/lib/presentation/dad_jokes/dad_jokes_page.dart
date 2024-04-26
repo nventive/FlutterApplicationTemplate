@@ -21,23 +21,28 @@ final class DadJokesPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dadJokesAsyncValue = ref.watch(_dadJokesProvider);
-    return dadJokesAsyncValue.when(
-      data: (dadJokes) {
-        return ListView.builder(
-          itemCount: dadJokes.length,
-          itemBuilder: (context, index) {
-            final dadJoke = dadJokes[index];
-            return DadJokeListItem(
-              key: Key(dadJoke.id),
-              dadJoke: dadJoke,
-            );
-          },
-        );
-      },
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Dad Jokes'),
       ),
-      error: (error, stackTrace) => Text('Error: $error'),
+      body: dadJokesAsyncValue.when(
+        data: (dadJokes) {
+          return ListView.builder(
+            itemCount: dadJokes.length,
+            itemBuilder: (context, index) {
+              final dadJoke = dadJokes[index];
+              return DadJokeListItem(
+                key: Key(dadJoke.id),
+                dadJoke: dadJoke,
+              );
+            },
+          );
+        },
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        error: (error, stackTrace) => Text('Error: $error'),
+      ),
     );
   }
 }
