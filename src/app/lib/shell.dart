@@ -1,31 +1,16 @@
-import 'package:app/presentation/dad_jokes/dad_jokes_page.dart';
-import 'package:app/presentation/dad_jokes/favorite_dad_jokes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 /// The shell of the application.
-class Shell extends StatefulWidget {
-  const Shell({super.key});
+final class Shell extends StatelessWidget {
+  const Shell({super.key, required this.navigationShell});
 
-  @override
-  State<Shell> createState() => _ShellState();
-}
-
-/// The state of the [Shell].
-class _ShellState extends State<Shell> {
-  int _selectedIndex = 0;
-
-  static final List<Widget> _pages = <Widget>[
-    const DadJokesPage(),
-    const FavoriteDadJokesPage(),
-  ];
+  final StatefulNavigationShell navigationShell;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dad Jokes'),
-      ),
-      body: _pages[_selectedIndex],
+      body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -36,17 +21,14 @@ class _ShellState extends State<Shell> {
             icon: Icon(Icons.favorite),
             label: 'Favorites',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
         ],
-        currentIndex: _selectedIndex,
-        onTap: _onTap,
+        currentIndex: navigationShell.currentIndex,
+        onTap: navigationShell.goBranch,
       ),
     );
-  }
-
-  /// Handles the tap event.
-  void _onTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
   }
 }
