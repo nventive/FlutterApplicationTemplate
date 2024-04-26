@@ -18,3 +18,4 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Fixed Azure Pipelines (iOS).
 - Fixed Android missing Internet permission.
 - Fixed Android release on Google Play.
+- Fixed PowerShell script that was copying source control.

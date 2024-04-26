@@ -184,6 +184,10 @@ try {
     $flutterProjectDir = Join-Path -Path $destProjectDir -ChildPath "src\app"
     Set-Location $flutterProjectDir
 
+    # Delete the source control folder.
+    $sourceControlDir = Join-Path -Path $destProjectDir -ChildPath ".git"
+    Remove-Item $sourceControlDir -Recurse -Force
+
     $renameConfigFileName = "package_rename_config.yaml"
 
     # Load the content of the YAML file.
