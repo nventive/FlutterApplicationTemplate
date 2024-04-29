@@ -17,19 +17,9 @@ steps:
   artifact: GeneratedApp
 #-endif
 
-- task: FlutterCommand@0
-  displayName: "Run Flutter Clean"
-  inputs:
+- template: templates/flutter-prepare.yml
+  parameters:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
-    arguments: 'clean'
-
-- task: PowerShell@2
-  displayName: 'Execute Build Runner'
-  inputs:
-    targetType: 'inline'
-    script: |
-      Set-Location '${{ parameters.pathToSrc }}/app'
-      $(DartToolPath)/dart run build_runner build --delete-conflicting-outputs
 
 - task: FlutterBuild@0
   displayName: 'Build solution in $(ApplicationConfiguration)'
@@ -40,6 +30,11 @@ steps:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
     verboseMode: true
     dartDefine: ENV=$(applicationEnvironment)
+
+- template: templates/flutter-diagnostics.yml
+  parameters:
+    projectDirectory: '${{ parameters.pathToSrc }}/app'
+    condition: failed()
 
 - publish: $(Build.ArtifactStagingDirectory)
   displayName: 'Publish artifact $(ApplicationConfiguration)'

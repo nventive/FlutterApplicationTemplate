@@ -23,13 +23,17 @@ trigger:
       - main
 
 variables:
+#-if false
+- name: IsReleaseBranch
+  value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+#-endif
 - template: variables.yml
 
 stages:
 #-if false
 - stage: CopyTool_GeneratedApp
   jobs:
-  - template: stage-copytool.yaml
+  - template: ../src/cli/.azuredevops/stage-test-cli.yaml
 
 - stage: Build_Staging_GeneratedApp
   dependsOn: CopyTool_GeneratedApp
@@ -48,8 +52,16 @@ stages:
       iosExportOptionsFile: $(InternalExportOptions)
       iosCertificateFile: $(InternalCertificate)
       iosVariableGroup: 'FlutterApplicationTemplate.Distribution.Internal.iOS'
-#-endif
 
+- stage: Publish_Template_Package
+  condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'), eq(variables['IsReleaseBranch'], 'true'))
+  dependsOn:
+   - CopyTool_GeneratedApp
+   - Build_Staging_GeneratedApp
+  jobs:
+  - template: ../src/cli/.azuredevops/stage-publish-cli.yml
+
+#-endif
 - stage: Build_Staging
 #-if false
   dependsOn: [] # This removes the implicit dependency on previous stage and causes this to run in parallel.

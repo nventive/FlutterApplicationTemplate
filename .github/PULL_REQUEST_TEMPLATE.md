@@ -37,7 +37,12 @@ No matter your changes, these checks always apply.
   - Create a new Major.Minor.X header if you do a **Minor** or **Major** change.
   - If you create a new header, it aligns with the **Impact on version** section and matches what is generated in the build pipeline.
 - [ ] Documentation files were updated according with the changes.
-- [ ] Images about the template are referenced from the [wiki](https://github.com/nventive/UnoApplicationTemplate/wiki/Images) and added as images in this git.
+  - Update `README.md` and `src/cli/CLI.md` if you made changes to **templating**.
+  - Update `AzurePipelines.md` and `src/app/README.md` if you made changes to **pipelines**.
+  - Update `Diagnostics.md` if you made changes to **diagnostic tools**.
+  - Update `Architecture.md` and its diagrams if you made **architecture decisions** or if you introduced new **recipes**.
+  - ...and so forth: Make sure you update the documentation files associated to the recipes you changed. Review the topics by looking at the content of the `doc/` folder.
+- [ ] Images about the template are referenced from the [wiki](https://github.com/nventive/FlutterApplicationTemplate/wiki/Images) and added as images in this git.
 - [ ] TODO comments are hints for next steps for users of the template and not planned work.
 
 ### Contextual

@@ -1,0 +1,51 @@
+parameters:
+- name: pathToSrc
+  type: string
+  default: '$(Build.SourcesDirectory)/src'
+
+jobs:
+    # This uses the CLI to generate a project.
+    # The generated project folder is published to be built in a later stage.
+  - job: OnWindows_Test_CLI
+    pool:
+      vmImage : $(windowsHostedAgentImage)
+    steps:
+    - template: ../../../build/templates/gitversion.yml
+      parameters:
+        configFilePath: '${{ parameters.pathToSrc }}/cli/.azuredevops/gitversion-config.yml'
+
+    - template: ../../../build/templates/flutter-install.yml
+      parameters:
+        projectDirectory: '${{ parameters.pathToSrc }}/cli'
+
+    - template: templates/prepare-package.yml
+      parameters:
+        pathToSrc: '${{ parameters.pathToSrc }}'
+        majorMinorPatch: '$(GitVersion.MajorMinorPatch)'
+        sha: '$(GitVersion.Sha)'
+        shortSha: '$(GitVersion.ShortSha)'
+        commitDate: '$(GitVersion.CommitDate)'
+
+    - template: ../../../build/templates/flutter-prepare.yml
+      parameters:
+        projectDirectory: '${{ parameters.pathToSrc }}/cli'
+
+    - template: templates/publish-package.yml
+      parameters:
+        pathToSrc: '${{ parameters.pathToSrc }}'
+        dryRun: true
+
+    - template: ../../../build/templates/flutter-diagnostics.yml
+      parameters:
+        projectDirectory: '${{ parameters.pathToSrc }}/cli'
+        condition: failed()
+
+    - powershell: $(DartToolPath)/dart pub global activate --source=path ${{ parameters.pathToSrc }}/cli
+      displayName: 'Install Flutter Application Generator'
+
+    - powershell: $(DartToolPath)/dart pub global run flutter_application_generator create --destinationDirectory $(Pipeline.Workspace) --projectName GeneratedApp --applicationName GeneratedApp --packageName com.nventive.internal.flutterapptemplate --organizationName nventive
+      displayName: 'Generate Project'
+
+    - publish: $(Pipeline.Workspace)/GeneratedApp
+      displayName: 'Publish GeneratedApp Folder'
+      artifact: GeneratedApp

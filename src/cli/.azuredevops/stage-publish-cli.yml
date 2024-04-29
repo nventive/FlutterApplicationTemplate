@@ -1,0 +1,56 @@
+parameters:
+- name: pathToSrc
+  type: string
+  default: '$(Build.SourcesDirectory)/src'
+
+jobs:
+- job: OnWindows_Publish_CLI
+  pool:
+    vmImage : $(windowsHostedAgentImage)
+  steps:
+  - template: ../../../build/templates/gitversion.yml
+    parameters:
+      configFilePath: '${{ parameters.pathToSrc }}/cli/.azuredevops/gitversion-config.yml'
+
+  - template: ../../../build/templates/flutter-install.yml
+    parameters:
+      projectDirectory: '${{ parameters.pathToSrc }}/cli'
+
+  - template: templates/prepare-package.yml
+    parameters:
+      pathToSrc: '${{ parameters.pathToSrc }}'
+      majorMinorPatch: '$(GitVersion.MajorMinorPatch)'
+      sha: '$(GitVersion.Sha)'
+      shortSha: '$(GitVersion.ShortSha)'
+      commitDate: '$(GitVersion.CommitDate)'
+
+  - template: ../../../build/templates/flutter-prepare.yml
+    parameters:
+      projectDirectory: '${{ parameters.pathToSrc }}/cli'
+
+  - task: DownloadSecureFile@1
+    displayName: 'Download Google Cloud Key'
+    condition: succeeded()
+    inputs:
+      secureFile: 'flutter_publisher_gckey.json'
+    name: DownloadGCloudKey
+
+  - script: |
+      gcloud auth activate-service-account --key-file=$(DownloadGCloudKey.secureFilePath)
+      gcloud auth print-identity-token --audiences=https://pub.dev | dart pub token add https://pub.dev
+    condition: succeeded()
+    displayName: 'Authenticate with Google Cloud'
+
+  - template: templates/publish-package.yml
+    parameters:
+      pathToSrc: '${{ parameters.pathToSrc }}'
+      dryRun: false
+
+  - template: ../../../build/templates/flutter-diagnostics.yml
+    parameters:
+      projectDirectory: '${{ parameters.pathToSrc }}/cli'
+      condition: failed()
+
+  - task: PostBuildCleanup@3
+    displayName: 'Post-Build cleanup : Cleanup files to keep build server clean!'
+    condition: always()

@@ -5,6 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Flutter Application Generator",
+      "program": "src/cli/bin/flutter_application_generator.dart",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
       "name": "ApplicationTemplate - Debug",
       "request": "launch",
       "type": "dart",

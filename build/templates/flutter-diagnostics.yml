@@ -1,0 +1,15 @@
+parameters:
+- name: projectDirectory
+  type: string
+  default: '$(Build.SourcesDirectory)/src/app'
+- name: condition
+  type: string
+  default: always()
+
+steps:
+  - task: FlutterCommand@0
+    condition: ${{ parameters.condition }}
+    displayName: "Run Flutter Diagnostics"
+    inputs:
+      projectDirectory: ${{ parameters.projectDirectory }}
+      arguments: 'doctor -v'

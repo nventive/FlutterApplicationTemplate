@@ -1,0 +1,24 @@
+parameters:
+- name: projectDirectory
+  type: string
+
+steps:
+- task: FlutterCommand@0
+  displayName: "Run Flutter Clean"
+  inputs:
+    projectDirectory: ${{ parameters.projectDirectory }}
+    arguments: 'clean'
+
+- task: FlutterCommand@0
+  displayName: 'Run Flutter Pub Get'
+  inputs:
+    projectDirectory: ${{ parameters.projectDirectory }}
+    arguments: 'pub get'
+
+- task: PowerShell@2
+  displayName: 'Execute Build Runner'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Set-Location ${{ parameters.projectDirectory }}
+      $(DartToolPath)/dart run build_runner build --delete-conflicting-outputs
