@@ -89,6 +89,7 @@ steps:
     profileMode: false
     projectDirectory: '${{ parameters.pathToSrc }}/app'
     verboseMode: true
+    dartDefine: ENV=$(applicationEnvironment)
 
 - task: CopyFiles@2
   displayName: 'Copy Binary Files'
