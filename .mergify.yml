@@ -2,7 +2,7 @@ queue_rules:
   - name: default
     conditions:
       # Conditions to get out of the queue (= merged)
-      - check-success=nventive.UnoApplicationTemplate # Replace this with your CI pipeline name
+      - check-success=nventive.FlutterApplicationTemplate # Replace this with your CI pipeline name
 
 pull_request_rules:
 
@@ -12,7 +12,7 @@ pull_request_rules:
       - base=main
 
       # All Azure builds should be green:
-      - status-success=nventive.UnoApplicationTemplate # Replace this with your CI pipeline name
+      - status-success=nventive.FlutterApplicationTemplate # Replace this with your CI pipeline name
 
       # CLA check must pass:
       #- "status-success=license/cla"

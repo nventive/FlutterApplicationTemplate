@@ -20,3 +20,4 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Fixed Android release on Google Play.
 - Fixed PowerShell script that was copying source control.
 - Added Navigation to the app.
+- Fixed Mergify.
