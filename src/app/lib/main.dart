@@ -1,4 +1,5 @@
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
+import 'package:app/access/environment/environment_repository.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_repository.dart';
 import 'package:app/access/diagnostics/diagnostics_repository.dart';
 import 'package:app/access/forced_update/current_version_repository.dart';
@@ -9,23 +10,41 @@ import 'package:app/app_router.dart';
 import 'package:app/business/dad_jokes/dad_jokes_service.dart';
 import 'package:app/business/diagnostics/diagnostics_service.dart';
 import 'package:app/business/forced_update/update_required_service.dart';
+import 'package:app/business/environment/environment_manager.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 
-Future main() async {
-  await dotenv.load(fileName: "appsettings.env");
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await _registerAndLoadEnvironment();
 
   _registerHttpClient();
   _registerRepositories();
   _registerServices();
+
   runApp(const App());
 
   GetIt.I.get<UpdateRequiredService>().waitForUpdateRequired().then((value) {
     router.go(forcedUpdatePagePath);
     print("Navigated to forced update page.");
   });
+}
+
+Future _registerAndLoadEnvironment() async {
+  // Register environment services in the IoC.
+  GetIt.I.registerSingleton(EnvironmentRepository());
+  GetIt.I.registerSingleton(
+    EnvironmentManager(
+      GetIt.I.get<EnvironmentRepository>(),
+    ),
+  );
+
+  // Loads the current environment.
+  await GetIt.I
+      .get<EnvironmentManager>()
+      .load(const String.fromEnvironment('ENV'));
 }
 
 /// Registers the HTTP client.
@@ -38,6 +57,7 @@ void _registerRepositories() {
   GetIt.I.registerSingleton(
     DadJokesRepository(
       GetIt.I.get<Dio>(),
+      baseUrl: dotenv.env["DAD_JOKES_BASE_URL"]!,
     ),
   );
   GetIt.I.registerSingleton(FavoriteDadJokesRepository());
