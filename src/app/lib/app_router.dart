@@ -1,8 +1,5 @@
 import 'package:app/presentation/dad_jokes/dad_jokes_page.dart';
 import 'package:app/presentation/dad_jokes/favorite_dad_jokes.dart';
-import 'package:app/presentation/router_examples/setting_page.dart';
-import 'package:app/presentation/router_examples/sub_page_with_menu_page.dart';
-import 'package:app/presentation/router_examples/sub_page_without_menu_page.dart';
 import 'package:app/shell.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,10 +9,6 @@ final _homeNavigatorKey = GlobalKey<NavigatorState>();
 
 const String dadJokesPagePath = '/';
 const String favoriteDadJokesPagePath = '/favorites';
-const String subPageWithoutMenuPath = '/sub-page-without-menu';
-const String subPageWithMenuPath = 'sub-page';
-const String settingPagePath = '/settings';
-const String subPageWithMenuCompletePath = '/settings/sub-page';
 
 final router = GoRouter(
   observers: [GoRouterObserver()],
@@ -50,25 +43,7 @@ final router = GoRouter(
             ),
           ],
         ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: settingPagePath,
-              builder: (context, state) => const SettingPage(),
-              routes: [
-                GoRoute(
-                  path: subPageWithMenuPath,
-                  builder: (context, state) => const SubPageWithMenuPage(),
-                ),
-              ],
-            ),
-          ],
-        ),
       ],
-    ),
-    GoRoute(
-      path: subPageWithoutMenuPath,
-      builder: (context, state) => const SubPageWithoutMenuPage(),
     ),
   ],
 );

@@ -62,6 +62,11 @@ This application is designed to use dependency injection (DI) to manage dependen
 
 See [DependencyInjection.md](DependencyInjection.md) for more details.
 
+### Diagnostics
+This application contains a diagnostic overlay.
+
+See [Diagnostics.md](Diagnostics.md) for more details.
+
 ## Access (DAL)
 
 Data access services (also referred to as _repositories_) are always declared using an interface and implemented in a separate class. These interfaces are meant to be used from the business layer.
