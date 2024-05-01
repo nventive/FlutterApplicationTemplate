@@ -1,2 +1,5 @@
 # Generated dart files
 /src/app/lib/**/*.g.dart
+
+# Mockito generated files.
+*.mocks.dart
