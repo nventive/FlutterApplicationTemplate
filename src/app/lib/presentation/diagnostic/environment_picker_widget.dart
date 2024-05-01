@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 /// Widget that handles environment switching.
-class EnvironmentPickerWidget extends StatefulWidget {
+final class EnvironmentPickerWidget extends StatefulWidget {
   const EnvironmentPickerWidget({super.key});
 
   @override
@@ -62,7 +62,7 @@ class _EnvironmentPickerWidgetState extends State<EnvironmentPickerWidget> {
               },
             ),
           ),
-        )
+        ),
       ],
     );
   }

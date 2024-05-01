@@ -24,3 +24,4 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Added Diagnostic overlay to the app.
 - Added examples of unit tests.
 - Added Forced update feature to the app.
+- Added Environments (Dev, Staging & Prod).
