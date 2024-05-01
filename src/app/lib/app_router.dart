@@ -1,5 +1,6 @@
 import 'package:app/presentation/dad_jokes/dad_jokes_page.dart';
 import 'package:app/presentation/dad_jokes/favorite_dad_jokes.dart';
+import 'package:app/presentation/forced_update/forced_update_page.dart';
 import 'package:app/shell.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +10,7 @@ final _homeNavigatorKey = GlobalKey<NavigatorState>();
 
 const String dadJokesPagePath = '/';
 const String favoriteDadJokesPagePath = '/favorites';
+const String forcedUpdatePagePath = '/forcedUpdate';
 
 final router = GoRouter(
   observers: [GoRouterObserver()],
@@ -44,6 +46,10 @@ final router = GoRouter(
           ],
         ),
       ],
+    ),
+    GoRoute(
+      path: forcedUpdatePagePath,
+      builder: (context, state) => ForcedUpdatePage(),
     ),
   ],
 );

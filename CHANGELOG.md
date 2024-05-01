@@ -23,3 +23,4 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Fixed Mergify.
 - Added Diagnostic overlay to the app.
 - Added examples of unit tests.
+- Added Forced update feature to the app.
