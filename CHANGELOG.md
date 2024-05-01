@@ -22,3 +22,4 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Added Navigation to the app.
 - Fixed Mergify.
 - Added Diagnostic overlay to the app.
+- Added examples of unit tests.

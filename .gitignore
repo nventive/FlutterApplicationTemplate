@@ -1,5 +1,9 @@
 # Generated dart files
 /src/app/lib/**/*.g.dart
 
+# Flutter code coverage
+/src/app/coverage
+
 # Mockito generated files.
 *.mocks.dart
+
