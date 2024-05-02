@@ -5,24 +5,24 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "app",
-            "cwd": "src\\app",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "app (profile mode)",
-            "cwd": "src\\app",
+            "name": "ApplicationTemplate - Debug",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "app (release mode)",
-            "cwd": "src\\app",
+            "toolArgs": ["--dart-define", "ENV=Development"]
+          },
+          {
+            "name": "ApplicationTemplate - Staging",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
-        }
+            "flutterMode": "release",
+            "toolArgs": ["--dart-define", "ENV=Staging"]
+          },
+          {
+            "name": "ApplicationTemplate - Production",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "toolArgs": ["--dart-define", "ENV=Production"]
+          }
     ]
 }

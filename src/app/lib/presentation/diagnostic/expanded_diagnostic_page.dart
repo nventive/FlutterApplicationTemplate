@@ -1,4 +1,5 @@
 import 'package:app/presentation/diagnostic/device_info_widget.dart';
+import 'package:app/presentation/diagnostic/environment_diagnostic_widget.dart';
 import 'package:app/presentation/diagnostic/navigation_diagnostic_widget.dart';
 import 'package:app/presentation/diagnostic/selectable_diagnostic_button.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class _ExpandedDiagnosticPageState extends State<ExpandedDiagnosticPage> {
   final List<Widget> expandedDiagnosticWidgets = <Widget>[
     const NavigationDiagnosticWidget(),
     const DeviceInfoWidget(),
+    EnvironmentDiagnosticWidget(),
   ];
 
   int _selectedIndex = 0;
@@ -44,6 +46,15 @@ class _ExpandedDiagnosticPageState extends State<ExpandedDiagnosticPage> {
                     onPressed: () {
                       setState(() {
                         _selectedIndex = 1;
+                      });
+                    },
+                  ),
+                  SelectableDiagnosticButton(
+                    label: 'Environment',
+                    isSelected: _selectedIndex == 2,
+                    onPressed: () {
+                      setState(() {
+                        _selectedIndex = 2;
                       });
                     },
                   ),

@@ -19,8 +19,8 @@ dependencies:
   package_info_plus: ^8.0.0
   retrofit: ^4.1.0
   rxdart: ^0.27.7
-  shared_preferences: ^2.2.2
   url_launcher: ^6.2.6
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -37,4 +37,6 @@ flutter:
 
   assets:
     - assets/openSourceSoftwareLicenses.json
-    - appsettings.env
+    - .env.dev
+    - .env.staging
+    - .env.prod

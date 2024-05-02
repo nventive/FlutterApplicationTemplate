@@ -39,6 +39,7 @@ steps:
     buildNumber: '$(BuildNumber)'
     projectDirectory: '${{ parameters.pathToSrc }}/app'
     verboseMode: true
+    dartDefine: ENV=$(applicationEnvironment)
 
 - publish: $(Build.ArtifactStagingDirectory)
   displayName: 'Publish artifact $(ApplicationConfiguration)'
