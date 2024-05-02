@@ -20,12 +20,11 @@ Future main() async {
   _registerHttpClient();
   _registerRepositories();
   _registerServices();
-
   runApp(const App());
 
-  GetIt.I.get<UpdateRequiredService>().checkUpdateRequired().then((value) {
-    print("Navigate to forced update screen.");
+  GetIt.I.get<UpdateRequiredService>().waitForUpdateRequired().then((value) {
     router.go(forcedUpdatePagePath);
+    print("Navigated to forced update page.");
   });
 }
 

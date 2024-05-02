@@ -68,7 +68,7 @@ This application contains a diagnostic overlay.
 See [Diagnostics.md](Diagnostics.md) for more details.
 
 ### Forced Update
-This application contains forced update feature.
+This application contains a forced update feature.
 
 See [ForcedUpdate.md](ForcedUpdate.md) for more details.
 

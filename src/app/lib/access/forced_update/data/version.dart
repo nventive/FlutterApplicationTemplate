@@ -1,8 +1,10 @@
-class Version implements Comparable<Version> {
+final class Version implements Comparable<Version> {
   final int major;
   final int minor;
   final int patch;
-  final int? build; // Optional, depending on your versioning needs
+
+  /// Optional, depending on your versioning needs.
+  final int? build;
 
   Version(this.major, this.minor, this.patch, [this.build]);
 
@@ -51,9 +53,9 @@ class Version implements Comparable<Version> {
     } else if (build == null && other.build == null) {
       return 0;
     } else if (build == null) {
-      return -1; // Treat no build as lesser
+      return -1; // Treat no build as lesser.
     } else {
-      return 1; // Treat no build on `other` as lesser
+      return 1; // Treat no build on `other` as lesser.
     }
   }
 }

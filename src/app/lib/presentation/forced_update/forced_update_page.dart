@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ForcedUpdatePage extends StatelessWidget {
+final class ForcedUpdatePage extends StatelessWidget {
   ForcedUpdatePage({super.key}) {
     if (Platform.isIOS) {
       _url = Uri.parse(dotenv.env['APP_STORE_URL_IOS']!);

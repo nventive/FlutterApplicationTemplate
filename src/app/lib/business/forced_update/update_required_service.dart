@@ -10,9 +10,9 @@ abstract interface class UpdateRequiredService {
     CurrentVersionRepository currentVersionService,
   ) = _UpdateRequiredService;
 
-  /// Checks if the application is running the minimum required version.
+  /// Waits for the minimum required version to be higher than the current version.
   /// We use a Future<void> since this is a one-time check.
-  Future<void> checkUpdateRequired();
+  Future<void> waitForUpdateRequired();
 }
 
 /// Implementation of [UpdateRequiredService].
@@ -26,7 +26,7 @@ final class _UpdateRequiredService implements UpdateRequiredService {
   );
 
   @override
-  Future<void> checkUpdateRequired() async {
+  Future<void> waitForUpdateRequired() async {
     final currentVersion = await _currentVersionService.getCurrentVersion();
 
     return _minimumVersionRepository.minimumVersionStream

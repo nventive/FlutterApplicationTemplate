@@ -2,7 +2,7 @@ import 'package:app/access/forced_update/data/version.dart';
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-/// Service to get what is the current version of the app.
+/// Repository to get what is the current version of the app.
 abstract interface class CurrentVersionRepository {
   factory CurrentVersionRepository() = _CurrentVersionRepository;
 
