@@ -16,14 +16,15 @@ You can add / remove runtime environments by simply following those steps:
 - Add or remove the associated item in `_EnvironmentManager._environmentFileNames`.
 
 This is governed by `EnvironmentManager`. It's initialized in the main method by calling `EnvironmentManager.Load`.
-Once initialized, the current environment configuration can be accessed via [EnvironmentConfiguration](../src/app/lib/presentation/configuration/environment_configuration.dart). For example, you can do the following:
+Once initialized, the current environment configuration can be accessed with `dotenv` For example, you can do the following:
 ```dart
-GetIt.I.registerSingleton(
-  DadJokesRepository(
-    GetIt.I.get<Dio>(),
-    baseUrl: GetIt.I.get<EnvironmentConfiguration>().dadJokesBaseUrl,
-  ),
-);
+ForcedUpdatePage({super.key}) {
+  if (Platform.isIOS) {
+    _url = Uri.parse(dotenv.env['APP_STORE_URL_IOS']!);
+  } else {
+    _url = Uri.parse(dotenv.env['APP_STORE_URL_Android']!);
+  }
+}
 ```
 
 - The default runtime environment is set via the environment variable `ENV`.
