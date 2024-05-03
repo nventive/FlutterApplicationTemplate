@@ -15,13 +15,13 @@ final class EnvironmentPickerWidget extends StatefulWidget {
 class _EnvironmentPickerWidgetState extends State<EnvironmentPickerWidget> {
   final _environmentManager = GetIt.I<EnvironmentManager>();
 
-  bool restartRequired = false;
+  bool _restartRequired = false;
   late Enum selectedEnviroment;
 
   _EnvironmentPickerWidgetState() {
     selectedEnviroment =
         _environmentManager.next ?? _environmentManager.current;
-    restartRequired = selectedEnviroment != _environmentManager.current;
+    _restartRequired = selectedEnviroment != _environmentManager.current;
   }
 
   @override
@@ -29,7 +29,7 @@ class _EnvironmentPickerWidgetState extends State<EnvironmentPickerWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (restartRequired)
+        if (_restartRequired)
           Container(
             color: const Color.fromARGB(170, 255, 0, 0),
             child: const Text(
@@ -55,7 +55,7 @@ class _EnvironmentPickerWidgetState extends State<EnvironmentPickerWidget> {
                 if (isSaved) {
                   setState(() {
                     selectedEnviroment = environment;
-                    restartRequired =
+                    _restartRequired =
                         environment != _environmentManager.current;
                   });
                 }
