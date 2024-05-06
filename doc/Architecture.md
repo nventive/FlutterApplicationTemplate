@@ -72,6 +72,11 @@ This application contains a forced update feature.
 
 See [ForcedUpdate.md](ForcedUpdate.md) for more details.
 
+### Kill Switch
+This application contains Kill switch feature.
+
+See [KillSwitch.md](KillSwitch.md) for more details.
+
 ## Access (DAL)
 
 Data access services (also referred to as _repositories_) are always declared using an interface and implemented in a separate class. These interfaces are meant to be used from the business layer.

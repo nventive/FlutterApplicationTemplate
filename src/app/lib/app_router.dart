@@ -1,6 +1,7 @@
 import 'package:app/presentation/dad_jokes/dad_jokes_page.dart';
 import 'package:app/presentation/dad_jokes/favorite_dad_jokes.dart';
 import 'package:app/presentation/forced_update/forced_update_page.dart';
+import 'package:app/presentation/kill_switch/kill_switch_page.dart';
 import 'package:app/shell.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -8,13 +9,15 @@ import 'package:go_router/go_router.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>();
 
-const String dadJokesPagePath = '/';
+const String home = '/';
 const String favoriteDadJokesPagePath = '/favorites';
 const String forcedUpdatePagePath = '/forcedUpdate';
+const String killSwitchPagePath = '/killswitch';
+String? currentPath;
 
 final router = GoRouter(
   observers: [GoRouterObserver()],
-  initialLocation: dadJokesPagePath,
+  initialLocation: home,
   navigatorKey: _rootNavigatorKey,
   routes: [
     // Shell routes are used to create pages with a shell.
@@ -32,7 +35,7 @@ final router = GoRouter(
           navigatorKey: _homeNavigatorKey,
           routes: [
             GoRoute(
-              path: dadJokesPagePath,
+              path: home,
               builder: (context, state) => const DadJokesPage(),
             ),
           ],
@@ -51,6 +54,12 @@ final router = GoRouter(
       path: forcedUpdatePagePath,
       builder: (context, state) => ForcedUpdatePage(),
     ),
+    GoRoute(
+      path: killSwitchPagePath,
+      builder: (context, state) {
+        return const KillSwitchPage();
+      },
+    ),
   ],
 );
 
@@ -60,6 +69,8 @@ class GoRouterObserver extends NavigatorObserver {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     if (route.settings.name != null) {
+      currentPath = route.settings.name;
+
       _logger.i('Pushing ${route.settings.name}.');
     }
   }
@@ -67,6 +78,8 @@ class GoRouterObserver extends NavigatorObserver {
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     if (route.settings.name != null) {
+      currentPath = route.settings.name;
+
       _logger.i('Popped ${route.settings.name}.');
     }
   }
@@ -74,6 +87,8 @@ class GoRouterObserver extends NavigatorObserver {
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     if (route.settings.name != null) {
+      currentPath = route.settings.name;
+
       _logger.i('Removed ${route.settings.name}.');
     }
   }
@@ -81,6 +96,8 @@ class GoRouterObserver extends NavigatorObserver {
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     if (newRoute?.settings.name != null) {
+      currentPath = newRoute?.settings.name;
+
       _logger.i(
         'Replaced ${oldRoute?.settings.name} with ${newRoute?.settings.name}.',
       );
