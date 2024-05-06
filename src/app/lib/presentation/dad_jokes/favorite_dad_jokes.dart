@@ -32,7 +32,7 @@ final class FavoriteDadJokesPage extends ConsumerWidget {
             itemBuilder: (context, index) {
               final dadJoke = dadJokes[index];
               return DadJokeListItem(
-                key: Key(dadJoke.id),
+                key: Key("FavoritesPage_${dadJoke.id}"),
                 dadJoke: dadJoke,
               );
             },

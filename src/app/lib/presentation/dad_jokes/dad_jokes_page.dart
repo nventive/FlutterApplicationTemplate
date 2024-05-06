@@ -22,20 +22,23 @@ final class DadJokesPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dadJokesAsyncValue = ref.watch(_dadJokesProvider);
     return Scaffold(
+      key: const Key('dadjokesScaffold'),
       appBar: AppBar(
         title: const Text('Dad Jokes'),
       ),
       body: dadJokesAsyncValue.when(
         data: (dadJokes) {
-          return ListView.builder(
-            itemCount: dadJokes.length,
-            itemBuilder: (context, index) {
-              final dadJoke = dadJokes[index];
-              return DadJokeListItem(
-                key: Key(dadJoke.id),
-                dadJoke: dadJoke,
-              );
-            },
+          return Container(
+            key: const Key('dadJokesContainer'),
+            child: ListView.builder(
+              itemCount: dadJokes.length,
+              itemBuilder: (context, index) {
+                final dadJoke = dadJokes[index];
+                return DadJokeListItem(
+                  dadJoke: dadJoke,
+                );
+              },
+            ),
           );
         },
         loading: () => const Center(

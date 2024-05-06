@@ -17,7 +17,7 @@ final class DiagnosticOverlay extends StatefulWidget {
 }
 
 final class _DiagnosticOverlay extends State<DiagnosticOverlay> {
-  final _diagnosticService = GetIt.I<DiagnosticsService>();
+  final _diagnosticService = GetIt.instance.get<DiagnosticsService>();
 
   @override
   void initState() {
