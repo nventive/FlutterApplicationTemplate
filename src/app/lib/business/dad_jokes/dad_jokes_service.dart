@@ -5,6 +5,7 @@ import 'package:app/access/dad_jokes/data/dad_joke_content_data.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_repository.dart';
 import 'package:app/business/dad_jokes/dad_joke.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// Interface for the dad jokes service.
@@ -12,6 +13,7 @@ abstract interface class DadJokesService implements Disposable {
   factory DadJokesService(
     DadJokesRepository dadJokesRepository,
     FavoriteDadJokesRepository favoriteDadJokesRepository,
+    Logger logger,
   ) = _DadJokesService;
 
   /// Stream of dad jokes.
@@ -42,11 +44,15 @@ final class _DadJokesService implements DadJokesService {
   /// The repository used to fetch favorite dad jokes.
   final FavoriteDadJokesRepository _favoriteDadJokesRepository;
 
+  final Logger _logger;
+
   _DadJokesService(
     DadJokesRepository dadJokesRepository,
     FavoriteDadJokesRepository favoriteDadJokesRepository,
+    Logger logger,
   )   : _dadJokesRepository = dadJokesRepository,
-        _favoriteDadJokesRepository = favoriteDadJokesRepository {
+        _favoriteDadJokesRepository = favoriteDadJokesRepository,
+        _logger = logger {
     getDadJokes().then((dadJokes) => _dadJokesBehaviorSubject.add(dadJokes));
   }
 
@@ -90,6 +96,8 @@ final class _DadJokesService implements DadJokesService {
 
   @override
   Future addFavoriteDadJoke(DadJoke dadJoke) async {
+    _logger.d("Start adding ${dadJoke.id} to favorites");
+
     final favoriteDadJokes =
         await _favoriteDadJokesRepository.getFavoriteDadJokes();
 
@@ -113,10 +121,14 @@ final class _DadJokesService implements DadJokesService {
         },
       ).toList(),
     );
+
+    _logger.i(" ${dadJoke.id} has been added to favorites");
   }
 
   @override
   Future removeFavoriteDadJoke(DadJoke dadJoke) async {
+    _logger.d("Start removing ${dadJoke.id} from favorites");
+
     final favoriteDadJokes =
         await _favoriteDadJokesRepository.getFavoriteDadJokes();
 
@@ -134,6 +146,8 @@ final class _DadJokesService implements DadJokesService {
         },
       ).toList(),
     );
+
+    _logger.i(" ${dadJoke.id} has been removed from favorites");
   }
 
   @override

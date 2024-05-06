@@ -6,6 +6,7 @@ import 'package:app/access/dad_jokes/favorite_dad_jokes_repository.dart';
 import 'package:app/business/dad_jokes/dad_joke.dart';
 import 'package:app/business/dad_jokes/dad_jokes_service.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,7 +39,11 @@ void main() {
     );
 
     favoriteDadJokesRepository = FavoriteDadJokesRepository();
-    SUT = DadJokesService(dadJokesRepository, favoriteDadJokesRepository);
+    SUT = DadJokesService(
+      dadJokesRepository,
+      favoriteDadJokesRepository,
+      Logger(),
+    );
   });
 
   test('Get jokes', () async {
