@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "139514080243",
+    "project_id": "flutterapplicationtempla-79caa",
+    "storage_bucket": "flutterapplicationtempla-79caa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139514080243:android:877033ea3d429ad3f0c086",
+        "android_client_info": {
+          "package_name": "com.nventive.internal.flutterapptemplate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYwPrW2yvBCfSGnAf1E4SddbRfk02P_m0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
