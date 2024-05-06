@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 /// The shell of the application.
-final class Shell extends StatelessWidget {
-  const Shell({super.key, required this.navigationShell});
+final class AppShell extends StatelessWidget {
+  const AppShell({super.key, required this.navigationShell});
 
   final StatefulNavigationShell navigationShell;
 
