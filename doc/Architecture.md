@@ -68,6 +68,12 @@ This application contains a diagnostic overlay.
 
 See [Diagnostics.md](Diagnostics.md) for more details.
 
+### Logging
+
+This application contains a built-in logging system that can be used to log messages to the debugger's console, to the native consoles, or to a file.
+
+See [Logging.md](Logging.md) for more details.
+
 ### Forced Update
 
 This application contains a forced update feature.
