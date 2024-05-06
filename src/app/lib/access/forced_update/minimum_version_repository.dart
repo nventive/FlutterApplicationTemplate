@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:app/access/forced_update/data/version.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:get_it/get_it.dart';
 
 /// Repository that gets the minimum version required to use the application.
 abstract interface class MinimumVersionRepository {
@@ -13,11 +14,12 @@ abstract interface class MinimumVersionRepository {
 }
 
 /// Implementation of [MinimumVersionRepository].
-final class _MinimumVersionRepository implements MinimumVersionRepository {
+final class _MinimumVersionRepository
+    implements MinimumVersionRepository, Disposable {
   _MinimumVersionRepository() {
     FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
 
-    //Listen to updates to the remote config. This is only available on mobile platforms.
+    // Listen to updates to the remote config. This is only available on mobile platforms.
     if (Platform.isAndroid || Platform.isIOS) {
       remoteConfig.onConfigUpdated.listen((event) async {
         await remoteConfig.activate();
@@ -47,4 +49,9 @@ final class _MinimumVersionRepository implements MinimumVersionRepository {
   @override
   Stream<Version> get minimumVersionStream =>
       _minimumVersionStreamController.stream;
+
+  @override
+  FutureOr onDispose() {
+    _minimumVersionStreamController.close();
+  }
 }

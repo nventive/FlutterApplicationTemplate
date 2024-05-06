@@ -40,8 +40,8 @@ class DefaultFirebaseOptions {
     }
   }
 
-  /// According to firebase documentation firebase apiKeys are not secrets. https://firebase.google.com/docs/projects/api-keys
-  /// Because of that it's ok to expose fire base api keys in code.
+  /// According to firebase documentation Firebase API Keys are not secrets. https://firebase.google.com/docs/projects/api-keys
+  /// Because of that it's ok to expose Firebase API keys in code.
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyANX3fUUu7K6-dCpfLLYkKvalzHaIUQXCE',
     appId: '1:139514080243:web:1fc151a0dc66e448f0c086',

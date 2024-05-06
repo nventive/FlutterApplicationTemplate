@@ -24,7 +24,7 @@ import 'package:get_it/get_it.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _registerAndLoadEnvironment();
-  await initializeFirebaseServices();
+  await _initializeFirebaseServices();
 
   _registerHttpClient();
   _registerRepositories();
@@ -53,7 +53,8 @@ Future _registerAndLoadEnvironment() async {
       .load(const String.fromEnvironment('ENV'));
 }
 
-Future initializeFirebaseServices() async {
+/// Initializes Firebase services.
+Future _initializeFirebaseServices() async {
   if (!Platform.isMacOS && !Platform.isWindows && !Platform.isLinux) {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -63,7 +64,9 @@ Future initializeFirebaseServices() async {
     await remoteConfig.setConfigSettings(
       RemoteConfigSettings(
         fetchTimeout: const Duration(minutes: 1),
-        minimumFetchInterval: const Duration(hours: 1),
+        minimumFetchInterval: Duration(
+          minutes: int.parse(dotenv.env["REMOTE_CONFIG_FETCH_INTERVAL"]!),
+        ),
       ),
     );
     await remoteConfig.setDefaults(const {
