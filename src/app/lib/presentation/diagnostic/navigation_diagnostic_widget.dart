@@ -11,6 +11,7 @@ final class NavigationDiagnosticWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final minimumVersionRepository = GetIt.I.get<MinimumVersionRepository>();
     return Row(
       children: [
         Expanded(
@@ -24,18 +25,13 @@ final class NavigationDiagnosticWidget extends StatelessWidget {
                   router.go(dadJokesPagePath);
                 },
               ),
-              DiagnosticButton(
-                label: "Trigger forced update",
-                onPressed: () {
-                  final minimumVersionRepository =
-                      GetIt.I.get<MinimumVersionRepository>();
-
-                  if (minimumVersionRepository
-                      is MinimumVersionRepositoryMock) {
+              if (minimumVersionRepository is MinimumVersionRepositoryMock)
+                DiagnosticButton(
+                  label: "Trigger forced update",
+                  onPressed: () {
                     minimumVersionRepository.updateMinimumVersion();
-                  }
-                },
-              ),
+                  },
+                ),
             ],
           ),
         ),

@@ -25,3 +25,4 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Added examples of unit tests.
 - Added Forced update feature to the app.
 - Added Environments (Dev, Staging & Prod).
+- Added Forced update implementation with firebase.
