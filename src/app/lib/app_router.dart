@@ -4,7 +4,9 @@ import 'package:app/presentation/forced_update/forced_update_page.dart';
 import 'package:app/presentation/kill_switch/kill_switch_page.dart';
 import 'package:app/shell.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>();
@@ -16,7 +18,7 @@ const String killSwitchPagePath = '/killswitch';
 String? currentPath;
 
 final router = GoRouter(
-  observers: [GoRouterObserver()],
+  observers: [GoRouterObserver(GetIt.I.get<Logger>())],
   initialLocation: home,
   navigatorKey: _rootNavigatorKey,
   routes: [
@@ -64,7 +66,9 @@ final router = GoRouter(
 );
 
 class GoRouterObserver extends NavigatorObserver {
-  final Logger _logger = Logger();
+  final Logger _logger;
+
+  GoRouterObserver(this._logger);
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
@@ -102,12 +106,5 @@ class GoRouterObserver extends NavigatorObserver {
         'Replaced ${oldRoute?.settings.name} with ${newRoute?.settings.name}.',
       );
     }
-  }
-}
-
-// Temporary logger.
-class Logger {
-  void i(String message) {
-    print(message);
   }
 }
