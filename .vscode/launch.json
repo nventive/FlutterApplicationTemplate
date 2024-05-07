@@ -8,7 +8,7 @@
             "name": "ApplicationTemplate - Debug",
             "request": "launch",
             "type": "dart",
-            "program": "src\\app\\lib\\main.dart",
+            "program": "src/app/lib/main.dart",
             "toolArgs": ["--dart-define", "ENV=Development"]
           },
           {
@@ -16,7 +16,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "program": "src\\app\\lib\\main.dart",
+            "program": "src/app/lib/main.dart",
             "toolArgs": ["--dart-define", "ENV=Staging"]
           },
           {
@@ -24,7 +24,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "program": "src\\app\\lib\\main.dart",
+            "program": "src/app/lib/main.dart",
             "toolArgs": ["--dart-define", "ENV=Production"]
           }
     ]
