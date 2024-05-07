@@ -120,6 +120,7 @@ Future _initializeFirebaseServices() async {
     );
     await remoteConfig.setDefaults(const {
       "minimum_version": "1.0.0",
+      "is_kill_switch_active": false,
     });
   }
 }
@@ -143,16 +144,17 @@ void _registerRepositories() {
   /// Firebase remote config is either not supported on desktop platforms or in beta.
   if (!Platform.isMacOS && !Platform.isWindows && !Platform.isLinux) {
     GetIt.I.registerSingleton(MinimumVersionRepository());
+    GetIt.I.registerSingleton(KillSwitchRepository());
   } else {
     GetIt.I.registerSingleton<MinimumVersionRepository>(
       MinimumVersionRepositoryMock(),
     );
+    GetIt.I.registerSingleton<KillSwitchRepository>(
+      KillSwitchRepositoryMock(),
+    );
   }
 
   GetIt.I.registerSingleton(CurrentVersionRepository());
-  GetIt.I.registerSingleton<KillSwitchRepository>(
-    KillSwitchRepositoryMock(),
-  );
 }
 
 /// Registers the services.
