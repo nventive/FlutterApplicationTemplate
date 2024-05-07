@@ -65,7 +65,8 @@ Future _initializeFirebaseServices() async {
       RemoteConfigSettings(
         fetchTimeout: const Duration(minutes: 1),
         minimumFetchInterval: Duration(
-          minutes: int.parse(dotenv.env["REMOTE_CONFIG_FETCH_INTERVAL"]!),
+          minutes:
+              int.parse(dotenv.env["REMOTE_CONFIG_FETCH_INTERVAL_MINUTES"]!),
         ),
       ),
     );
