@@ -15,6 +15,7 @@ final class NavigationDiagnosticWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final minimumVersionRepository = GetIt.I.get<MinimumVersionRepository>();
     final killSwitchRepository = GetIt.I.get<KillSwitchRepository>();
+
     return Row(
       children: [
         Expanded(
