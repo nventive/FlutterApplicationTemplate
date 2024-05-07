@@ -63,14 +63,22 @@ This application is designed to use dependency injection (DI) to manage dependen
 See [DependencyInjection.md](DependencyInjection.md) for more details.
 
 ### Diagnostics
+
 This application contains a diagnostic overlay.
 
 See [Diagnostics.md](Diagnostics.md) for more details.
 
 ### Forced Update
+
 This application contains a forced update feature.
 
 See [ForcedUpdate.md](ForcedUpdate.md) for more details.
+
+### Kill Switch
+
+This application contains Kill switch feature.
+
+See [KillSwitch.md](KillSwitch.md) for more details.
 
 ## Access (DAL)
 

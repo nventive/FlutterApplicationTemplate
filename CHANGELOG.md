@@ -27,3 +27,4 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Added Environments (Dev, Staging & Prod).
 - Added Forced update implementation with Firebase.
 - Fix start from VS Code Debug Menu.
+- Added Kill Switch feature to the app.

@@ -7,12 +7,15 @@ import 'package:app/access/environment/environment_repository.dart';
 import 'package:app/access/forced_update/current_version_repository.dart';
 import 'package:app/access/forced_update/minimum_version_repository.dart';
 import 'package:app/access/forced_update/minimum_version_repository_mock.dart';
+import 'package:app/access/kill_switch/kill_switch_repository.dart';
+import 'package:app/access/kill_switch/kill_switch_repository_mock.dart';
 import 'package:app/app.dart';
 import 'package:app/app_router.dart';
 import 'package:app/business/dad_jokes/dad_jokes_service.dart';
 import 'package:app/business/diagnostics/diagnostics_service.dart';
 import 'package:app/business/environment/environment_manager.dart';
 import 'package:app/business/forced_update/update_required_service.dart';
+import 'package:app/business/kill_switch/kill_switch_service.dart';
 import 'package:app/firebase_options.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,6 +38,19 @@ Future<void> main() async {
   GetIt.I.get<UpdateRequiredService>().waitForUpdateRequired().then((value) {
     router.go(forcedUpdatePagePath);
     print("Navigated to forced update page.");
+  });
+
+  GetIt.I
+      .get<KillSwitchService>()
+      .isKillSwitchActivatedStream()
+      .listen((isActivated) {
+    if (isActivated) {
+      router.go(killSwitchPagePath);
+      print("KillSwitch is activated. Navigated to kill switch page.");
+    } else if (currentPath == killSwitchPagePath) {
+      router.go(home);
+      print("Killswitch is deactivated. Navigated to home page.");
+    }
   });
 }
 
@@ -102,6 +118,9 @@ void _registerRepositories() {
   }
 
   GetIt.I.registerSingleton(CurrentVersionRepository());
+  GetIt.I.registerSingleton<KillSwitchRepository>(
+    KillSwitchRepositoryMock(),
+  );
 }
 
 /// Registers the services.
@@ -122,6 +141,12 @@ void _registerServices() {
     UpdateRequiredService(
       GetIt.I.get<MinimumVersionRepository>(),
       GetIt.I.get<CurrentVersionRepository>(),
+    ),
+  );
+
+  GetIt.I.registerSingleton(
+    KillSwitchService(
+      GetIt.I.get<KillSwitchRepository>(),
     ),
   );
 }
