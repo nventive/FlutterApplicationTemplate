@@ -10,7 +10,7 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Added basic empty Flutter project.
 - Added basic PowerShell script to create project based on this template.
 - Added basic documentation based on the `UnoApplicationTemplate`.
-- Target iOS 17 with a minimum version of iOS 15.
+- Set minimum version of iOS 15.
 - Target Android 14 with a minimum version of Android 11.
 - Added empty Azure Pipelines.
 - Updated Azure Pipelines (Windows, Android, iOS, Tests).
