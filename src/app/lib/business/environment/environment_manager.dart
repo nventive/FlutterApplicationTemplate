@@ -21,7 +21,7 @@ abstract interface class EnvironmentManager {
   Future<void> load(String defaultEnvironment);
 
   /// Sets the environment to apply on next app launch.
-  Future<bool> setEnvironment(Environment environment);
+  Future setEnvironment(Environment environment);
 }
 
 /// Implementation of [EnvironmentManager].
@@ -63,11 +63,8 @@ final class _EnvironmentManager implements EnvironmentManager {
   }
 
   @override
-  Future<bool> setEnvironment(Environment environment) async {
-    var isSaved = await _repository.setEnvironment(environment.toString());
-    if (isSaved) {
-      next = environment;
-    }
-    return isSaved;
+  Future setEnvironment(Environment environment) async {
+    await _repository.setEnvironment(environment.toString());
+    next = environment;
   }
 }

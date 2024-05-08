@@ -49,16 +49,12 @@ class _EnvironmentPickerWidgetState extends State<EnvironmentPickerWidget> {
               key: ValueKey(environment),
               title: Text(environment.toString()),
               onChanged: (value) async {
-                var isSaved =
-                    await _environmentManager.setEnvironment(environment);
+                _environmentManager.setEnvironment(environment);
 
-                if (isSaved) {
-                  setState(() {
-                    selectedEnviroment = environment;
-                    _restartRequired =
-                        environment != _environmentManager.current;
-                  });
-                }
+                setState(() {
+                  selectedEnviroment = environment;
+                  _restartRequired = environment != _environmentManager.current;
+                });
               },
             ),
           ),
