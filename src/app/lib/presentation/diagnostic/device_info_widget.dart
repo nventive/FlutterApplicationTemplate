@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:app/presentation/diagnostic/diagnostic_button.dart';
 import 'package:app/presentation/diagnostic/diagnostic_text.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// A widget that displays device information.
 final class DeviceInfoWidget extends StatelessWidget {
@@ -41,6 +44,19 @@ final class DeviceInfoWidget extends StatelessWidget {
                       const Divider(),
                       for (var info in snapshot.data!)
                         DiagnosticText(text: info),
+                      if (Platform.isWindows)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16),
+                          child: DiagnosticButton(
+                            label: "Open app settings folder",
+                            onPressed: () async {
+                              final Directory appSupportDirectory =
+                                  await getApplicationSupportDirectory();
+
+                              await launchUrl(appSupportDirectory.uri);
+                            },
+                          ),
+                        ),
                     ],
                   );
                 } else {

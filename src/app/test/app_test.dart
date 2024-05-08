@@ -4,6 +4,7 @@ import 'package:app/business/diagnostics/diagnostics_service.dart';
 import 'package:app/shell.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 
 import 'app_test.mocks.dart';
@@ -26,6 +27,8 @@ void main() {
     GetIt.I.registerSingleton<DadJokesService>(
       dadJokesService,
     );
+
+    GetIt.I.registerSingleton(Logger());
   });
 
   testWidgets('Shell Test', (WidgetTester tester) async {

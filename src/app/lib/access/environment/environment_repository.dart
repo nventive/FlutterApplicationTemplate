@@ -1,3 +1,4 @@
+import 'package:app/access/persistence_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Contract repository to handle environment selection.
@@ -8,7 +9,7 @@ abstract interface class EnvironmentRepository {
   Future<String?> getEnvironment();
 
   /// Sets the environment to apply on next app launch.
-  Future<bool> setEnvironment(String environment);
+  Future setEnvironment(String environment);
 }
 
 /// Implementation of [EnvironmentRepository].
@@ -17,9 +18,14 @@ final class _EnvironmentRepository implements EnvironmentRepository {
   final String _environmentKey = 'environment';
 
   @override
-  Future<bool> setEnvironment(String environment) async {
+  Future setEnvironment(String environment) async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    return await sharedPreferences.setString(_environmentKey, environment);
+    var isSaved =
+        await sharedPreferences.setString(_environmentKey, environment);
+
+    if (!isSaved) {
+      throw const PersistenceException();
+    }
   }
 
   @override

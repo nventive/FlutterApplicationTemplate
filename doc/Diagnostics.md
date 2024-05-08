@@ -22,3 +22,4 @@ The expanded diagnostics overlay has by default two widgets.
 The navigation widget has some buttons with commands on them that allow you to do some navigation in the app.
 The DeviceInfo widgets contains some information on the device and the app.
 The environment widget which lets the user change the environment. See [Environment.md](./Environment.md) for more details.
+The loggers widget which lets the user test logging and modify logging configuration. See [Logging.md](./Logging.md) for more details.

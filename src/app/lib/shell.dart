@@ -1,30 +1,20 @@
+import 'package:app/presentation/diagnostic/diagnostic_overlay.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
-/// The shell of the application.
+/// The shell of the application with [DiagnosticOverlay].
 final class Shell extends StatelessWidget {
-  const Shell({super.key, required this.navigationShell});
+  const Shell({super.key, required this.child});
 
-  final StatefulNavigationShell navigationShell;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: navigationShell,
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.theater_comedy),
-            label: 'Dad Jokes',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorites',
-          ),
-        ],
-        currentIndex: navigationShell.currentIndex,
-        onTap: navigationShell.goBranch,
-      ),
+    return Stack(
+      children: [
+        child,
+        // Add global widgets here.
+        const DiagnosticOverlay(),
+      ],
     );
   }
 }
