@@ -1,15 +1,20 @@
 import 'dart:io';
 
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
+import 'package:app/access/dad_jokes/dad_jokes_repository_decorator.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_repository.dart';
 import 'package:app/access/diagnostics/diagnostics_repository.dart';
 import 'package:app/access/environment/environment_repository.dart';
 import 'package:app/access/forced_update/current_version_repository.dart';
 import 'package:app/access/forced_update/minimum_version_repository.dart';
 import 'package:app/access/forced_update/minimum_version_repository_mock.dart';
+<<<<<<< Updated upstream
 import 'package:app/access/kill_switch/kill_switch_repository.dart';
 import 'package:app/access/kill_switch/kill_switch_repository_mock.dart';
 import 'package:app/access/logger/logger_repository.dart';
+=======
+import 'package:app/access/mocking/mocking_repository.dart';
+>>>>>>> Stashed changes
 import 'package:app/app.dart';
 import 'package:app/app_router.dart';
 import 'package:app/business/dad_jokes/dad_jokes_service.dart';
@@ -140,6 +145,14 @@ void _registerRepositories() {
   );
   GetIt.I.registerSingleton(FavoriteDadJokesRepository());
   GetIt.I.registerSingleton(DiagnosticsRepository());
+  GetIt.I.registerSingleton(MockingRepository());
+
+  GetIt.I.registerSingleton(
+    DadJokesRepositoryDecorator(
+      GetIt.I.get<DadJokesRepository>(),
+      GetIt.I.get<MockingRepository>(),
+    ),
+  );
 
   /// Firebase remote config is either not supported on desktop platforms or in beta.
   if (!Platform.isMacOS && !Platform.isWindows && !Platform.isLinux) {
@@ -161,7 +174,7 @@ void _registerRepositories() {
 void _registerServices() {
   GetIt.I.registerSingleton(
     DadJokesService(
-      GetIt.I.get<DadJokesRepository>(),
+      GetIt.I.get<DadJokesRepositoryDecorator>(),
       GetIt.I.get<FavoriteDadJokesRepository>(),
       _logger,
     ),

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
+import 'package:app/access/dad_jokes/dad_jokes_repository_decorator.dart';
 import 'package:app/access/dad_jokes/data/dad_joke_content_data.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_repository.dart';
 import 'package:app/business/dad_jokes/dad_joke.dart';
@@ -11,7 +12,7 @@ import 'package:rxdart/rxdart.dart';
 /// Interface for the dad jokes service.
 abstract interface class DadJokesService implements Disposable {
   factory DadJokesService(
-    DadJokesRepository dadJokesRepository,
+    DadJokesRepositoryDecorator dadJokesRepository,
     FavoriteDadJokesRepository favoriteDadJokesRepository,
     Logger logger,
   ) = _DadJokesService;
@@ -47,7 +48,7 @@ final class _DadJokesService implements DadJokesService {
   final Logger _logger;
 
   _DadJokesService(
-    DadJokesRepository dadJokesRepository,
+    DadJokesRepositoryDecorator dadJokesRepository,
     FavoriteDadJokesRepository favoriteDadJokesRepository,
     Logger logger,
   )   : _dadJokesRepository = dadJokesRepository,

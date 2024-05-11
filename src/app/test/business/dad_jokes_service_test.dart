@@ -1,8 +1,12 @@
 import 'dart:convert';
 
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
+import 'package:app/access/dad_jokes/dad_jokes_repository_decorator.dart';
 import 'package:app/access/dad_jokes/data/dad_joke_content_data.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_repository.dart';
+import 'package:app/access/dad_jokes/mocks/dad_jokes_data_mock.dart';
+import 'package:app/access/dad_jokes/mocks/dad_jokes_list_mock.dart';
+import 'package:app/access/mocking/mocking_repository.dart';
 import 'package:app/business/dad_jokes/dad_joke.dart';
 import 'package:app/business/dad_jokes/dad_jokes_service.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,8 +14,6 @@ import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../mocks/dad_jokes_data_mock.dart';
-import '../mocks/dad_jokes_list_mock.dart';
 import 'dad_jokes_service_test.mocks.dart';
 
 @GenerateNiceMocks(
@@ -20,7 +22,7 @@ import 'dad_jokes_service_test.mocks.dart';
   ],
 )
 void main() {
-  late DadJokesRepository dadJokesRepository;
+  late DadJokesRepositoryDecorator dadJokesRepository;
   late FavoriteDadJokesRepository favoriteDadJokesRepository;
   late DadJokesService SUT;
 
@@ -33,7 +35,7 @@ void main() {
     });
 
     provideDummy(mockedDadJokeResponse);
-    dadJokesRepository = MockDadJokesRepository();
+    dadJokesRepository = DadJokesRepositoryDecorator(MockDadJokesRepository(), MockingRepository());
     when(dadJokesRepository.getDadJokes()).thenAnswer(
       (_) async => mockedDadJokeResponse,
     );
