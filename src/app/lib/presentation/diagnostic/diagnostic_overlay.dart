@@ -83,11 +83,11 @@ final class _DiagnosticOverlay extends State<DiagnosticOverlay> {
     );
   }
 
-  void _closeOverlay() async {
+  void _closeOverlay() {
+    _diagnosticService.dismissDiagnostics();
     setState(() {
       _showOverlay = false;
     });
-    await _diagnosticService.dismissDiagnostics();
   }
 
   void _moveOverlay() {

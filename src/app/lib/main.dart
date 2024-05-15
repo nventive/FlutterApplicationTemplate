@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:alice/alice.dart';
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_repository.dart';
 import 'package:app/access/diagnostics/diagnostics_repository.dart';
@@ -90,9 +91,14 @@ Future _registerAndLoadEnvironment() async {
 Future _registerAndLoadLoggers() async {
   // Register logging services in the IoC.
   GetIt.I.registerSingleton(LoggerRepository());
+  GetIt.I.registerSingleton(Alice(
+    showNotification: false,
+    navigatorKey: rootNavigatorKey,
+  ));
   GetIt.I.registerSingleton(
     LoggerManager(
-      GetIt.I.get<LoggerRepository>(),
+      loggerRepository: GetIt.I.get<LoggerRepository>(),
+      alice: GetIt.I.get<Alice>(),
     ),
   );
 
@@ -127,7 +133,11 @@ Future _initializeFirebaseServices() async {
 
 /// Registers the HTTP client.
 void _registerHttpClient() {
-  GetIt.I.registerSingleton<Dio>(Dio());
+  final dio = Dio();
+
+  dio.interceptors.add(GetIt.I.get<Alice>().getDioInterceptor());
+
+  GetIt.I.registerSingleton<Dio>(dio);
 }
 
 /// Registers the repositories.
@@ -139,7 +149,11 @@ void _registerRepositories() {
     ),
   );
   GetIt.I.registerSingleton(FavoriteDadJokesRepository());
-  GetIt.I.registerSingleton(DiagnosticsRepository());
+  GetIt.I.registerSingleton(
+    DiagnosticsRepository(
+      bool.parse(dotenv.env["DIAGNOSTIC_ENABLED"] ?? 'false'),
+    ),
+  );
 
   /// Firebase remote config is either not supported on desktop platforms or in beta.
   if (!Platform.isMacOS && !Platform.isWindows && !Platform.isLinux) {

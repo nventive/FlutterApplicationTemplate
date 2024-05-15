@@ -14,12 +14,12 @@ final class ExpandedDiagnosticPage extends StatefulWidget {
 
 class _ExpandedDiagnosticPageState extends State<ExpandedDiagnosticPage>
     with SingleTickerProviderStateMixin {
-  late TabController tabController;
+  late TabController _tabController;
 
   final List<Widget> expandedDiagnosticWidgets = <Widget>[
     const NavigationDiagnosticWidget(),
     const DeviceInfoWidget(),
-    const EnvironmentDiagnosticWidget(),
+    EnvironmentDiagnosticWidget(),
     LoggerDiagnosticWidget(),
   ];
 
@@ -27,8 +27,14 @@ class _ExpandedDiagnosticPageState extends State<ExpandedDiagnosticPage>
 
   @override
   void initState() {
-    tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -65,7 +71,7 @@ class _ExpandedDiagnosticPageState extends State<ExpandedDiagnosticPage>
                       text: "Logger",
                     ),
                   ],
-                  controller: tabController,
+                  controller: _tabController,
                 ),
               ),
               expandedDiagnosticWidgets[_selectedIndex],

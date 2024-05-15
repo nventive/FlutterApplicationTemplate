@@ -9,7 +9,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>();
 
 const String home = '/';
@@ -21,7 +21,7 @@ String? currentPath;
 final router = GoRouter(
   observers: [GoRouterObserver(GetIt.I.get<Logger>())],
   initialLocation: home,
-  navigatorKey: _rootNavigatorKey,
+  navigatorKey: rootNavigatorKey,
   routes: [
     ShellRoute(
       builder: (context, state, child) => Shell(child: child),
