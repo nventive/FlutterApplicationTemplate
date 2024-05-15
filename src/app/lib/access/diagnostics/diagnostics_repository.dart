@@ -1,36 +1,48 @@
+import 'package:app/access/persistence_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Interface for Diagnostic Repository.
 abstract interface class DiagnosticsRepository {
-  factory DiagnosticsRepository() = _DiagnosticsRepository;
+  factory DiagnosticsRepository(bool defaultIsEnabled) = _DiagnosticsRepository;
 
-  /// Gets whether the diagnostic was dismissed.
-  Future<bool> checkDiagnosticDismissal();
+  /// Gets whether the diagnostic is enabled.
+  Future<bool> checkDiagnosticEnabled();
 
   /// Sets the diagnostic as dismissed.
-  Future dismissDiagnostics();
+  Future disableDiagnostics();
 }
 
 /// Implementation of [DiagnosticRepository].
 final class _DiagnosticsRepository implements DiagnosticsRepository {
   /// The key used to store the diagnostic dismissed state in shared preferences.
-  final String _diagnosticDismissedKey = 'diagnosticDismissed';
+  final String _diagnosticDisabledKey = 'diagnosticDisabled';
+
+  /// Whether we want the diagnostics to be accessible by default.
+  final bool _defaultIsEnabled;
+
+  _DiagnosticsRepository(this._defaultIsEnabled);
 
   @override
-  Future<bool> checkDiagnosticDismissal() async {
+  Future<bool> checkDiagnosticEnabled() async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    final wasDiagnosticDismissed =
-        sharedPreferences.getBool(_diagnosticDismissedKey) ?? false;
+    final isDiagnosticDisabled =
+        sharedPreferences.getBool(_diagnosticDisabledKey);
 
-    return wasDiagnosticDismissed;
+    return isDiagnosticDisabled != null
+        ? !isDiagnosticDisabled
+        : _defaultIsEnabled;
   }
 
   @override
-  Future dismissDiagnostics() async {
+  Future disableDiagnostics() async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setBool(
-      _diagnosticDismissedKey,
+    var isSaved = await sharedPreferences.setBool(
+      _diagnosticDisabledKey,
       true,
     );
+
+    if (!isSaved) {
+      throw const PersistenceException();
+    }
   }
 }

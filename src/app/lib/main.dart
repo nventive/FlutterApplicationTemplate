@@ -149,7 +149,11 @@ void _registerRepositories() {
     ),
   );
   GetIt.I.registerSingleton(FavoriteDadJokesRepository());
-  GetIt.I.registerSingleton(DiagnosticsRepository());
+  GetIt.I.registerSingleton(
+    DiagnosticsRepository(
+      bool.parse(dotenv.env["DIAGNOSTIC_ENABLED"] ?? 'false'),
+    ),
+  );
 
   /// Firebase remote config is either not supported on desktop platforms or in beta.
   if (!Platform.isMacOS && !Platform.isWindows && !Platform.isLinux) {

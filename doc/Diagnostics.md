@@ -1,6 +1,7 @@
 # Diagnostic Tools
 
 This template comes with multiple built-in diagnostic tools.
+This is not available in the prod environment.
 
 ## Diagnostics Overlay
 When you start the application, you'll notice a box on the side of the screen.
@@ -13,7 +14,8 @@ This is useful when you want to see something happening live.
 The default buttons include commands such as the following.
 - **Expand/Minimize** opens or closes the expanded view of the overlay.
 - **Move** moves the overlay left or right.
-- **X** hides the overlay.
+- **X** hides the overlay for the remaining of the app cycle.
+    - If you want to permanently hide the diagnostic, go to the environment section within the expanded overlay.
 
 ## Expanded overlay widgets
 
