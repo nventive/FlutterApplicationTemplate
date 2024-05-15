@@ -43,5 +43,12 @@ Multiple logging features can be tested from the diagnostics screen. This is con
 - You can see if a log file exists.
 - You can share the logs / app summary by email, etc.
 
+## Alice
+
+We use [alice](https://pub.dev/packages/alice) to track logs in-app without debugger console. 
+It is also configured to intercept HTTP requests made within the app.
+
+It's accessible via the "OPEN CONSOLE" in the `LoggerDiagnosticWidget`.
+
 ## References
 - [Logger documentation](https://pub.dev/documentation/logger/latest/logger/logger-library.html)
