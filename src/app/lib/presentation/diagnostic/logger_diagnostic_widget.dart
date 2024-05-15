@@ -1,3 +1,4 @@
+import 'package:alice/alice.dart';
 import 'package:app/business/logger/logger_manager.dart';
 import 'package:app/presentation/diagnostic/diagnostic_button.dart';
 import 'package:app/presentation/diagnostic/logging_configuration_widget.dart';
@@ -9,6 +10,7 @@ import 'package:logger/logger.dart';
 final class LoggerDiagnosticWidget extends StatelessWidget {
   final Logger _logger = GetIt.I.get<Logger>();
   final LoggerManager _loggerManager = GetIt.I.get<LoggerManager>();
+  final Alice _alice = GetIt.I.get<Alice>();
 
   LoggerDiagnosticWidget({super.key});
 
@@ -106,6 +108,10 @@ final class LoggerDiagnosticWidget extends StatelessWidget {
               _showNativePrompt(context, 'Failed to share the log file.');
             }
           },
+        ),
+        DiagnosticButton(
+          label: 'OPEN CONSOLE',
+          onPressed: () => _alice.showInspector(),
         ),
       ],
     );
