@@ -6,7 +6,7 @@ final class Version implements Comparable<Version> {
   /// Optional, depending on your versioning needs.
   final int? build;
 
-  Version(this.major, this.minor, this.patch, [this.build]);
+  const Version(this.major, this.minor, this.patch, [this.build]);
 
   factory Version.fromString(String versionString) {
     final parts = versionString.split('.');

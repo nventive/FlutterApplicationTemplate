@@ -32,3 +32,4 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Added Firebase implementation of the Kill Switch feature.
 - Added Alice as a tool to see logs in app.
 - Fix diagnostic overlay dismiss behavior so it's not permanent.
+- Added test for the UpdateRequiredService and fixed bug where remote config was not updating correctly.
