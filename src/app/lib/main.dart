@@ -5,6 +5,7 @@ import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_repository.dart';
 import 'package:app/access/diagnostics/diagnostics_repository.dart';
 import 'package:app/access/environment/environment_repository.dart';
+import 'package:app/access/firebase/firebase_repository.dart';
 import 'package:app/access/forced_update/current_version_repository.dart';
 import 'package:app/access/forced_update/minimum_version_repository.dart';
 import 'package:app/access/forced_update/minimum_version_repository_mock.dart';
@@ -18,11 +19,8 @@ import 'package:app/business/diagnostics/diagnostics_service.dart';
 import 'package:app/business/environment/environment_manager.dart';
 import 'package:app/business/forced_update/update_required_service.dart';
 import 'package:app/business/kill_switch/kill_switch_service.dart';
-import 'package:app/firebase_options.dart';
 import 'package:app/business/logger/logger_manager.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
@@ -36,9 +34,6 @@ Future<void> main() async {
   await _registerAndLoadLoggers();
 
   _logger.d("Initialized environment and logger.");
-
-  await _initializeFirebaseServices();
-  _logger.i("Firebase has been Initialized and registered in the container.");
 
   _registerHttpClient();
   _logger.i("HttpClient has been Initialized and registered in the container.");
@@ -63,7 +58,7 @@ Future<void> main() async {
       .isKillSwitchActivatedStream()
       .listen((isActivated) {
     _logger.d("KillSwitch state has been changed.");
-    if (isActivated) {
+    if (isActivated && currentPath != forcedUpdatePagePath) {
       router.go(killSwitchPagePath);
       _logger.i("KillSwitch is activated. Navigated to kill switch page.");
     } else if (currentPath == killSwitchPagePath) {
@@ -107,30 +102,6 @@ Future _registerAndLoadLoggers() async {
   GetIt.I.registerSingleton(_logger);
 }
 
-/// Initializes Firebase services.
-Future _initializeFirebaseServices() async {
-  if (!Platform.isMacOS && !Platform.isWindows && !Platform.isLinux) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
-    FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
-    await remoteConfig.setConfigSettings(
-      RemoteConfigSettings(
-        fetchTimeout: const Duration(minutes: 1),
-        minimumFetchInterval: Duration(
-          minutes:
-              int.parse(dotenv.env["REMOTE_CONFIG_FETCH_INTERVAL_MINUTES"]!),
-        ),
-      ),
-    );
-    await remoteConfig.setDefaults(const {
-      "minimum_version": "1.0.0",
-      "is_kill_switch_active": false,
-    });
-  }
-}
-
 /// Registers the HTTP client.
 void _registerHttpClient() {
   final dio = Dio();
@@ -157,8 +128,15 @@ void _registerRepositories() {
 
   /// Firebase remote config is either not supported on desktop platforms or in beta.
   if (!Platform.isMacOS && !Platform.isWindows && !Platform.isLinux) {
-    GetIt.I.registerSingleton(MinimumVersionRepository());
-    GetIt.I.registerSingleton(KillSwitchRepository());
+    var fireBaseRemoteConfigRepository =
+        FirebaseRemoteConfigRepository(_logger);
+
+    GetIt.I.registerSingleton<MinimumVersionRepository>(
+      fireBaseRemoteConfigRepository,
+    );
+    GetIt.I.registerSingleton<KillSwitchRepository>(
+      fireBaseRemoteConfigRepository,
+    );
   } else {
     GetIt.I.registerSingleton<MinimumVersionRepository>(
       MinimumVersionRepositoryMock(),

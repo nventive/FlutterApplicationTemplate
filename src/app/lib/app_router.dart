@@ -1,9 +1,9 @@
-import 'package:app/shell.dart';
+import 'package:app/app_shell.dart';
 import 'package:app/presentation/dad_jokes/dad_jokes_page.dart';
 import 'package:app/presentation/dad_jokes/favorite_dad_jokes.dart';
 import 'package:app/presentation/forced_update/forced_update_page.dart';
 import 'package:app/presentation/kill_switch/kill_switch_page.dart';
-import 'package:app/app_shell.dart';
+import 'package:app/shell.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -60,17 +60,14 @@ final router = GoRouter(
           path: forcedUpdatePagePath,
           builder: (context, state) => ForcedUpdatePage(),
         ),
+
+        GoRoute(
+          path: killSwitchPagePath,
+          builder: (context, state) {
+            return const KillSwitchPage();
+          },
+        ),
       ],
-    ),
-    GoRoute(
-      path: forcedUpdatePagePath,
-      builder: (context, state) => ForcedUpdatePage(),
-    ),
-    GoRoute(
-      path: killSwitchPagePath,
-      builder: (context, state) {
-        return const KillSwitchPage();
-      },
     ),
   ],
 );
