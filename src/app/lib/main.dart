@@ -61,7 +61,7 @@ Future<void> main() async {
     if (isActivated && currentPath != forcedUpdatePagePath) {
       router.go(killSwitchPagePath);
       _logger.i("KillSwitch is activated. Navigated to kill switch page.");
-    } else if (currentPath == killSwitchPagePath) {
+    } else if (!isActivated && currentPath == killSwitchPagePath) {
       router.go(home);
       _logger.i("Killswitch is deactivated. Navigated to home page.");
     }
@@ -86,10 +86,12 @@ Future _registerAndLoadEnvironment() async {
 Future _registerAndLoadLoggers() async {
   // Register logging services in the IoC.
   GetIt.I.registerSingleton(LoggerRepository());
-  GetIt.I.registerSingleton(Alice(
-    showNotification: false,
-    navigatorKey: rootNavigatorKey,
-  ));
+  GetIt.I.registerSingleton(
+    Alice(
+      showNotification: false,
+      navigatorKey: rootNavigatorKey,
+    ),
+  );
   GetIt.I.registerSingleton(
     LoggerManager(
       loggerRepository: GetIt.I.get<LoggerRepository>(),

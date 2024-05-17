@@ -19,12 +19,13 @@ const String killSwitchPagePath = '/killswitch';
 String? currentPath;
 
 final router = GoRouter(
-  observers: [GoRouterObserver(GetIt.I.get<Logger>())],
   initialLocation: home,
+  observers: [GoRouterObserver(GetIt.I.get<Logger>())],
   navigatorKey: rootNavigatorKey,
   routes: [
     ShellRoute(
       builder: (context, state, child) => Shell(child: child),
+      observers: [GoRouterObserver(GetIt.I.get<Logger>())],
       routes: [
         // Shell routes are used to create pages with a shell.
         // StatefulShellRoutes save the state of each branch, allowing you to navigate between them without losing state.
@@ -39,6 +40,7 @@ final router = GoRouter(
               // We can provide a navigator key if we want to use it elsewhere.
               // But it is not necessary. A default one will be generated if not provided.
               navigatorKey: _homeNavigatorKey,
+              observers: [GoRouterObserver(GetIt.I.get<Logger>())],
               routes: [
                 GoRoute(
                   path: home,
@@ -47,6 +49,7 @@ final router = GoRouter(
               ],
             ),
             StatefulShellBranch(
+              observers: [GoRouterObserver(GetIt.I.get<Logger>())],
               routes: [
                 GoRoute(
                   path: favoriteDadJokesPagePath,
