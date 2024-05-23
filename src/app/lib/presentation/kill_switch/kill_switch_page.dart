@@ -1,3 +1,4 @@
+import 'package:app/l10n/localization_extensions.dart';
 import 'package:flutter/material.dart';
 
 final class KillSwitchPage extends StatelessWidget {
@@ -5,16 +6,17 @@ final class KillSwitchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final local = context.local;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kill Switch Page'),
+        title: Text(local.killSwitchPageTitle),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'The app is not available at the moment, please come back later.',
+              local.killSwitchPageMessage,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],

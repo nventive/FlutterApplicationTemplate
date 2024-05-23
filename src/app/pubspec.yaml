@@ -28,6 +28,9 @@ dependencies:
   path_provider: ^2.1.3
   share_plus: ^9.0.0
   alice: ^0.4.1
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 # This is required with alice installed unless this PR is merged https://github.com/jhomlala/alice/pull/171
 dependency_overrides:

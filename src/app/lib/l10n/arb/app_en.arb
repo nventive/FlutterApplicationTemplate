@@ -1,0 +1,13 @@
+{
+  "dadJokesPageTitle": "Dad Jokes",
+  "favoriteDadJokesPageTitle": "Dad Jokes",
+  "dadJokesPageLabel": "Dad Jokes",
+  "favoriteDadJokesPageLabel": "Favorites",
+  "error": "Error: {error}",
+  "forcedUpdatePageTitle": "Forced Update Page",
+  "forcedUpdatePageUpdateRequiredMessage": "An update is required to continue using the application.",
+  "forcedUpdatePageUpdateButton": "Update",
+  "forcedUpdatePageUrlLaunchException": "Could not launch {url}",
+  "killSwitchPageTitle": "Kill Switch Page",
+  "killSwitchPageMessage": "The app is not available at the moment, please come back later."
+}
