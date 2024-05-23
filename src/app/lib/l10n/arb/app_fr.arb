@@ -1,0 +1,13 @@
+{
+  "dadJokesPageTitle": "Blagues de Papa",
+  "favoriteDadJokesPageTitle": "Blagues de Papa",
+  "dadJokesPageLabel": "Blagues de Papa",
+  "favoriteDadJokesPageLabel": "Favoris",
+  "error": "Erreur: {error}",
+  "forcedUpdatePageTitle": "Page de mise à jour forcée",
+  "forcedUpdatePageUpdateRequiredMessage": "Une mise à jour est nécessaire pour continuer à utiliser l'application.",
+  "forcedUpdatePageUpdateButton": "Mettre à jour",
+  "forcedUpdatePageUrlLaunchException": "Impossible de lancer {url}",
+  "killSwitchPageTitle": "Kill Switch Page",
+  "killSwitchPageMessage": "L'application n'est pas disponible pour le moment, veuillez revenir plus tard."
+}

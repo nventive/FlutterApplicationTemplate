@@ -33,4 +33,5 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Added Alice as a tool to see logs in app.
 - Fix diagnostic overlay dismiss behavior so it's not permanent.
 - Added test for the UpdateRequiredService and fixed bug where remote config was not updating correctly.
-- fixed minor bug where the current path was not being updated properly.
+- Fixed minor bug where the current path was not being updated properly.
+- Added localization.

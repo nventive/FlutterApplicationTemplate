@@ -1,5 +1,6 @@
 import 'package:app/business/dad_jokes/dad_joke.dart';
 import 'package:app/business/dad_jokes/dad_jokes_service.dart';
+import 'package:app/l10n/localization_extensions.dart';
 import 'package:app/presentation/dad_jokes/dad_joke_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,9 +22,10 @@ final class DadJokesPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dadJokesAsyncValue = ref.watch(_dadJokesProvider);
+    final local = context.local;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dad Jokes'),
+        title: Text(local.dadJokesPageTitle),
       ),
       body: dadJokesAsyncValue.when(
         data: (dadJokes) {
@@ -41,7 +43,9 @@ final class DadJokesPage extends ConsumerWidget {
         loading: () => const Center(
           child: CircularProgressIndicator(),
         ),
-        error: (error, stackTrace) => Text('Error: $error'),
+        error: (error, stackTrace) => Text(
+          local.error(error),
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:app/l10n/localization_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,14 +13,14 @@ final class AppShell extends StatelessWidget {
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.theater_comedy),
-            label: 'Dad Jokes',
+            icon: const Icon(Icons.theater_comedy),
+            label: context.local.dadJokesPageLabel,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorites',
+            icon: const Icon(Icons.favorite),
+            label: context.local.favoriteDadJokesPageLabel,
           ),
         ],
         currentIndex: navigationShell.currentIndex,
