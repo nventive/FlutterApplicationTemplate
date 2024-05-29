@@ -26,7 +26,7 @@ final class _DiagnosticsService implements DiagnosticsService {
 
   @override
   Future<bool> checkDiagnosticDismissal() async {
-    final isEnabled = await _diagnosticRepository.checkDiagnosticEnabled();
+    final isEnabled = await _diagnosticRepository.isDiagnosticEnabled();
     return !isEnabled || _isDismissed;
   }
 
@@ -36,7 +36,7 @@ final class _DiagnosticsService implements DiagnosticsService {
   }
 
   @override
-  Future disableDiagnostics() {
+  Future<void> disableDiagnostics() {
     return _diagnosticRepository.disableDiagnostics();
   }
 }

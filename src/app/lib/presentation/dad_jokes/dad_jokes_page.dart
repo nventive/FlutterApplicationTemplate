@@ -29,15 +29,17 @@ final class DadJokesPage extends ConsumerWidget {
       ),
       body: dadJokesAsyncValue.when(
         data: (dadJokes) {
-          return ListView.builder(
-            itemCount: dadJokes.length,
-            itemBuilder: (context, index) {
-              final dadJoke = dadJokes[index];
-              return DadJokeListItem(
-                key: Key(dadJoke.id),
-                dadJoke: dadJoke,
-              );
-            },
+          return Container(
+            key: const Key('DadJokesContainer'),
+            child: ListView.builder(
+              itemCount: dadJokes.length,
+              itemBuilder: (context, index) {
+                final dadJoke = dadJokes[index];
+                return DadJokeListItem(
+                  dadJoke: dadJoke,
+                );
+              },
+            ),
           );
         },
         loading: () => const Center(

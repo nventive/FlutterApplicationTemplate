@@ -1,24 +1,15 @@
-import 'dart:convert';
-
+import 'package:app/access/dad_jokes/dad_jokes_mocked_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
 import 'package:app/access/dad_jokes/data/dad_joke_content_data.dart';
+import 'package:app/access/dad_jokes/favorite_dad_jokes_mocked_repository.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_repository.dart';
+import 'package:app/access/dad_jokes/mocks/dad_jokes_list_mock.dart';
 import 'package:app/business/dad_jokes/dad_joke.dart';
 import 'package:app/business/dad_jokes/dad_jokes_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../mocks/dad_jokes_data_mock.dart';
-import '../mocks/dad_jokes_list_mock.dart';
-import 'dad_jokes_service_test.mocks.dart';
 
-@GenerateNiceMocks(
-  [
-    MockSpec<DadJokesRepository>(),
-  ],
-)
+
 void main() {
   late DadJokesRepository dadJokesRepository;
   late FavoriteDadJokesRepository favoriteDadJokesRepository;
@@ -26,19 +17,9 @@ void main() {
 
   setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
-    SharedPreferences.setMockInitialValues({
-      "favoriteDadJokes": getFavoriteDadJokesList()
-          .map((dadJoke) => jsonEncode(dadJoke))
-          .toList()
-    });
+    dadJokesRepository = DadJokesMockedRepository();
+    favoriteDadJokesRepository = FavoriteDadJokesMockedRepository();
 
-    provideDummy(mockedDadJokeResponse);
-    dadJokesRepository = MockDadJokesRepository();
-    when(dadJokesRepository.getDadJokes()).thenAnswer(
-      (_) async => mockedDadJokeResponse,
-    );
-
-    favoriteDadJokesRepository = FavoriteDadJokesRepository();
     SUT = DadJokesService(
       dadJokesRepository,
       favoriteDadJokesRepository,
@@ -48,13 +29,13 @@ void main() {
 
   test('Get jokes', () async {
     // Arrange
-    var mockedJokesList = getDadJokesList().map(
+    var mockedJokesList = getMockedDadJokesList().map(
       (dadJokeChildData) {
         return DadJoke(
           id: dadJokeChildData.id,
           title: dadJokeChildData.title,
           text: dadJokeChildData.selfText,
-          isFavorite: getFavoriteDadJokesList().any(
+          isFavorite: getMockedFavoriteDadJokesList().any(
             (favoriteDadJoke) => favoriteDadJoke.id == dadJokeChildData.id,
           ),
         );
@@ -71,7 +52,7 @@ void main() {
   group("favorites", () {
     test('Get all favorite jokes', () async {
       // Arrange
-      var mockedJokesList = getFavoriteDadJokesList()
+      var mockedJokesList = getMockedFavoriteDadJokesList()
           .map(
             (favoriteDadJoke) => DadJoke.fromData(
               favoriteDadJoke,

@@ -11,7 +11,7 @@ abstract interface class FavoriteDadJokesRepository {
   Future<List<DadJokeContentData>> getFavoriteDadJokes();
 
   /// Sets the favorite dad jokes.
-  Future setFavoriteDadJokes(List<DadJokeContentData> favoriteDadJokes);
+  Future<void> setFavoriteDadJokes(List<DadJokeContentData> favoriteDadJokes);
 }
 
 /// Implementation of [FavoriteDadJokesRepository].
@@ -34,7 +34,7 @@ final class _FavoriteDadJokesRepository implements FavoriteDadJokesRepository {
   }
 
   @override
-  Future setFavoriteDadJokes(List<DadJokeContentData> favoriteDadJokes) async {
+  Future<void> setFavoriteDadJokes(List<DadJokeContentData> favoriteDadJokes) async {
     final sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setStringList(
       _favoriteDadJokesKey,

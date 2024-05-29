@@ -5,6 +5,9 @@
 - name: projectName
   type: string
   default: ''
+- name: applicationEnvironment
+  type: string
+  default: ''
 
 steps:
 - template: templates/flutter-install.yml
@@ -40,6 +43,12 @@ steps:
   inputs:
     generateCodeCoverageReport: true
     projectDirectory: '${{ parameters.pathToSrc }}/app'
+
+- task: FlutterCommand@0
+  displayName: "Run Integration Tests"
+  inputs:
+    projectDirectory: '${{ parameters.pathToSrc }}/app'
+    arguments: test integration_test --dart-define ENV=${{ parameters.applicationEnvironment }} -d all
 
 - script: |
     set PATH=%PATH%;C:\Users\VssAdministrator\AppData\Local\Pub\Cache\bin

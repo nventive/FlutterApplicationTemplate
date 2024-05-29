@@ -2,6 +2,12 @@
 - name: applicationEnvironment
   type: string
   default: ''
+- name: artifactName
+  type: string
+  default: $(TestsArtifactName)_$(applicationEnvironment)
+- name: androidArtifactName
+  type: string
+  default: $(AndroidArtifactName)_$(applicationEnvironment)
 - name: androidKeyStoreFile
   type: string
   default: ''
@@ -44,7 +50,7 @@ jobs:
     pool:
       vmImage : $(windowsHostedAgentImage)
     variables:
-      ArtifactName: ReleaseNotes_${{ parameters.applicationEnvironment }}
+      ArtifactName: ReleaseNotes_${{ parameters.artifactName }}
       ApplicationEnvironment: ${{ parameters.applicationEnvironment }}
     steps:
       - template: steps-build-release-notes.yml
@@ -72,13 +78,14 @@ jobs:
     pool:
       vmImage : $(windowsHostedAgentImage)
     variables:
-      ArtifactName: $(TestsArtifactName)_${{ parameters.applicationEnvironment }}
+      ArtifactName: ${{ parameters.artifactName }}
       ApplicationEnvironment: ${{ parameters.applicationEnvironment }}
     steps:
       - template: steps-build-tests.yml
         parameters:
           pathToSrc: ${{ parameters.pathToSrc }}
           projectName: ${{ parameters.projectName }}
+          applicationEnvironment: ${{ parameters.applicationEnvironment }}
 
   - job: OnWindows_Android
     pool:
@@ -87,7 +94,7 @@ jobs:
     - name: ApplicationEnvironment
       value: ${{ parameters.applicationEnvironment }}
     - name: ArtifactName
-      value: $(AndroidArtifactName)_${{ parameters.applicationEnvironment }}
+      value: ${{ parameters.androidArtifactName }}
 
     - group: ${{ parameters.androidVariableGroup }}
 
