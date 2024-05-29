@@ -6,7 +6,7 @@ abstract interface class DiagnosticsRepository {
   factory DiagnosticsRepository(bool defaultIsEnabled) = _DiagnosticsRepository;
 
   /// Gets whether the diagnostic is enabled.
-  Future<bool> checkDiagnosticEnabled();
+  Future<bool> isDiagnosticEnabled();
 
   /// Sets the diagnostic as dismissed.
   Future disableDiagnostics();
@@ -23,7 +23,7 @@ final class _DiagnosticsRepository implements DiagnosticsRepository {
   _DiagnosticsRepository(this._defaultIsEnabled);
 
   @override
-  Future<bool> checkDiagnosticEnabled() async {
+  Future<bool> isDiagnosticEnabled() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     final isDiagnosticDisabled =
         sharedPreferences.getBool(_diagnosticDisabledKey);
@@ -34,7 +34,7 @@ final class _DiagnosticsRepository implements DiagnosticsRepository {
   }
 
   @override
-  Future disableDiagnostics() async {
+  Future<void> disableDiagnostics() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     var isSaved = await sharedPreferences.setBool(
       _diagnosticDisabledKey,

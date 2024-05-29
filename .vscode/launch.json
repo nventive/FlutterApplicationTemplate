@@ -1,31 +1,62 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "ApplicationTemplate - Debug",
-            "request": "launch",
-            "type": "dart",
-            "program": "src/app/lib/main.dart",
-            "toolArgs": ["--dart-define", "ENV=Development"]
-          },
-          {
-            "name": "ApplicationTemplate - Staging",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release",
-            "program": "src/app/lib/main.dart",
-            "toolArgs": ["--dart-define", "ENV=Staging"]
-          },
-          {
-            "name": "ApplicationTemplate - Production",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release",
-            "program": "src/app/lib/main.dart",
-            "toolArgs": ["--dart-define", "ENV=Production"]
-          }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ApplicationTemplate - Debug",
+      "request": "launch",
+      "type": "dart",
+      "program": "src/app/lib/main.dart",
+      "toolArgs": [
+        "--dart-define",
+        "ENV=Development"
+      ]
+    },
+    {
+      "name": "ApplicationTemplate - Staging",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "src/app/lib/main.dart",
+      "toolArgs": [
+        "--dart-define",
+        "ENV=Staging"
+      ]
+    },
+    {
+      "name": "ApplicationTemplate - Production",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "src/app/lib/main.dart",
+      "toolArgs": [
+        "--dart-define",
+        "ENV=Production"
+      ]
+    },
+    {
+      "name": "ApplicationTemplate - Integration Tests",
+      "type": "dart",
+      "request": "launch",
+      "flutterMode": "debug",
+      "program": "src/app/integration_test/",
+      "toolArgs": [
+        "--dart-define",
+        "ENV=Development"
+      ]
+    },
+    {
+      "name": "ApplicationTemplate - Unit Tests",
+      "type": "dart",
+      "request": "launch",
+      "flutterMode": "debug",
+      "program": "src/app/test/",
+      "toolArgs": [
+        "--dart-define",
+        "ENV=Development"
+      ]
+    }
+  ]
 }

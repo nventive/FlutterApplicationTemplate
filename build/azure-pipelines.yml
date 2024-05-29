@@ -38,8 +38,10 @@ stages:
     parameters:
       pathToSrc: '$(Pipeline.Workspace)/GeneratedApp/src'
       projectName: 'GeneratedApp'
-      applicationEnvironment: Generated_Staging
+      applicationEnvironment: Staging
       androidKeyStoreFile: $(InternalKeystore)
+      artifactName: 'GeneratedArtifact_Staging'
+      androidArtifactName: 'GeneratedAndroidArtifact_Staging'
       androidKeyPropertiesFile: $(InternalKeyProperties)
       androidVariableGroup: 'FlutterApplicationTemplate.Distribution.Internal.Android'
       iosProvisioningProfileFile: $(InternalProvisioningProfile)

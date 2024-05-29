@@ -1,6 +1,7 @@
 import 'package:app/presentation/diagnostic/device_info_widget.dart';
 import 'package:app/presentation/diagnostic/environment_diagnostic_widget.dart';
 import 'package:app/presentation/diagnostic/logger_diagnostic_widget.dart';
+import 'package:app/presentation/diagnostic/mocking_diagnostic_widget.dart';
 import 'package:app/presentation/diagnostic/navigation_diagnostic_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ final class ExpandedDiagnosticPage extends StatefulWidget {
   State<ExpandedDiagnosticPage> createState() => _ExpandedDiagnosticPageState();
 }
 
-class _ExpandedDiagnosticPageState extends State<ExpandedDiagnosticPage>
+final class _ExpandedDiagnosticPageState extends State<ExpandedDiagnosticPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -21,13 +22,14 @@ class _ExpandedDiagnosticPageState extends State<ExpandedDiagnosticPage>
     const DeviceInfoWidget(),
     EnvironmentDiagnosticWidget(),
     LoggerDiagnosticWidget(),
+    const MockingDiagnosticWidget(),
   ];
 
   int _selectedIndex = 0;
 
   @override
   void initState() {
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: expandedDiagnosticWidgets.length, vsync: this);
     super.initState();
   }
 
@@ -69,6 +71,9 @@ class _ExpandedDiagnosticPageState extends State<ExpandedDiagnosticPage>
                     ),
                     Tab(
                       text: "Logger",
+                    ),
+                    Tab(
+                      text: "Mocking",
                     ),
                   ],
                   controller: _tabController,
