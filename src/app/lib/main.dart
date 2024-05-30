@@ -23,8 +23,8 @@ import 'package:app/business/environment/environment.dart';
 import 'package:app/business/environment/environment_manager.dart';
 import 'package:app/business/forced_update/update_required_service.dart';
 import 'package:app/business/kill_switch/kill_switch_service.dart';
-import 'package:app/business/mocking/mocking_manager.dart';
 import 'package:app/business/logger/logger_manager.dart';
+import 'package:app/business/mocking/mocking_manager.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -137,7 +137,8 @@ Future<void> _registerRepositories(bool? isMocked) async {
     GetIt.I.get<MockingRepository>().setMocking(isMocked);
     GetIt.I.registerSingleton<DadJokesRepository>(DadJokesMockedRepository());
     GetIt.I.registerSingleton<FavoriteDadJokesRepository>(
-        FavoriteDadJokesMockedRepository());
+      FavoriteDadJokesMockedRepository(),
+    );
   } else {
     GetIt.I.registerSingleton(
       DadJokesRepository(
@@ -162,7 +163,14 @@ Future<void> _registerRepositories(bool? isMocked) async {
       .initialize();
 
   /// Firebase remote config is either not supported on desktop platforms or in beta.
-  if (!Platform.isMacOS && !Platform.isWindows && !Platform.isLinux) {
+  if (Platform.isMacOS || Platform.isWindows || Platform.isLinux || isMocked) {
+    GetIt.I.registerSingleton<MinimumVersionRepository>(
+      MinimumVersionRepositoryMock(),
+    );
+    GetIt.I.registerSingleton<KillSwitchRepository>(
+      KillSwitchRepositoryMock(),
+    );
+  } else {
     var fireBaseRemoteConfigRepository =
         FirebaseRemoteConfigRepository(_logger);
 
@@ -171,13 +179,6 @@ Future<void> _registerRepositories(bool? isMocked) async {
     );
     GetIt.I.registerSingleton<KillSwitchRepository>(
       fireBaseRemoteConfigRepository,
-    );
-  } else {
-    GetIt.I.registerSingleton<MinimumVersionRepository>(
-      MinimumVersionRepositoryMock(),
-    );
-    GetIt.I.registerSingleton<KillSwitchRepository>(
-      KillSwitchRepositoryMock(),
     );
   }
 

@@ -40,7 +40,7 @@ final class NavigationDiagnosticWidget extends StatelessWidget {
                 DiagnosticButton(
                   label: "Toggle kill switch state",
                   onPressed: () {
-                    killSwitchRepository.toggleKillSwitchState();
+                    killSwitchRepository.setOrToggleKillSwitchState();
                   },
                 ),
             ],

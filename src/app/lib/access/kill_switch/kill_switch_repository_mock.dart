@@ -16,10 +16,15 @@ final class KillSwitchRepositoryMock
 
   bool isKillSwitchActivated = false;
 
-  /// Sets the state of the kill switch.
-  void toggleKillSwitchState() {
+  /// Toggles the state of the kill switch.
+  void setOrToggleKillSwitchState() {
     isKillSwitchActivated = !isKillSwitchActivated;
+    isKillSwitchActivatedStreamController.add(isKillSwitchActivated);
+  }
 
+  /// Sets the state of the kill switch.
+  void setKillSwitchState(bool isActivated) {
+    isKillSwitchActivated = isActivated;
     isKillSwitchActivatedStreamController.add(isKillSwitchActivated);
   }
 
