@@ -37,3 +37,4 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Fixed minor bug where the current path was not being updated properly.
 - Added localization.
 - Added test for the killswitch.
+- Added integration test for forced update.
