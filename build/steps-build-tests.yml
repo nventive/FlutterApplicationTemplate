@@ -48,7 +48,7 @@ steps:
   displayName: "Run Integration Tests"
   inputs:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
-    arguments: test integration_test --dart-define ENV=${{ parameters.applicationEnvironment }} -d all
+    arguments: test integration_test/integration_test.dart --dart-define ENV=${{ parameters.applicationEnvironment }} -d all
 
 - script: |
     set PATH=%PATH%;C:\Users\VssAdministrator\AppData\Local\Pub\Cache\bin

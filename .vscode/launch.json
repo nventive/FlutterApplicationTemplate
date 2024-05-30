@@ -41,7 +41,7 @@
       "type": "dart",
       "request": "launch",
       "flutterMode": "debug",
-      "program": "src/app/integration_test/",
+      "program": "src/app/integration_test/integration_test.dart",
       "toolArgs": [
         "--dart-define",
         "ENV=Development"

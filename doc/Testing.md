@@ -135,7 +135,7 @@ For more documentation on testing, read the references listed at the bottom.
 	import 'package:flutter_test/flutter_test.dart';
 	import 'package:integration_test/integration_test.dart';
 
-	void main() {
+	void dadJokesTest() {
 		testWidgets('Get Dad Jokes', (WidgetTester tester) async {
 			// Arrange
 
@@ -157,6 +157,9 @@ For more documentation on testing, read the references listed at the bottom.
 		});
 	}
 	```
+
+  After that, you can add it to [the function that runs the test](../src/app/integration_test/integration_test.dart).
+  They are all run in the same `main` because of [this issue](https://github.com/flutter/flutter/issues/135673).
 
   To test different behaviors and interactions between the components of the app you need to simulate user interactions with the tester.tap(target) method like this:
   ```cs

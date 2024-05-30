@@ -1,22 +1,12 @@
-import 'package:app/access/mocking/mocking_repository.dart';
 import 'package:app/app.dart';
 import 'package:app/app_router.dart';
-import 'package:app/main.dart';
 import 'package:app/presentation/dad_jokes/dad_joke_list_item.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
-import 'package:integration_test/integration_test.dart';
 
-Future<void> main() async {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  await initializeComponents(isMocked: true);
-
-  tearDownAll(
-    () async => await GetIt.I.get<MockingRepository>().setMocking(false),
-  );
-
+/// Test for the Dad Jokes page.
+Future<void> dadJokeTest() async {
   testWidgets('Get Dad Jokes', (WidgetTester tester) async {
     // Arrange
 
@@ -70,7 +60,7 @@ Future<void> main() async {
       await tester.pumpAndSettle();
     });
   });
-  
+
   testWidgets('Can remove joke from favorite', (WidgetTester tester) async {
     // Arrange
     await tester.pumpWidget(const App());
