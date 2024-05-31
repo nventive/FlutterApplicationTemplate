@@ -46,16 +46,6 @@ steps:
   condition: always()
   artifact: $(ArtifactName)
 
-#-if false
-- task: DeleteFiles@1
-  displayName: "Remove downloaded artifacts (GeneratedApp folder)"
-  condition: always()
-  inputs:
-    SourceFolder: $(Pipeline.Workspace)/GeneratedApp
-    RemoveSourceFolder: true
-    Contents: '**'
-#-endif
-
 - task: PostBuildCleanup@3
   displayName: 'Post-Build Cleanup: Cleanup files to keep build server clean!'
   condition: always()
