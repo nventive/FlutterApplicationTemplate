@@ -29,6 +29,7 @@ final class ForcedUpdatePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final local = context.local;
     return Scaffold(
+      key: const Key('forcedUpdateScaffold'),
       appBar: AppBar(
         title: Text(local.forcedUpdatePageTitle),
       ),
