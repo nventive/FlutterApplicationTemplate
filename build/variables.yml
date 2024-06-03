@@ -56,7 +56,10 @@
   AppCenterDistributionGroup: '00000000-0000-0000-0000-000000000000'
 
   # Solution to build.
-  projectName: FlutterApplicationTemplate
+  ProjectName: FlutterApplicationTemplate
+
+  # Flutter version.
+  FlutterVersion: '3.22.1'
 
   # Virtual machine images.
   windowsHostedAgentImage: 'windows-2022'

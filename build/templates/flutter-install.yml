@@ -5,8 +5,9 @@ parameters:
 
 steps:
   - task: FlutterInstall@0
-    displayName: "Run Flutter Install"
+    displayName: 'Run Flutter Install'
     inputs:
       mode: 'auto'
       channel: 'stable'
-      version: 'latest'
+      version: 'custom'
+      customVersion : $(FlutterVersion)
