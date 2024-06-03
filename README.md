@@ -12,35 +12,27 @@ This template largely relies on Flutter, if you want to make sure you got everyt
 
 ## Getting Started
 
-We use a custom PowerShell script and a Dart package to easily create new projects. It simplifies the **project renaming**.
+We use a Dart CLI application to easily create new projects.
 
 ### Generate a new project
 
-1. Make sure you cloned the latest version of this repository.
+1. Install the CLI using this command.
 
-2. Make sure you have PowerShell installed.
+   `dart pub global activate flutter_application_generator`
 
-   > 💡 For Windows, you can run `powershell` to verify. You can install it with the command `winget install --id Microsoft.Powershell --source winget`.
+2. Create a new project using this command.
 
-   > 💡 For Mac, you can run `pwsh` to verify. You can install it with Homebrew `brew install powershell/tap/powershell`.
-
-3. Make sure you have GitVersion installed.
-
-   > 💡 For Windows, you can run `dotnet-gitversion` to verify. You can install it with the command `dotnet tool install --global GitVersion.Tool`.
-
-   > 💡 For Mac, you can run `gitversion` to verify. You can install it with Homebrew `brew install gitversion`.
-
-4. To run the script and create a new project, run the following command in the cloned `FlutterApplicationTemplate` repository.
-
-   `powershell -File ".\tools\copyApplicationTemplate.ps1" -sourceProjectDir C:\P\FlutterApplicationTemplate -destDir C:\P -projectName MyProjectName -appName MyAppName -packageName com.example.myAppName -organization MyOrg`
-
-   > 💡 For Mac, you can use `pwsh` instead of `powershell`.
+    `flutter_application_generator create --destinationDirectory C:\P --projectName MyProjectName --applicationName MyAppName --packageName com.example.myAppName --organizationName MyOrg`
 
    > 💡 The organization parameter is optional (Only used for the Windows platform).
 
+   > 💡 You'll need internet access to create new projects.
+
    The following options are available when running the command.
 
-   - To get help: `Get-Help .\tools\copyApplicationTemplate.ps1`
+   - To get help: `flutter_application_generator --help`
+
+   - To show version: `flutter_application_generator --version`
 
 ### Next Steps
 

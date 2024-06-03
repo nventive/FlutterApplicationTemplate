@@ -1,4 +1,9 @@
-﻿steps:
+﻿parameters:
+- name: configFilePath
+  type: string
+  default: '$(Build.SourcesDirectory)/build/gitversion-config.yml'
+
+steps:
   - task: gitversion/setup@0
     retryCountOnTaskFailure: 3
     inputs:
@@ -8,5 +13,5 @@
   - task: gitversion/execute@0
     inputs:
       useConfigFile: true
-      configFilePath: $(Build.SourcesDirectory)/build/gitversion-config.yml
-    displayName: 'Calculate App Version'
+      configFilePath: ${{ parameters.configFilePath }}
+    displayName: 'Calculate Version'

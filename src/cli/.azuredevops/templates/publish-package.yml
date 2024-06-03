@@ -1,0 +1,22 @@
+parameters:
+- name: pathToSrc
+  type: string
+  default: '$(Build.SourcesDirectory)/src'
+- name: dryRun
+  type: boolean
+  default: true
+
+steps:
+- task: FlutterCommand@0
+  displayName: 'Flutter Pub Publish Dry Run'
+  condition: ${{ parameters.dryRun }}
+  inputs:
+    projectDirectory: '${{ parameters.pathToSrc }}/cli'
+    arguments: 'pub publish --dry-run'
+
+- task: FlutterCommand@0
+  displayName: 'Flutter Pub Publish'
+  condition: eq(${{ parameters.dryRun }}, false)
+  inputs:
+    projectDirectory: '${{ parameters.pathToSrc }}/cli'
+    arguments: 'pub publish --force'

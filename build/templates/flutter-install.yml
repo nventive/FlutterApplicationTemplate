@@ -1,7 +1,7 @@
 parameters:
-- name: pathToSrc
+- name: projectDirectory
   type: string
-  default: '$(Build.SourcesDirectory)/src'
+  default: '$(Build.SourcesDirectory)/src/app'
 
 steps:
   - task: FlutterInstall@0
@@ -10,9 +10,3 @@ steps:
       mode: 'auto'
       channel: 'stable'
       version: 'latest'
-
-  - task: FlutterCommand@0
-    displayName: "Run Flutter Diagnostics"
-    inputs:
-      projectDirectory: '${{ parameters.pathToSrc }}/app'
-      arguments: 'doctor -v'

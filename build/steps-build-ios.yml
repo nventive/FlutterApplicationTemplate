@@ -53,11 +53,9 @@ steps:
   inputs:
     secureFile: '${{ parameters.iosExportOptionsFile }}'
 
-- task: FlutterCommand@0
-  displayName: "Run Flutter Pub Get"
-  inputs:
+- template: templates/flutter-prepare.yml
+  parameters:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
-    arguments: 'pub get'
 
 - task: PowerShell@2
   displayName: 'Execute Package Rename'
@@ -78,14 +76,6 @@ steps:
     bannerVersionNumberPosition: 'top'
     bannerVersionNumberText: '$(MajorMinorPatch)'
 
-- task: PowerShell@2
-  displayName: 'Execute Build Runner'
-  inputs:
-    targetType: 'inline'
-    script: |
-      Set-Location '${{ parameters.pathToSrc }}/app'
-      $(DartToolPath)/dart run build_runner build --delete-conflicting-outputs
-
 - task: FlutterBuild@0
   displayName:  Build Project for Release
   inputs:
@@ -99,6 +89,11 @@ steps:
     verboseMode: true
     exportOptionsPlist: '$(exportOptions.secureFilePath)'
     dartDefine: ENV=$(applicationEnvironment)
+
+- template: templates/flutter-diagnostics.yml
+  parameters:
+    projectDirectory: '${{ parameters.pathToSrc }}/app'
+    condition: failed()
 
 - task: Xcode@5
   condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'))

@@ -1,7 +1,7 @@
 ﻿parameters:
 - name: pathToSrc
   type: string
-  default: ''
+  default: '$(Build.SourcesDirectory)/src'
 - name: projectName
   type: string
   default: ''
@@ -18,25 +18,9 @@ steps:
   artifact: GeneratedApp
 #-endif
 
-- task: FlutterCommand@0
-  displayName: "Run Flutter Clean"
-  inputs:
+- template: templates/flutter-prepare.yml
+  parameters:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
-    arguments: 'clean'
-
-- task: FlutterCommand@0
-  displayName: "Run Flutter Pub Get"
-  inputs:
-    projectDirectory: '${{ parameters.pathToSrc }}/app'
-    arguments: 'pub get'
-
-- task: PowerShell@2
-  displayName: 'Execute Build Runner'
-  inputs:
-    targetType: 'inline'
-    script: |
-      Set-Location '${{ parameters.pathToSrc }}/app'
-      $(DartToolPath)/dart run build_runner build --delete-conflicting-outputs
 
 - task: FlutterTest@0
   displayName: "Run Tests"
@@ -49,6 +33,11 @@ steps:
   inputs:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
     arguments: test integration_test/integration_test.dart --dart-define ENV=${{ parameters.applicationEnvironment }} -d all
+
+- template: templates/flutter-diagnostics.yml
+  parameters:
+    projectDirectory: '${{ parameters.pathToSrc }}/app'
+    condition: failed()
 
 - script: |
     set PATH=%PATH%;C:\Users\VssAdministrator\AppData\Local\Pub\Cache\bin
