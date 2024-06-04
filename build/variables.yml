@@ -71,9 +71,10 @@
   iOSArtifactName: iOS
   WindowsArtifactName: Windows
   TestsArtifactName: Tests
+  ReleaseNotesArtifactName: ReleaseNotes
 
-  # For Application.Building.Light optimizations.
-  IsLightBuild: $[eq(variables['Build.Reason'], 'PullRequest')]
+  # To know if it's a Pull Request build.
+  IsPullRequestBuild: $[eq(variables['Build.Reason'], 'PullRequest')]
 
   # Pipeline configuration (Disable shallow fetch).
   # See https://dev.to/kkazala/azure-devops-pipelines-shallow-fetch-1-is-now-default-4656 for more details.

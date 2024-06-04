@@ -44,6 +44,8 @@ steps:
   inputs:
     secureFile: ${{ parameters.androidKeyStorePropertiesFile }}
 
+# TODO: If Production -> Download the google-services.json for production.
+
 # The file copied inside the source directory must be aligned with the name chosen in '/src/app/lib/android/app/build.gradle' where 'key.properties' is loaded.
 - task: PowerShell@2
   displayName: Copy Signing Configuration Files
@@ -55,6 +57,8 @@ steps:
 
       Copy-Item -Path '$(keyStore.secureFilePath)' -Destination '${{ parameters.pathToSrc }}\app\android\app\${{ parameters.androidKeystoreFile }}'
       Write-Host 'Key store copied to ${{ parameters.pathToSrc }}/app/android/app/${{ parameters.androidKeystoreFile }}.'
+
+# TODO: If Production -> Copy downloaded the google-services.json for production in the Android application folder.
 
 - template: templates/flutter-prepare.yml
   parameters:

@@ -96,7 +96,7 @@ steps:
     condition: failed()
 
 - task: Xcode@5
-  condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'))
+  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
   displayName: 'Xcode Archive iOS'
   inputs:
     actions: 'archive'
@@ -115,7 +115,7 @@ steps:
     provisioningProfileName: '$(provisioningProfile.provisioningProfileName)'
 
 - task: CopyFiles@2
-  condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'))
+  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
   displayName: 'Copy Binary Files'
   inputs:
     sourceFolder: '${{ parameters.pathToSrc }}/app'
