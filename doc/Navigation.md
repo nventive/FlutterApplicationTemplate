@@ -11,8 +11,7 @@ To handle pages that share a menu, we use a [StatefulShellRoute](https://pub.dev
 To register a new section, you must add a stateful branch.
 Each branch represents a section. 
 Each page you add below the primary route will have the shell and anything that comes with it (like the bottom navigation bar).
-When you add a route nested in another route, if you navigate to that page and then navigate back,
-it will navigate back to the parent page.
+When you add a route nested in another route, if you navigate to that page and then navigate back, it will navigate back to the parent page.
 
 ```dart
 StatefulShellBranch(
