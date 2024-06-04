@@ -38,7 +38,8 @@ ForcedUpdatePage({super.key}) {
 
 ## Diagnostics
 
-Multiple environment features can be tested from the diagnostics overlay. This is configured in [EnvironmentPickerWidget](../src/app/lib/presentation/diagnostic/environment_picker_widget.dart).
+Multiple environment features can be tested from the diagnostics overlay.
+This is configured in [EnvironmentPickerWidget](../src/app/lib/presentation/diagnostic/environment_picker_widget.dart).
 
 - You can see the current runtime environment.
 - You can see what the environment will be overriden to. 

@@ -1,4 +1,5 @@
 # Testing
+
 For more documentation on testing, read the references listed at the bottom.
 
 ## Unit Testing
@@ -189,21 +190,23 @@ flutter test integration_test --dart-define ENV=Development
 Otherwise it will throw unclear exceptions that don't point you at this issue.
 
 ## Code coverage
+
 You can collect the code coverage locally using the following command lines.
 
 ### Installing lcov/genhtml
 
 In order to visualize the test coverage you need to install lcov and by extension genhtml.
 
-On windows you need chocolatey and run this command
+On windows you need chocolatey and run this command.
 ```bash
 chocolatey install lcov
 ```
 
-on macOS you need to have lcov installed on your system (`brew install lcov`) to use the `genhtml` command.
+On macOS you need to have lcov installed on your system (`brew install lcov`) to use the `genhtml` command.
 
-Then you need to add the genhtml path to your environment variables. Go to the properties of your pc then go to advanced system settings -> Environment variables, then in system variables find the 
-path variable and edit it. Add this path C:\ProgramData\chocolatey\lib\lcov\tools\bin and now open a git bash terminal against your src/app folder and enter these commands
+Then you need to add the genhtml path to your environment variables.
+Go to the properties of your PC then go to advanced system settings -> `Environment variables`, then in system variables find the path variable and edit it.
+Add this path `C:\ProgramData\chocolatey\lib\lcov\tools\bin` and now open a git bash terminal against your `src/app` folder and enter these commands.
 
 ```bash
 # Generate `coverage/lcov.info` file
@@ -231,7 +234,9 @@ There’s also a couple of VSCode extensions you can use to visualize your cover
 For both of these extensions to work, you must generate a `lcov.info` file before hand, or whenever you make a change and want to see your coverage.
 
 ## Naming
-In general, test files should reside inside a `test` folder located at the root of your Flutter application or package. Test files should always end with `_test.dart`, this is the convention used by the test runner when searching for tests.
+
+In general, test files should reside inside a `test` folder located at the root of your Flutter application or package.
+Test files should always end with `_test.dart`, this is the convention used by the test runner when searching for tests.
 
 Your file structure should look like this:
 ```

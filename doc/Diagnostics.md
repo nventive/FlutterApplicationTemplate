@@ -4,6 +4,7 @@ This template comes with multiple built-in diagnostic tools.
 This is not available in the prod environment.
 
 ## Diagnostics Overlay
+
 When you start the application, you'll notice a box on the side of the screen.
 This overlay shows a few buttons.
 The overlay is accessible from anywhere in your app.

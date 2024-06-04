@@ -126,8 +126,6 @@ This application uses resources from Material Design.
 
 ### Localization
 
-This application uses
-[flutter_localization](https://pub.dev/packages/flutter_localization) to deal
-with the localization of strings into multiple languages.
+This application uses [flutter_localization](https://pub.dev/packages/flutter_localization) to deal with the localization of strings into multiple languages.
 
 See [Localization.md](Localization.md) for more details.

@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
+## 0.19.2
+- Cleanup documentation.
+
 ## 0.19.1
 - Target specific Dart (>=3.4.0 <4.0.0) / Flutter (3.22.1) SDK.
 
