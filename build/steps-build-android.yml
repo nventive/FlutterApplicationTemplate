@@ -1,16 +1,19 @@
 parameters:
 - name: androidKeystoreFile
   type: string
-  default: ''
 - name: androidKeyStorePropertiesFile
   type: string
-  default: ''
 - name: pathToSrc
   type: string
-  default: ''
 - name: projectName
   type: string
   default: '$(ProjectName)'
+- name: firebaseJsonFile
+  type: string
+- name: firebaseOptionsDartFile
+  type: string
+- name: googleServicesJsonFile
+  type: string
 
 steps:
 #-if false
@@ -31,6 +34,13 @@ steps:
 
 - template: templates/flutter-install.yml
 
+- template : templates/replace-firebase-config.yml
+  parameters:
+    pathToSrc: '${{ parameters.pathToSrc }}'
+    firebaseJsonFile: '${{ parameters.firebaseJsonFile }}'
+    firebaseOptionsDartFile: '${{ parameters.firebaseOptionsDartFile }}'
+    googleServicesJsonFile: '${{ parameters.googleServicesJsonFile }}'
+
 - task: DownloadSecureFile@1
   name: keyStore
   displayName: "Download Keystore from Secure Files"
@@ -44,8 +54,6 @@ steps:
   inputs:
     secureFile: ${{ parameters.androidKeyStorePropertiesFile }}
 
-# TODO: If Production -> Download the google-services.json for production.
-
 # The file copied inside the source directory must be aligned with the name chosen in '/src/app/lib/android/app/build.gradle' where 'key.properties' is loaded.
 - task: PowerShell@2
   displayName: Copy Signing Configuration Files
@@ -57,8 +65,6 @@ steps:
 
       Copy-Item -Path '$(keyStore.secureFilePath)' -Destination '${{ parameters.pathToSrc }}\app\android\app\${{ parameters.androidKeystoreFile }}'
       Write-Host 'Key store copied to ${{ parameters.pathToSrc }}/app/android/app/${{ parameters.androidKeystoreFile }}.'
-
-# TODO: If Production -> Copy downloaded the google-services.json for production in the Android application folder.
 
 - template: templates/flutter-prepare.yml
   parameters:

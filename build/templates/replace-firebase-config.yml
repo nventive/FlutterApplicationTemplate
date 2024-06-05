@@ -1,0 +1,42 @@
+parameters:
+- name: pathToSrc
+  type: string
+- name: firebaseJsonFile
+  type: string
+- name: firebaseOptionsDartFile
+  type: string
+- name: googleServicesJsonFile
+  type: string
+
+steps:
+  - task: DownloadSecureFile@1
+    name: firebaseJson
+    displayName: "Download Keystore from Secure Files"
+    inputs:
+      secureFile: ${{ parameters.firebaseJsonFile }}
+  
+  - task: DownloadSecureFile@1
+    name: firebaseOptionsDart
+    displayName: "Download Keystore from Secure Files"
+    inputs:
+      secureFile: ${{ parameters.firebaseOptionsDartFile }}
+
+  - task: DownloadSecureFile@1
+    name: googleServicesJson
+    displayName: "Download Keystore from Secure Files"
+    inputs:
+      secureFile: ${{ parameters.googleServicesJsonFile }}
+
+  - task: PowerShell@2
+    displayName: Copy Firebase Configuration Files
+    inputs:
+      targetType: 'inline'
+      script: |
+        Copy-Item -Path '$(firebaseJson.secureFilePath)' -Destination '${{ parameters.pathToSrc }}\app\firebase.json'
+        Write-Host 'Firebase.json copied to ${{ parameters.pathToSrc }}/app/firebase.json'
+
+        Copy-Item -Path '$(firebaseOptionsDart.secureFilePath)' -Destination '${{ parameters.pathToSrc }}\app\lib\firebase_options.dart'
+        Write-Host 'FirebaseOptions.Dart copied to ${{ parameters.pathToSrc }}/app/lib/firebase_options.dart'
+
+        Copy-Item -Path '$(googleServicesJson.secureFilePath)' -Destination '${{ parameters.pathToSrc }}\app\android\app\google-services.json'
+        Write-Host 'GoogleServices.json copied to ${{ parameters.pathToSrc }}\app\android\app\google-services.json'

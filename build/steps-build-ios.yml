@@ -1,25 +1,25 @@
 parameters:
 - name: iosCertificateFile
   type: string
-  default: ''
 - name: iosCertificatePassword
   type: string
-  default: ''
 - name: iosProvisioningProfileFile
   type: string
-  default: ''
 - name: iosExportOptionsFile
   type: string
-  default: ''
 - name: pathToSrc
   type: string
-  default: ''
 - name: projectName
   type: string
   default: '$(ProjectName)'
 - name: BannerVersionNameText
   type: string
-  default: ''
+- name: firebaseJsonFile
+  type: string
+- name: firebaseOptionsDartFile
+  type: string
+- name: googleServicesJsonFile
+  type: string
 
 steps:
 #-if false
@@ -46,6 +46,13 @@ steps:
   inputs:
     provisioningProfileLocation: 'secureFiles'
     provProfileSecureFile: ${{ parameters.iosProvisioningProfileFile }}
+
+- template : templates/replace-firebase-config.yml
+  parameters:
+    pathToSrc: '${{ parameters.pathToSrc }}'
+    firebaseJsonFile: '${{ parameters.firebaseJsonFile }}'
+    firebaseOptionsDartFile: '${{ parameters.firebaseOptionsDartFile }}'
+    googleServicesJsonFile: '${{ parameters.googleServicesJsonFile }}'
 
 # Flutter project signing process goes through exportOptions.plist file which holds secure information about signing.
 - task: DownloadSecureFile@1

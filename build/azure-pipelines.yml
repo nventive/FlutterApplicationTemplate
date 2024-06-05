@@ -54,6 +54,9 @@ stages:
       iosCertificateFile: $(InternalCertificate)
       iosVariableGroup: 'FlutterApplicationTemplate.Distribution.Internal.iOS'
       releaseNotesArtifactName: 'GeneratedReleaseNotes_Staging'
+      firebaseJsonFile:  $(InternalFirebaseJson)
+      firebaseOptionsDartFile:  $(InternalFirebaseOptionsDart)
+      googleServicesJsonFile:  $(InternalGoogleServicesJson)
 
 - stage: Publish_Template_Package
   condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'), eq(variables['IsReleaseBranch'], 'true'))
@@ -80,6 +83,9 @@ stages:
       iosCertificateFile: $(InternalCertificate)
       iosVariableGroup: 'FlutterApplicationTemplate.Distribution.Internal.iOS'
       BannerVersionNameText: 'STAGING'
+      firebaseJsonFile:  $(InternalFirebaseJson)
+      firebaseOptionsDartFile:  $(InternalFirebaseOptionsDart)
+      googleServicesJsonFile:  $(InternalGoogleServicesJson)
 
 - stage: AppCenter_TestFlight_Staging
   condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
@@ -114,6 +120,9 @@ stages:
       iosExportOptionsFile: $(AppStoreExportOptions)
       iosCertificateFile: $(AppStoreCertificate)
       iosVariableGroup: 'FlutterApplicationTemplate.Distribution.AppStore'
+      firebaseJsonFile:  $(FirebaseJson)
+      firebaseOptionsDartFile:  $(FirebaseOptionsDart)
+      googleServicesJsonFile:  $(GoogleServicesJson)
 
 - stage: AppCenter_Production
   condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))

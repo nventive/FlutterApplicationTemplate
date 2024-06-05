@@ -50,6 +50,12 @@
 - name: BannerVersionNameText
   type: string
   default: ''
+- name: firebaseJsonFile
+  type: string
+- name: firebaseOptionsDartFile
+  type: string
+- name: googleServicesJsonFile
+  type: string
 
 jobs:
   - job: OnWindows_ReleaseNotes
@@ -111,6 +117,9 @@ jobs:
         projectName: ${{ parameters.projectName }}
         androidKeystoreFile: ${{ parameters.androidKeyStoreFile }}
         androidKeyStorePropertiesFile: ${{ parameters.androidKeyPropertiesFile }}
+        firebaseJsonFile: '${{ parameters.firebaseJsonFile }}'
+        firebaseOptionsDartFile: '${{ parameters.firebaseOptionsDartFile }}'
+        googleServicesJsonFile: '${{ parameters.googleServicesJsonFile }}'
 
   - job: OnMac_iOS
     pool:
@@ -133,3 +142,6 @@ jobs:
         iosProvisioningProfileFile: ${{ parameters.iosProvisioningProfileFile }}
         iosExportOptionsFile: ${{ parameters.iosExportOptionsFile }}
         BannerVersionNameText: ${{ parameters.BannerVersionNameText }}
+        firebaseJsonFile: '${{ parameters.firebaseJsonFile }}'
+        firebaseOptionsDartFile: '${{ parameters.firebaseOptionsDartFile }}'
+        googleServicesJsonFile: '${{ parameters.googleServicesJsonFile }}'

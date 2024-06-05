@@ -40,6 +40,14 @@
   AppStoreExportOptions: com.nventive.flutterapptemplate.exportOptions.plist # This is the export options file for the AppStore (Production distribution) builds.
   AppStoreCertificate: nventive.p12 # This is the client production certificate used to sign AppStore builds.
 
+  # Firebase
+  InternalFirebaseJson: firebase-flutter-internal.json
+  InternalFirebaseOptionsDart: firebase_options-flutter-internal.dart
+  InternalGoogleServicesJson: google-services-flutter-internal.json
+  FirebaseJson: firebase-flutter.json
+  FirebaseOptionsDart: firebase_options-flutter.dart
+  GoogleServicesJson: google-services-flutter.json
+
   # Prerequisites - Service connections.
   # Make sure you have the following service connections in your Azure pipeline library.
   GooglePlayServiceConnection: GooglePlay-nventive-ApplicationTemplate
