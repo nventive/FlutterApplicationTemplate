@@ -1,4 +1,5 @@
 import 'package:app/business/mocking/mocking_manager.dart';
+import 'package:app/review_service_dart/lib/src/review_service/review_prompter.dart';
 import 'package:app/presentation/diagnostic/diagnostic_switch.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +7,8 @@ import 'package:flutter/material.dart';
 final class MockingConfigurationWidget extends StatefulWidget {
   final MockingManager _mockingManager;
 
-  const MockingConfigurationWidget(MockingManager mockingManager, {super.key}) : _mockingManager = mockingManager;
+  const MockingConfigurationWidget(MockingManager mockingManager, {super.key})
+      : _mockingManager = mockingManager;
 
   @override
   State<MockingConfigurationWidget> createState() {
@@ -18,6 +20,7 @@ final class _MockingConfigurationWidgetState
     extends State<MockingConfigurationWidget> {
   bool _restartRequired = false;
   late MockingManager _mockingManager;
+  late IReviewPrompter _reviewPrompter;
 
   @override
   void initState() {
@@ -54,6 +57,12 @@ final class _MockingConfigurationWidgetState
               _restartRequired = _mockingManager.hasConfigurationBeenChanged;
             });
           },
+        ),
+        IconButton(
+          onPressed: () {
+            _reviewPrompter.tryPrompt();
+          },
+          icon: Icon(Icons.refresh),
         ),
       ],
     );
