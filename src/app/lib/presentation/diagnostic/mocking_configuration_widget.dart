@@ -1,6 +1,6 @@
 import 'package:app/business/mocking/mocking_manager.dart';
-import 'package:app/review_service_dart/lib/src/review_service/review_prompter.dart';
 import 'package:app/presentation/diagnostic/diagnostic_switch.dart';
+import 'package:app/review_service_dart/lib/src/review_service/review_prompter_interface.dart';
 import 'package:flutter/material.dart';
 
 /// Widget that handles logging configuration switching.
