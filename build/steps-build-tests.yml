@@ -46,10 +46,11 @@ steps:
     cobertura convert
   displayName: Convert Code Coverage from LCOV to Cobertura
 
-- task: PublishCodeCoverageResults@2
+- task: PublishCodeCoverageResults@1
   displayName: Publish Code Coverage Result
   condition: succeeded()
   inputs:
+    codeCoverageTool: 'Cobertura'
     summaryFileLocation: "${{ parameters.pathToSrc }}/app/coverage/cobertura.xml"
 
 - publish: $(Build.ArtifactStagingDirectory)
