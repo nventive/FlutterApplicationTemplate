@@ -5,6 +5,15 @@ import 'package:app/access/dad_jokes/dad_jokes_mocked_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_mocked_repository.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_repository.dart';
+import 'package:app/access/review_source/custom_review_condition_builder.dart';
+import 'package:app/access/review_source/custom_review_service.dart';
+import 'package:app/access/review_source/custom_review_settings.dart';
+import 'package:review_service/src/review_service/review_service.dart';
+import 'package:review_service/src/review_service/review_service.extensions.dart';
+import 'package:review_service/src/review_service/review_prompter.dart';
+import 'package:review_service/src/review_service/review_settings_source.dart';
+import 'package:review_service/src/review_service/review_condition_builder.dart';
+import 'package:review_service/src/review_service/memory_review_settings_source.dart';
 import 'package:app/access/diagnostics/diagnostics_repository.dart';
 import 'package:app/access/environment/environment_repository.dart';
 import 'package:app/access/firebase/firebase_repository.dart';
@@ -187,8 +196,32 @@ Future<void> _registerRepositories(bool? isMocked) async {
 
 /// Registers the services.
 void _registerServices() {
+  var logger = Logger();
+  var reviewConditionsBuilder =
+      ReviewConditionsBuilderImplementation<CustomReviewSettings>()
+          .minimumJokesFavorited(3);
+
+  var reviewSettingsSource =
+      GetIt.I.registerSingleton<ReviewSettingsSource<CustomReviewSettings>>(
+    MemoryReviewSettingsSource<CustomReviewSettings>(
+      () => const CustomReviewSettings(),
+    ),
+  );
+
+  GetIt.I.registerSingleton(
+    CustomReviewService(
+      ReviewService<CustomReviewSettings>(
+        logger: logger,
+        reviewPrompter: ReviewPrompter(logger: logger),
+        reviewSettingsSource: reviewSettingsSource,
+        reviewConditionsBuilder: reviewConditionsBuilder,
+      ),
+    ),
+  );
+
   GetIt.I.registerSingleton(
     DadJokesService(
+      GetIt.I.get<CustomReviewService>(),
       GetIt.I.get<DadJokesRepository>(),
       GetIt.I.get<FavoriteDadJokesRepository>(),
       _logger,

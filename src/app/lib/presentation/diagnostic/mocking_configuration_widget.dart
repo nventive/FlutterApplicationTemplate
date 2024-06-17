@@ -1,6 +1,10 @@
+import 'package:app/access/review_source/custom_review_service.dart';
 import 'package:app/business/mocking/mocking_manager.dart';
+import 'package:app/presentation/diagnostic/diagnostic_button.dart';
 import 'package:app/presentation/diagnostic/diagnostic_switch.dart';
-import 'package:app/review_service_dart/lib/src/review_service/review_prompter_interface.dart';
+import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
+import 'package:review_service/src/review_service/review_prompter.dart';
 import 'package:flutter/material.dart';
 
 /// Widget that handles logging configuration switching.
@@ -20,12 +24,15 @@ final class _MockingConfigurationWidgetState
     extends State<MockingConfigurationWidget> {
   bool _restartRequired = false;
   late MockingManager _mockingManager;
-  late IReviewPrompter _reviewPrompter;
+  late ReviewPrompter _reviewPrompter;
+  late CustomReviewService _reviewService;
 
   @override
   void initState() {
     super.initState();
     _mockingManager = widget._mockingManager;
+    _reviewPrompter = ReviewPrompter(logger: Logger());
+    _reviewService = GetIt.I.get<CustomReviewService>();
     _restartRequired = _mockingManager.hasConfigurationBeenChanged;
   }
 
@@ -58,11 +65,15 @@ final class _MockingConfigurationWidgetState
             });
           },
         ),
-        IconButton(
-          onPressed: () {
-            _reviewPrompter.tryPrompt();
+        DiagnosticButton(
+          label: 'Try prompt star review',
+          onPressed: () async {
+            if (await _reviewService.getAreConditionsSatisfied()) {
+              _reviewPrompter.tryPrompt();
+            } else {
+              Logger().log(Level.debug, 'conditions not satisfied');
+            }
           },
-          icon: Icon(Icons.refresh),
         ),
       ],
     );

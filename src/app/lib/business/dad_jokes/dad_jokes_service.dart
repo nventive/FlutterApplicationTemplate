@@ -3,14 +3,28 @@ import 'dart:async';
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
 import 'package:app/access/dad_jokes/data/dad_joke_content_data.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_repository.dart';
+import 'package:app/access/review_source/custom_review_service.dart';
 import 'package:app/business/dad_jokes/dad_joke.dart';
+import 'package:review_service/src/review_service/review_service.extensions.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
+/// Extensions of ReviewService<TReviewSettings>.
+extension CustomReviewServiceExtensions on CustomReviewService {
+  /// Tracks that the application onboarding has been completed.
+  Future<void> trackFavoriteJokesCount() async {
+    await updateReviewSettings((reviewSettings) {
+      return reviewSettings
+          .copyWithFavorite(reviewSettings.favoriteJokesCount + 1);
+    });
+  }
+}
+
 /// Interface for the dad jokes service.
 abstract interface class DadJokesService implements Disposable {
   factory DadJokesService(
+    CustomReviewService reviewService,
     DadJokesRepository dadJokesRepository,
     FavoriteDadJokesRepository favoriteDadJokesRepository,
     Logger logger,
@@ -44,13 +58,17 @@ final class _DadJokesService implements DadJokesService {
   /// The repository used to fetch favorite dad jokes.
   final FavoriteDadJokesRepository _favoriteDadJokesRepository;
 
+  final CustomReviewService _reviewService;
+
   final Logger _logger;
 
   _DadJokesService(
+    CustomReviewService reviewService,
     DadJokesRepository dadJokesRepository,
     FavoriteDadJokesRepository favoriteDadJokesRepository,
     Logger logger,
-  )   : _dadJokesRepository = dadJokesRepository,
+  )   : _reviewService = reviewService,
+        _dadJokesRepository = dadJokesRepository,
         _favoriteDadJokesRepository = favoriteDadJokesRepository,
         _logger = logger {
     getDadJokes().then((dadJokes) => _dadJokesBehaviorSubject.add(dadJokes));
@@ -108,6 +126,8 @@ final class _DadJokesService implements DadJokesService {
         selfText: dadJoke.text,
       ),
     );
+
+    _reviewService.trackFavoriteJokesCount();
 
     await _favoriteDadJokesRepository.setFavoriteDadJokes(favoriteDadJokes);
 

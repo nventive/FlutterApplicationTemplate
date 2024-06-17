@@ -32,7 +32,7 @@ dependencies:
     sdk: flutter
   intl: any
   review_service:
-    path: review_service_dart
+    path: '../../../ReviewService-Dart'
 
 # This is required with alice installed unless this PR is merged https://github.com/jhomlala/alice/pull/171
 dependency_overrides:
@@ -50,6 +50,7 @@ dev_dependencies:
   retrofit_generator: ^8.1.0
   json_serializable: ^6.7.1
   mockito: ^5.4.4
+
 
 flutter:
   uses-material-design: true

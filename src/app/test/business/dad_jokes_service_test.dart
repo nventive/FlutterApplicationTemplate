@@ -4,26 +4,44 @@ import 'package:app/access/dad_jokes/data/dad_joke_content_data.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_mocked_repository.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_repository.dart';
 import 'package:app/access/dad_jokes/mocks/dad_jokes_list_mock.dart';
+import 'package:app/access/review_source/custom_review_service.dart';
+import 'package:app/access/review_source/custom_review_settings.dart';
+import 'package:app/access/review_source/memory_review_settings_source.dart';
 import 'package:app/business/dad_jokes/dad_joke.dart';
 import 'package:app/business/dad_jokes/dad_jokes_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 
+import 'package:review_service/src/review_service/review_service.dart';
+import 'package:review_service/src/review_service/logging_review_prompter.dart';
+import 'package:review_service/src/review_service/review_condition_builder.dart';
 
 void main() {
+  late CustomReviewService reviewService;
   late DadJokesRepository dadJokesRepository;
   late FavoriteDadJokesRepository favoriteDadJokesRepository;
   late DadJokesService SUT;
+  late Logger logger;
 
   setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
+    logger = Logger();
+    reviewService = CustomReviewService(
+      ReviewService<CustomReviewSettings>(
+        logger: logger,
+        reviewPrompter: LoggingReviewPrompter(),
+        reviewSettingsSource: CustomMemoryReviewSettingsSource(),
+        reviewConditionsBuilder: ReviewConditionsBuilderImplementation(),
+      ),
+    );
     dadJokesRepository = DadJokesMockedRepository();
     favoriteDadJokesRepository = FavoriteDadJokesMockedRepository();
 
     SUT = DadJokesService(
+      reviewService,
       dadJokesRepository,
       favoriteDadJokesRepository,
-      Logger(),
+      logger,
     );
   });
 
