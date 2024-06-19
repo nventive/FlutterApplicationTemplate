@@ -128,7 +128,7 @@ jobs:
     - name: ApplicationEnvironment
       value: ${{ parameters.applicationEnvironment }}
     - name: ArtifactName
-      value: $(iOSArtifactName)_${{ parameters.applicationEnvironment }}
+      value: ${{ parameters.iosArtifactName }}
 
     - group: ${{ parameters.iosVariableGroup }}
 

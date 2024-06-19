@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:alice/alice.dart';
+import 'package:alice_dio/alice_dio_adapter.dart';
 import 'package:app/access/dad_jokes/dad_jokes_mocked_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_mocked_repository.dart';
@@ -120,8 +121,10 @@ Future _registerAndLoadLoggers() async {
 /// Registers the HTTP client.
 void _registerHttpClient() {
   final dio = Dio();
+  final aliceDioAdapter = AliceDioAdapter();
 
-  dio.interceptors.add(GetIt.I.get<Alice>().getDioInterceptor());
+  dio.interceptors.add(aliceDioAdapter);
+  GetIt.I.get<Alice>().addAdapter(aliceDioAdapter);
 
   GetIt.I.registerSingleton<Dio>(dio);
 }

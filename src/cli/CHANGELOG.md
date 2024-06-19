@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
+## 0.19.4
+- Update packages.
+  - lints: 3.0.2
+  - alice: 1.0.0-dev.5
+- Fix CI/CD iOS artifact name.
+
 ## 0.19.3
 - Fix CI/CD artifact name for iOS.
 - Firebase configuration is now injected by CI/CD.
