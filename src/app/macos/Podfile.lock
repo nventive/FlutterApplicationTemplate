@@ -1,6 +1,4 @@
 PODS:
-  - alice (0.0.1):
-    - FlutterMacOS
   - Firebase/Analytics (10.25.0):
     - Firebase/Core
   - Firebase/Core (10.25.0):
@@ -135,7 +133,6 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
-  - alice (from `Flutter/ephemeral/.symlinks/plugins/alice/macos`)
   - firebase_analytics (from `Flutter/ephemeral/.symlinks/plugins/firebase_analytics/macos`)
   - firebase_core (from `Flutter/ephemeral/.symlinks/plugins/firebase_core/macos`)
   - firebase_remote_config (from `Flutter/ephemeral/.symlinks/plugins/firebase_remote_config/macos`)
@@ -164,8 +161,6 @@ SPEC REPOS:
     - PromisesObjC
 
 EXTERNAL SOURCES:
-  alice:
-    :path: Flutter/ephemeral/.symlinks/plugins/alice/macos
   firebase_analytics:
     :path: Flutter/ephemeral/.symlinks/plugins/firebase_analytics/macos
   firebase_core:
@@ -188,7 +183,6 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
 
 SPEC CHECKSUMS:
-  alice: 63a97c7b966d605b5e47468b9b88debc563b7617
   Firebase: 0312a2352584f782ea56f66d91606891d4607f06
   firebase_analytics: 47e1f6453c222417b323ca53b1793f1a9ef395f6
   firebase_core: b5b8b60dad71f93132bbaa21e8d1379367d824f0

@@ -1,6 +1,4 @@
 PODS:
-  - alice (0.0.1):
-    - Flutter
   - Firebase/Analytics (10.25.0):
     - Firebase/Core
   - Firebase/Core (10.25.0):
@@ -142,7 +140,6 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - alice (from `.symlinks/plugins/alice/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_remote_config (from `.symlinks/plugins/firebase_remote_config/ios`)
@@ -175,8 +172,6 @@ SPEC REPOS:
     - PromisesObjC
 
 EXTERNAL SOURCES:
-  alice:
-    :path: ".symlinks/plugins/alice/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_core:
@@ -207,7 +202,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  alice: 16ca3b89f5e8395fd585e3a2920b8f4e250e3bf4
   Firebase: 0312a2352584f782ea56f66d91606891d4607f06
   firebase_analytics: cc06e24d6a2343c44f845b3112143db72d10ef78
   firebase_core: a626d00494efa398e7c54f25f1454a64c8abf197

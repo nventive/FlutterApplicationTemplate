@@ -7,8 +7,9 @@ Prefix your items with `(Template)` if the change is about the template and not 
 
 ## 0.19.4
 - Update packages.
-  - lints: 4.0.0
+  - lints: 3.0.2
   - alice: 1.0.0-dev.5
+- Fix CI/CD iOS artifact name.
 
 ## 0.19.3
 - Fix CI/CD artifact name for iOS.
