@@ -48,13 +48,18 @@ stages:
       androidArtifactName: 'GeneratedAndroidArtifact_Staging'
       androidKeyPropertiesFile: $(InternalKeyProperties)
       androidVariableGroup: 'FlutterApplicationTemplate.Distribution.Internal.Android'
+      iosArtifactName: 'GeneratediOSArtifact_Staging'
       iosProvisioningProfileFile: $(InternalProvisioningProfile)
       iosExportOptionsFile: $(InternalExportOptions)
       iosCertificateFile: $(InternalCertificate)
       iosVariableGroup: 'FlutterApplicationTemplate.Distribution.Internal.iOS'
+      releaseNotesArtifactName: 'GeneratedReleaseNotes_Staging'
+      firebaseJsonFile:  $(InternalFirebaseJson)
+      firebaseOptionsDartFile:  $(InternalFirebaseOptionsDart)
+      googleServicesJsonFile:  $(InternalGoogleServicesJson)
 
 - stage: Publish_Template_Package
-  condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'), eq(variables['IsReleaseBranch'], 'true'))
+  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'), eq(variables['IsReleaseBranch'], 'true'))
   dependsOn:
    - CopyTool_GeneratedApp
    - Build_Staging_GeneratedApp
@@ -78,9 +83,12 @@ stages:
       iosCertificateFile: $(InternalCertificate)
       iosVariableGroup: 'FlutterApplicationTemplate.Distribution.Internal.iOS'
       BannerVersionNameText: 'STAGING'
+      firebaseJsonFile:  $(InternalFirebaseJson)
+      firebaseOptionsDartFile:  $(InternalFirebaseOptionsDart)
+      googleServicesJsonFile:  $(InternalGoogleServicesJson)
 
 - stage: AppCenter_TestFlight_Staging
-  condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'))
+  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
   dependsOn: Build_Staging
   jobs:
   - template: stage-release-appcenter.yml
@@ -100,7 +108,7 @@ stages:
 
 - stage: Build_Production
   dependsOn: Build_Staging
-  condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'))
+  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
   jobs:
   - template: stage-build.yml
     parameters:
@@ -112,9 +120,12 @@ stages:
       iosExportOptionsFile: $(AppStoreExportOptions)
       iosCertificateFile: $(AppStoreCertificate)
       iosVariableGroup: 'FlutterApplicationTemplate.Distribution.AppStore'
+      firebaseJsonFile:  $(FirebaseJson)
+      firebaseOptionsDartFile:  $(FirebaseOptionsDart)
+      googleServicesJsonFile:  $(GoogleServicesJson)
 
 - stage: AppCenter_Production
-  condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'))
+  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
   dependsOn: Build_Production
   jobs:
   - template: stage-release-appcenter.yml
@@ -128,7 +139,7 @@ stages:
       appCenterDistributionGroup: $(AppCenterDistributionGroup)
 
 - stage: AppStore
-  condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'))
+  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
   dependsOn: Build_Production
   jobs:
   - template: stage-release-appstore.yml
@@ -137,7 +148,7 @@ stages:
       deploymentEnvironment: AppStore
 
 - stage: GooglePlay
-  condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'))
+  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
   dependsOn: Build_Production
   jobs:
   - template: stage-release-googleplay.yml

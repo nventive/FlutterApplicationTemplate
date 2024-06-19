@@ -1,25 +1,25 @@
 parameters:
 - name: iosCertificateFile
   type: string
-  default: ''
 - name: iosCertificatePassword
   type: string
-  default: ''
 - name: iosProvisioningProfileFile
   type: string
-  default: ''
 - name: iosExportOptionsFile
   type: string
-  default: ''
 - name: pathToSrc
   type: string
-  default: ''
 - name: projectName
   type: string
   default: '$(ProjectName)'
 - name: BannerVersionNameText
   type: string
-  default: ''
+- name: firebaseJsonFile
+  type: string
+- name: firebaseOptionsDartFile
+  type: string
+- name: googleServicesJsonFile
+  type: string
 
 steps:
 #-if false
@@ -46,6 +46,13 @@ steps:
   inputs:
     provisioningProfileLocation: 'secureFiles'
     provProfileSecureFile: ${{ parameters.iosProvisioningProfileFile }}
+
+- template : templates/replace-firebase-config.yml
+  parameters:
+    pathToSrc: '${{ parameters.pathToSrc }}'
+    firebaseJsonFile: '${{ parameters.firebaseJsonFile }}'
+    firebaseOptionsDartFile: '${{ parameters.firebaseOptionsDartFile }}'
+    googleServicesJsonFile: '${{ parameters.googleServicesJsonFile }}'
 
 # Flutter project signing process goes through exportOptions.plist file which holds secure information about signing.
 - task: DownloadSecureFile@1
@@ -96,7 +103,7 @@ steps:
     condition: failed()
 
 - task: Xcode@5
-  condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'))
+  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
   displayName: 'Xcode Archive iOS'
   inputs:
     actions: 'archive'
@@ -115,7 +122,7 @@ steps:
     provisioningProfileName: '$(provisioningProfile.provisioningProfileName)'
 
 - task: CopyFiles@2
-  condition: and(succeeded(), eq(variables['IsLightBuild'], 'false'))
+  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
   displayName: 'Copy Binary Files'
   inputs:
     sourceFolder: '${{ parameters.pathToSrc }}/app'

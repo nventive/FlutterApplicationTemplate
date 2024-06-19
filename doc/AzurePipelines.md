@@ -24,14 +24,14 @@ It also runs automated tests during the build steps.
 ### Pull request runs
 
 Due to the length of mobile builds, pipelines are configured to behave a little differently when building in a context of **pull request (PR) build validation**.
-To reduce the build time, some stages and steps are disabled for PR builds.
-This requires a specific variable called `IsLightBuild` to be set, hence why it is appearing in the pipeline. 
+To reduce the CI/CD utilization time, some stages and steps are disabled for PR builds.
+This requires a specific variable called `IsPullRequestBuild` to be set, hence why it is appearing in the pipeline. 
 
-Also, all release stages are disabled in the context of PR build validation because, with the optimizations differences, the resulting application would not represent the real thing.
+Also, all release stages are disabled in the context of PR build validation.
 
 ### Release runs
 
-Pipeline runs **triggered on the main branch** don't qualify for `IsLightBuild` and build the application with the goal of releasing it.
+Pipeline runs **triggered on the main branch** don't qualify for `IsPullRequestBuild` and build the application with the goal of releasing it.
 All stages are therefore enabled.
 
 ## Stages and Steps
@@ -67,7 +67,7 @@ This is where the exact build steps are defined. These vary depending on the pla
 1. Install and run [GitVersion](https://gitversion.net/) to calculate the semantic version based on the Git history.
 1. Install the proper signing certificates (depending on the platform).
 1. Build the application.
-1. Archive the application (if on iOS and depending on `IsLightBuild`).
+1. Archive the application (if on iOS and depending on `IsPullRequestBuild`).
 1. Run the tests and publish both the test results and the code coverage results.
 1. Push the built artifacts (.ipa, .aab, release notes, etc.).
 1. Cleanup.

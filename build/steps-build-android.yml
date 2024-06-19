@@ -1,16 +1,19 @@
 parameters:
 - name: androidKeystoreFile
   type: string
-  default: ''
 - name: androidKeyStorePropertiesFile
   type: string
-  default: ''
 - name: pathToSrc
   type: string
-  default: ''
 - name: projectName
   type: string
   default: '$(ProjectName)'
+- name: firebaseJsonFile
+  type: string
+- name: firebaseOptionsDartFile
+  type: string
+- name: googleServicesJsonFile
+  type: string
 
 steps:
 #-if false
@@ -30,6 +33,13 @@ steps:
     jdkSourceOption: 'PreInstalled'
 
 - template: templates/flutter-install.yml
+
+- template : templates/replace-firebase-config.yml
+  parameters:
+    pathToSrc: '${{ parameters.pathToSrc }}'
+    firebaseJsonFile: '${{ parameters.firebaseJsonFile }}'
+    firebaseOptionsDartFile: '${{ parameters.firebaseOptionsDartFile }}'
+    googleServicesJsonFile: '${{ parameters.googleServicesJsonFile }}'
 
 - task: DownloadSecureFile@1
   name: keyStore

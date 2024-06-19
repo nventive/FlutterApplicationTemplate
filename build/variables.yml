@@ -40,6 +40,14 @@
   AppStoreExportOptions: com.nventive.flutterapptemplate.exportOptions.plist # This is the export options file for the AppStore (Production distribution) builds.
   AppStoreCertificate: nventive.p12 # This is the client production certificate used to sign AppStore builds.
 
+  # Firebase
+  InternalFirebaseJson: firebase-flutter-internal.json
+  InternalFirebaseOptionsDart: firebase_options-flutter-internal.dart
+  InternalGoogleServicesJson: google-services-flutter-internal.json
+  FirebaseJson: firebase-flutter.json
+  FirebaseOptionsDart: firebase_options-flutter.dart
+  GoogleServicesJson: google-services-flutter.json
+
   # Prerequisites - Service connections.
   # Make sure you have the following service connections in your Azure pipeline library.
   GooglePlayServiceConnection: GooglePlay-nventive-ApplicationTemplate
@@ -71,9 +79,10 @@
   iOSArtifactName: iOS
   WindowsArtifactName: Windows
   TestsArtifactName: Tests
+  ReleaseNotesArtifactName: ReleaseNotes
 
-  # For Application.Building.Light optimizations.
-  IsLightBuild: $[eq(variables['Build.Reason'], 'PullRequest')]
+  # To know if it's a Pull Request build.
+  IsPullRequestBuild: $[eq(variables['Build.Reason'], 'PullRequest')]
 
   # Pipeline configuration (Disable shallow fetch).
   # See https://dev.to/kkazala/azure-devops-pipelines-shallow-fetch-1-is-now-default-4656 for more details.
