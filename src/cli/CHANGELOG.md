@@ -1,9 +1,12 @@
-﻿# Changelog
+# Changelog
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
+
+## 0.20.0
+- Configured MobSF security scan on Android and iOS for Staging and Production builds. 
 
 ## 0.19.4
 - Fix CI/CD artifact name for iOS stage.

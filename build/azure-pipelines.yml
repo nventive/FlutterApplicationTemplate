@@ -106,6 +106,16 @@ stages:
       applicationEnvironment: Staging
       deploymentEnvironment: TestFlight
 
+# MOBSF SECURITY SCAN STAGING
+- stage: Security_Scan_Build_Staging
+  dependsOn: Build_Staging
+  jobs:
+  - template: stage-security-scan.yml
+    parameters:
+      applicationEnvironment: Staging
+      enableIosSecurityScan: true
+      enableAndroidSecurityScan: true
+
 - stage: Build_Production
   dependsOn: Build_Staging
   condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
@@ -137,6 +147,16 @@ stages:
       androidVariableGroup: 'ApplicationTemplate.Distribution.GooglePlay'
       appCenterServiceConnectionName: $(AppCenterServiceConnection)
       appCenterDistributionGroup: $(AppCenterDistributionGroup)
+
+# MOBSF SECURITY SCAN PRODUCTION
+- stage: Security_Scan_Build_Production
+  dependsOn: Build_Production
+  jobs:
+  - template: stage-security-scan.yml
+    parameters:
+      applicationEnvironment: Production
+      enableIosSecurityScan: true
+      enableAndroidSecurityScan: true
 
 - stage: AppStore
   condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))

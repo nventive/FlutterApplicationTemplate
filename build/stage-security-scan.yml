@@ -1,0 +1,38 @@
+parameters:
+- name: applicationEnvironment
+  type: string
+  default: ''
+- name: enableIosSecurityScan
+  type: boolean
+  default: false
+- name: enableAndroidSecurityScan
+  type: boolean
+  default: false
+
+jobs:
+  - job: OnLinux_iOS_SecurityScan
+    condition: eq(${{parameters.enableIosSecurityScan}}, true)
+    dependsOn: []
+    pool:
+      vmImage: $(ubuntuHostedAgentImage)
+    steps:
+      - template: templates/mobsf-scan.yml
+        parameters:
+          platform: 'iOS'
+          fileExtension: $(ipaFileExtension)          
+          mobSfApiKey: $(mobSfApiKey)
+          artifactName: '$(iOSArtifactName)_${{ parameters.applicationEnvironment }}'
+
+  - job: OnLinux_Android_SecurityScan
+    condition: eq(${{parameters.enableAndroidSecurityScan}}, true)
+    dependsOn: []
+    pool:
+      vmImage: $(ubuntuHostedAgentImage)
+    steps:
+      - template: templates/mobsf-scan.yml
+        parameters:
+          platform: 'android'
+          fileExtension: $(aabFileExtension)
+          mobSfApiKey: $(mobSfApiKey)
+          artifactName: '$(AndroidArtifactName)_${{ parameters.applicationEnvironment }}'
+  

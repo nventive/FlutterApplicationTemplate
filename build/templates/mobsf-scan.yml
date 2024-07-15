@@ -1,0 +1,149 @@
+parameters:
+- name: mobSfApiKey
+  type: string
+  default: $(mobSfApiKey)
+- name: artifactName
+  type: string
+  default: ''
+- name: fileExtension
+  type: string
+  default: ''
+- name: platform
+  type: string
+  default: ''
+
+steps:
+- task: DownloadPipelineArtifact@1
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: "${{parameters.artifactName}}"
+    downloadPath: '$(System.ArtifactsDirectory)'
+  condition: succeeded()
+
+- task: DockerInstaller@0
+  displayName: 'Install Docker'
+  inputs:
+    dockerVersion: $(DockerVersion)
+  condition: succeeded()
+
+- script: docker pull opensecurity/mobile-security-framework-mobsf:latest
+  displayName: 'Pull MobSF Docker Image'
+  condition: succeeded()
+
+- script: docker run -d -it --rm -e MOBSF_API_KEY='${{parameters.mobSfApiKey}}' -e DATA_UPLOAD_MAX_MEMORY_SIZE=209715200 -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
+  displayName: 'Run MobSF Docker Image'
+  condition: succeeded()
+
+- script: ls -R "$(System.ArtifactsDirectory)"
+  displayName: 'List Downloaded Artifacts'
+
+- task: PowerShell@2
+  displayName: 'Upload file to MobSF'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $FILENAME = Get-ChildItem -Path "$(System.ArtifactsDirectory)/" -File | Select-Object -First 1 -ExpandProperty Name
+      Write-Host "Filename: $FILENAME"   
+      $file = "$(System.ArtifactsDirectory)/$FILENAME"    
+      Write-Host "Uploading file $file to MobSF..."
+      
+      # Check if the server is up and running
+      $serverIsRunning = $false
+      $retryCount = 0
+      while (-not $serverIsRunning -and $retryCount -lt 10) {
+          $response = curl --url http://127.0.0.1:8000/api/v1/scans -H "Authorization: ${{parameters.mobSfApiKey}}"
+          if ($response.StatusCode -eq 200) {
+            Write-Host "MobSF server is up and running"
+            $serverIsRunning = $true
+          } else {
+            Write-Host "Waiting for the MobSF server to start..."
+            $retryCount++
+            Start-Sleep -Seconds 5
+          }
+      }
+
+      $uploadResponse = curl -X POST -F "file=@$file;type=application/octet-stream" http://127.0.0.1:8000/api/v1/upload -H "Authorization: ${{parameters.mobSfApiKey}}"
+      $uploadResponseJson = $uploadResponse | ConvertFrom-Json
+      $hash = $uploadResponseJson.hash
+      echo "##vso[task.setvariable variable=fileHash]$hash"
+      Write-Host "Uploaded file hash: $hash"
+      Write-Host "File uploaded to MobSF successfully"
+  condition: succeeded()
+
+- task: PowerShell@2
+  displayName: 'Run MobSF Scan'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "MobSF Scan started"
+      $hash = "$(fileHash)"
+      $scanUrl = "http://127.0.0.1:8000/api/v1/scan"
+      Write-Host "Scanning Uploaded file hash: $hash"
+      $headers = @{
+        "Authorization" = ${{parameters.mobSfApiKey}}
+      }
+      $scanBody = @{
+        "scan_type" = "${{parameters.fileExtension}}"
+        "hash" = $hash  # use the hash from the upload response
+      }
+      $response = Invoke-RestMethod -Uri $scanUrl -Method Post -Headers $headers -Body $scanBody
+      Write-Host "Scan completed"
+  condition: succeeded()
+
+- task: PowerShell@2
+  displayName: 'Download MobSF PDF report'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "Downloading MobSF PDF report..."
+      $hash = "$(fileHash)"
+      Write-Host "File hash: $hash"
+      $reportUrl = "http://127.0.0.1:8000/api/v1/download_pdf"
+      $headers = @{
+        "Authorization" = "${{parameters.mobSfApiKey}}"
+      }
+      $reportBody = @{
+        "hash" = $hash  # use the hash from the upload response
+      }
+      $directoryPath = "${{parameters.artifactName}}/${{parameters.platform}}"
+      if (!(Test-Path -Path $directoryPath)) {
+        New-Item -ItemType Directory -Path $directoryPath | Out-Null
+      }
+      $pdfFilePath = "$directoryPath/report.pdf"
+      Invoke-WebRequest -Uri $reportUrl -Method Post -Headers $headers -Body $reportBody -OutFile $pdfFilePath
+      Write-Host "PDF report downloaded to $pdfFilePath"
+  condition: succeeded()
+  
+- task: PowerShell@2
+  displayName: 'Download MobSF Json report'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "Downloading MobSF Json report..."
+      $hash = "$(fileHash)"
+      Write-Host "File hash: $hash"
+      $reportUrl = "http://127.0.0.1:8000/api/v1/report_json"
+      $headers = @{
+        "Authorization" = "${{parameters.mobSfApiKey}}"
+      }
+      $reportBody = @{
+        "hash" = $hash  # use the hash from the upload response
+      }
+      $reportResponse = Invoke-RestMethod -Uri $reportUrl -Method Post -Headers $headers -Body $reportBody
+      Write-Host "Response: $reportResponse"
+      $jsonFilePath = "${{parameters.artifactName}}/${{parameters.platform}}/Report.json"
+      $reportResponse | ConvertTo-Json | Out-File -FilePath $jsonFilePath
+      Write-Host "JSON report downloaded to $jsonFilePath"
+  condition: succeeded()
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '${{parameters.artifactName}}/${{parameters.platform}}'
+    ArtifactName: ${{parameters.artifactName}}_Security_Reports
+    publishLocation: 'Container'
+
+- task: PostBuildCleanup@3
+  displayName: 'Post-Build Cleanup: Cleanup files to keep build server clean!'
+  condition: always()
