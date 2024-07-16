@@ -84,7 +84,7 @@ steps:
     bannerVersionNumberText: '$(MajorMinorPatch)'
 
 - task: FlutterBuild@0
-  displayName:  Build Project for Release
+  displayName: Build Project for Release
   inputs:
     target: 'ios'
     buildName: '$(MajorMinorPatch)'
@@ -103,7 +103,7 @@ steps:
     condition: failed()
 
 - task: Xcode@5
-  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
+  condition: succeeded()
   displayName: 'Xcode Archive iOS'
   inputs:
     actions: 'archive'
@@ -122,7 +122,7 @@ steps:
     provisioningProfileName: '$(provisioningProfile.provisioningProfileName)'
 
 - task: CopyFiles@2
-  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
+  condition: succeeded()
   displayName: 'Copy Binary Files'
   inputs:
     sourceFolder: '${{ parameters.pathToSrc }}/app'
