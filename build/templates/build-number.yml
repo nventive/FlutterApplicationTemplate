@@ -9,3 +9,31 @@ steps:
       $buildNumberWithPadding = [int]$(PreReleaseNumber) + [int]$(BuildPadding)
       Write-Host "##vso[task.setvariable variable=BuildNumber]$buildNumberWithPadding"
       Write-Host "Overridden build number: $buildNumberWithPadding"
+
+# For all builds, we multiply the actual build number by 10 to act as a shift to the left.
+# With the left shift, we can use the last number to determine which environment the build belongs to (1 = QA, 2 = Staging, 0 = Production).
+- task: PowerShell@2
+  displayName: Set the build version
+  inputs:
+    targetType: inline
+    script: |
+      $buildNumber = [int]$(BuildNumber)
+      $buildNumberEnv = ($buildNumber * 10)
+
+      if ("$(applicationEnvironment)" -eq "QA") {
+        $buildNumberEnv = ($buildNumber * 10) + 1
+      }
+      elseif ("$(applicationEnvironment)" -eq "Staging") {
+        $buildNumberEnv = ($buildNumber * 10) + 2
+      }
+
+      $buildNumber = $buildNumberEnv
+
+      Write-Host "##vso[task.setvariable variable=BuildNumber]$buildNumber"
+      Write-Host "Build number: $BuildNumber"
+
+      # Logic to manually override the CI run with the actual build number.
+      $branchName = "$(PreReleaseLabelWithDash)"
+      $version = '$(MajorMinorPatch)'
+      $runName = "$version$branchName$buildNumber"
+      Write-Host "##vso[build.updatebuildnumber]$runName"

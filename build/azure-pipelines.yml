@@ -59,7 +59,7 @@ stages:
       googleServicesJsonFile:  $(InternalGoogleServicesJson)
 
 - stage: Publish_Template_Package
-  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'), eq(variables['IsReleaseBranch'], 'true'))
+  condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
   dependsOn:
    - CopyTool_GeneratedApp
    - Build_Staging_GeneratedApp
