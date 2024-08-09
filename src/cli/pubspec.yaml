@@ -1,5 +1,5 @@
 name: flutter_application_generator
-description: A sample command-line application.
+description: A starter CLI for creating apps using FlutterApplicationTemplate.
 version: 1.0.0
 repository: https://github.com/nventive/FlutterApplicationTemplate
 

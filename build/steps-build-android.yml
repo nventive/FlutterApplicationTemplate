@@ -84,7 +84,7 @@ steps:
   inputs:
     target: 'aab'
     buildName: '$(MajorMinorPatch)'
-    buildNumber: '$(PreReleaseNumber)'
+    buildNumber: '$(buildNumber)'
     debugMode: false
     profileMode: false
     projectDirectory: '${{ parameters.pathToSrc }}/app'
