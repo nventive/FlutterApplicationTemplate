@@ -40,7 +40,7 @@
   default: false
 - name: releaseNotesArtifactName
   type: string
-  default: $(ReleaseNotesArtifactName)
+  default: $(ReleaseNotesArtifactName)_$(applicationEnvironment)
 - name: pathToSrc
   type: string
   default: '$(Build.SourcesDirectory)/src'
