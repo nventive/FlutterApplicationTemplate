@@ -14,9 +14,9 @@ steps:
     projectDirectory: '${{ parameters.pathToSrc }}/cli'
     arguments: 'pub publish --dry-run'
 
-- task: FlutterCommand@0
-  displayName: 'Flutter Pub Publish'
+- script: | 
+    gcloud auth activate-service-account --key-file=$(DownloadGCloudKey.secureFilePath)
+    gcloud auth print-identity-token --audiences=https://pub.dev | dart pub token add https://pub.dev
+    dart pub publish --force
   condition: eq(${{ parameters.dryRun }}, false)
-  inputs:
-    projectDirectory: '${{ parameters.pathToSrc }}/cli'
-    arguments: 'pub publish --force'
+  displayName: 'Flutter Pub Publish'

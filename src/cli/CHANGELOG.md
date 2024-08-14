@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
+## 0.20.1
+- Fix CI/CD artifact name for Android.
+- Fix CI/CD to install gcloud CLI Tool.
+- Fix CI/CD build number
+
 ## 0.20.0
 - Configured MobSF security scan on Android and iOS for Staging and Production builds. 
 
