@@ -28,39 +28,6 @@ jobs:
     parameters:
       projectDirectory: '${{ parameters.pathToSrc }}/cli'
 
-  - task: DownloadSecureFile@1
-    displayName: 'Download Google Cloud Key'
-    condition: succeeded()
-    inputs:
-      secureFile: 'flutter_publisher_gckey.json'
-    name: DownloadGCloudKey
-
-  - task: PowerShell@2
-    inputs:
-      targetType: 'inline'
-      script: |
-        $zipUrl = "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-windows-x86_64.zip"
-        $zipPath = "$(System.DefaultWorkingDirectory)\gcloud.zip"
-        $extractPath = "$(System.DefaultWorkingDirectory)\gcloud"
-
-        Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
-
-        New-Item -ItemType Directory -Path $extractPath -Force
-
-        Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
-
-        $gcloudPath = "$extractPath\google-cloud-sdk\bin\gcloud.cmd"
-
-        $gcloudDir = [System.IO.Path]::GetDirectoryName($gcloudPath)
-        # [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";" + $gcloudDir, [System.EnvironmentVariableTarget]::Machine)
-        
-        Write-Host "##vso[task.setvariable variable=PATH;]${env:PATH};$gcloudDir";
-
-        Write-Host "Updated PATH: $env:PATH"
-
-        Remove-Item -Path $zipPath -Force
-    displayName: 'Install Google Cloud SDK'
-
   - template: templates/publish-package.yml
     parameters:
       pathToSrc: '${{ parameters.pathToSrc }}'
