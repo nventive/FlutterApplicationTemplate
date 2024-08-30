@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
+## 0.20.3
+- (CI/CD) Fixes an authentication issue with pub.dev
+
 ## 0.20.2
 - (Template) Fixes an issue with the CLI in which the build fails during template generation because of a missing required file.
 
