@@ -16,11 +16,19 @@ We use a Dart CLI application to easily create new projects.
 
 ### Generate a new project
 
-1. Install the CLI using this command.
+1. Fetch all dependencies.
+
+   Change directory to src/app in the terminal, and run these following commands:
+
+   `flutter pub get`
+   `dart run build_runner build --delete-conflicting-outputs`
+   `flutter gen-l10n`
+
+3. Install the CLI using this command.
 
    `dart pub global activate flutter_application_generator`
 
-2. Create a new project using this command.
+4. Create a new project using this command.
 
     `flutter_application_generator create --destinationDirectory C:\P --projectName MyProjectName --applicationName MyAppName --packageName com.example.myAppName --organizationName MyOrg`
 
