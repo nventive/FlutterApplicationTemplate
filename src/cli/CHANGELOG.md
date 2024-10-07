@@ -71,3 +71,4 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Added localization.
 - Added test for the killswitch.
 - Added integration test for forced update.
+- Added design system, including color scheme and fonts.
