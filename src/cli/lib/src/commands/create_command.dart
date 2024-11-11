@@ -282,7 +282,7 @@ final class CreateCommand extends Command<int> {
         await renameConfigurationFile.writeAsString(newContent.join('\n'));
 
     // Apply new configuration.
-    await Process.run('flutter', ['pub', 'get'], runInShell: true);
+    // await Process.run('flutter', ['pub', 'get'], runInShell: true);
     await Process.run('dart', ['run', 'package_rename'], runInShell: true);
 
     // Load the content of the YAML file.
