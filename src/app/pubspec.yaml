@@ -31,6 +31,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+  bugsee_flutter: ^8.4.0
 
 # This is required with alice installed unless this PR is merged https://github.com/jhomlala/alice/pull/171
 dependency_overrides:
@@ -57,3 +58,4 @@ flutter:
     - .env.dev
     - .env.staging
     - .env.prod
+    - .bugsee.dev

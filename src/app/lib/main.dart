@@ -17,6 +17,7 @@ import 'package:app/access/logger/logger_repository.dart';
 import 'package:app/access/mocking/mocking_repository.dart';
 import 'package:app/app.dart';
 import 'package:app/app_router.dart';
+import 'package:app/business/bugsee/bugsee_manager.dart';
 import 'package:app/business/dad_jokes/dad_jokes_service.dart';
 import 'package:app/business/diagnostics/diagnostics_service.dart';
 import 'package:app/business/environment/environment.dart';
@@ -36,13 +37,18 @@ late Logger _logger;
 Future<void> main() async {
   await initializeComponents();
 
-  runApp(const App());
+  GetIt.I.get<BugseeManager>().initialize(
+    runApp: () {
+      runApp(const App());
+    },
+  );
 }
 
 Future initializeComponents({bool? isMocked}) async {
   WidgetsFlutterBinding.ensureInitialized();
   await _registerAndLoadEnvironment();
   await _registerAndLoadLoggers();
+  await _registerBugseeManager();
 
   _logger.d("Initialized environment and logger.");
 
@@ -115,6 +121,14 @@ Future _registerAndLoadLoggers() async {
   // Create a new instance of logger and insert it into the IoC.
   _logger = await GetIt.I.get<LoggerManager>().createLogInstance();
   GetIt.I.registerSingleton(_logger);
+}
+
+Future _registerBugseeManager() async {
+  GetIt.I.registerSingleton<BugseeManager>(
+    BugseeManager(
+      logger: GetIt.I.get<Logger>(),
+    ),
+  );
 }
 
 /// Registers the HTTP client.

@@ -60,6 +60,22 @@ steps:
   inputs:
     secureFile: '${{ parameters.iosExportOptionsFile }}'
 
+# Flutter project signing process goes through 'key.properties' file which holds secure information about the keystore.
+- task: DownloadSecureFile@1
+  name: bugseeFile
+  displayName: "Download Bug See Tokens from Secure Files"
+  inputs:
+    secureFile: ${{ parameters.bugSeeFile }}
+
+# The file copied inside the source directory must be aligned with the name chosen in '/src/app/lib/android/app/build.gradle' where 'key.properties' is loaded.
+- task: PowerShell@2
+  displayName: Copy Bugsee Configuration File
+  inputs:
+    targetType: 'inline'
+    script: |
+      Copy-Item -Path '$(bugSeeFile.secureFilePath)' -Destination '${{ parameters.pathToSrc }}\app'
+      Write-Host 'Key store copied to ${{ parameters.pathToSrc }}/app.'
+
 - template: templates/flutter-prepare.yml
   parameters:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
