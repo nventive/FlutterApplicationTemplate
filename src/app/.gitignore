@@ -34,5 +34,3 @@ app.*.map.json
 
 # Localization related
 lib/l10n/gen_l10n/*
-
-.bugsee.dev

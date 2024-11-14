@@ -82,7 +82,8 @@ final class _BugseeManager implements BugseeManager {
     initializeLaunchOptions();
     _isBugSeeInitialized = false;
 
-    if (bugseeToken == null ||
+    if (kDebugMode ||
+        bugseeToken == null ||
         !RegExp(bugseeTokenFormat).hasMatch(bugseeToken)) {
       isValidConfiguration = false;
       if (!kDebugMode) {
@@ -110,7 +111,8 @@ final class _BugseeManager implements BugseeManager {
     }
 
     bugseeIsEnabled = _isBugSeeInitialized;
-    captureVideoIsEnabled = _isBugSeeInitialized;
+    captureVideoIsEnabled = _isBugSeeInitialized &&
+        (bugseeConfigurationData.isVideoCaptureEnabled ?? true);
   }
 
   Future initializeLaunchOptions() async {
@@ -145,6 +147,7 @@ final class _BugseeManager implements BugseeManager {
   Future<void> updateIsVideoCuptureValue(bool isVideoCaptureEnabled) async {
     if (bugseeIsEnabled) {
       captureVideoIsEnabled = isVideoCaptureEnabled;
+      await bugseeRepository.setIsVideoCaptureEnabled(isVideoCaptureEnabled);
       if (!isVideoCaptureEnabled) {
         await Bugsee.pause();
       } else {
