@@ -28,7 +28,9 @@
       "program": "src/app/lib/main.dart",
       "toolArgs": [
         "--dart-define",
-        "ENV=Staging"
+        "ENV=Staging",
+        "--dart-define",
+        "BUGSEE_TOKEN=<token>"
       ]
     },
     {
@@ -39,7 +41,9 @@
       "program": "src/app/lib/main.dart",
       "toolArgs": [
         "--dart-define",
-        "ENV=Production"
+        "ENV=Production",
+        "--dart-define",
+        "BUGSEE_TOKEN=<token>"
       ]
     },
     {

@@ -36,12 +36,7 @@ late Logger _logger;
 
 Future<void> main() async {
   await initializeComponents();
-
-  GetIt.I.get<BugseeManager>().initialize(
-    runApp: () {
-      runApp(const App());
-    },
-  );
+  runApp(const App());
 }
 
 Future initializeComponents({bool? isMocked}) async {
@@ -129,6 +124,9 @@ Future _registerBugseeManager() async {
       logger: GetIt.I.get<Logger>(),
     ),
   );
+  GetIt.I.get<BugseeManager>().initialize(
+        bugseeToken: const String.fromEnvironment('BUGSEE_TOKEN'),
+      );
 }
 
 /// Registers the HTTP client.

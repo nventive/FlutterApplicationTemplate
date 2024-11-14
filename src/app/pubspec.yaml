@@ -58,4 +58,3 @@ flutter:
     - .env.dev
     - .env.staging
     - .env.prod
-    - .bugsee.dev

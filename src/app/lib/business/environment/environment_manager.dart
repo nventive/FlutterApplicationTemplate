@@ -33,12 +33,6 @@ final class _EnvironmentManager implements EnvironmentManager {
     Environment.production: '.env.prod',
   };
 
-  final Map<Environment, String> _bugseeFileName = {
-    Environment.development: '.bugsee.dev',
-    Environment.staging: '.bugsee.dev',
-    Environment.production: '.bugsee.dev',
-  };
-
   @override
   late List<Environment> environments;
 
@@ -64,15 +58,7 @@ final class _EnvironmentManager implements EnvironmentManager {
     next = null;
 
     await dotenv.load(
-      fileName: _bugseeFileName[current]!,
-    );
-    Map<String, String> bugSeeTokens = {
-      'BUGSEE_ANDROID_TOKEN': dotenv.env['BUGSEE_ANDROID_TOKEN']!,
-      'BUGSEE_IOS_TOKEN': dotenv.env['BUGSEE_IOS_TOKEN']!,
-    };
-    await dotenv.load(
       fileName: _environmentFileNames[current]!,
-      mergeWith: bugSeeTokens,
     );
   }
 
