@@ -41,9 +41,7 @@
       "program": "src/app/lib/main.dart",
       "toolArgs": [
         "--dart-define",
-        "ENV=Production",
-        "--dart-define",
-        "BUGSEE_TOKEN=<token>"
+        "ENV=Production"
       ]
     },
     {

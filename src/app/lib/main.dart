@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:alice/alice.dart';
+import 'package:app/access/bugsee/bugsee_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_mocked_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_mocked_repository.dart';
@@ -119,9 +120,11 @@ Future _registerAndLoadLoggers() async {
 }
 
 Future _registerBugseeManager() async {
+  GetIt.I.registerSingleton<BugseeRepository>(BugseeRepository());
   GetIt.I.registerSingleton<BugseeManager>(
     BugseeManager(
       logger: GetIt.I.get<Logger>(),
+      bugseeRepository: GetIt.I.get<BugseeRepository>(),
     ),
   );
   GetIt.I.get<BugseeManager>().initialize(

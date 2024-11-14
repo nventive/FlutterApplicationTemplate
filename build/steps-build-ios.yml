@@ -96,7 +96,7 @@ steps:
     verboseMode: true
     exportOptionsPlist: '$(exportOptions.secureFilePath)'
     dartDefine: ENV=$(applicationEnvironment)
-    dartDefine: BUGSEE_TOKEN=$(iOSDevToken)
+    dartDefine: BUGSEE_TOKEN=$(iOSBugseeToken)
 
 - template: templates/flutter-diagnostics.yml
   parameters:
