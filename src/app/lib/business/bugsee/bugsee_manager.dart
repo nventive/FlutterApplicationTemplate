@@ -18,33 +18,41 @@ abstract interface class BugseeManager {
     required BugseeRepository bugseeRepository,
   }) = _BugseeManager;
 
-  bool get configurationHasChanged;
+  bool get isRequireRestart;
 
   bool get bugseeIsEnabled;
   bool get captureVideoIsEnabled;
   bool get isValidConfiguration;
 
-  ///initialize bugsee with given token
-  ///bugsee is not available in debug mode
-  ///* [bugseeToken]: nullable bugsee token, if null bugsee won't be initialized make sure you provide
-  ///[BUGSEE_TOKEN] in the env using `--dart-define` or `launch.json` on vscode
+  /// initialize bugsee with given token
+  /// bugsee is not available in debug mode
+  /// * [bugseeToken]: nullable bugsee token, if null bugsee won't be initialized make sure you provide
+  /// [BUGSEE_TOKEN] in the env using `--dart-define` or `launch.json` on vscode
   Future<void> initialize({
     String? bugseeToken,
   });
 
-  ///Manually log a provided exception with a stack trace
+  /// Manually log a provided exception with a stack trace
+  /// (medium severity exception in Bugsee dashboard)
   Future<void> logException({
     required Exception exception,
     StackTrace? stackTrace,
   });
 
-  ///Manually update the current BugseeEnabled flag in shared prefs and in current manager singleton.
-  Future<void> updateBugseeEnabledValue(bool isBugseeEnabled);
+  /// Manually log an unhandled exception with a stack trace
+  /// (critical severity exception in Bugsee dashboard)
+  Future<void> logUnhandledException({
+    required Exception exception,
+    StackTrace? stackTrace,
+  });
 
-  ///Manually update the current enableVideoCapture flag in shared prefs and in current manager singleton.
-  Future<void> updateIsVideoCuptureValue(bool isBugseeEnabled);
+  /// Manually update the current BugseeEnabled flag in shared prefs and in current manager singleton.
+  Future<void> setIsBugseeEnabled(bool isBugseeEnabled);
 
-  ///Manually shows the built-in capture log report screen of Bugsee.
+  /// Manually update the current enableVideoCapture flag in shared prefs and in current manager singleton.
+  Future<void> setIsVideoCaptureEnabled(bool isBugseeEnabled);
+
+  /// Manually shows the built-in capture log report screen of Bugsee.
   Future<void> showCaptureLogReport();
 }
 
@@ -58,7 +66,7 @@ final class _BugseeManager implements BugseeManager {
   });
 
   @override
-  bool configurationHasChanged = false;
+  bool isRequireRestart = false;
 
   @override
   bool bugseeIsEnabled = false;
@@ -70,7 +78,7 @@ final class _BugseeManager implements BugseeManager {
   bool isValidConfiguration = true;
 
   late bool _isBugSeeInitialized;
-  late BugseeLaunchOptions launchOptions;
+  BugseeLaunchOptions? launchOptions;
 
   @override
   Future<void> initialize({
@@ -79,35 +87,26 @@ final class _BugseeManager implements BugseeManager {
     BugseeConfigurationData bugseeConfigurationData =
         await bugseeRepository.getBugseeConfiguration();
 
-    initializeLaunchOptions();
+    launchOptions = initializeLaunchOptions();
     _isBugSeeInitialized = false;
 
-    if (kDebugMode ||
-        bugseeToken == null ||
+    if (kDebugMode) {
+      isValidConfiguration = false;
+      logger.i("BUGSEE: deactivated in debug mode");
+      return;
+    }
+
+    if (bugseeToken == null ||
         !RegExp(bugseeTokenFormat).hasMatch(bugseeToken)) {
       isValidConfiguration = false;
-      if (!kDebugMode) {
-        logger.i(
-          "BUGSEE: token is null or invalid, bugsee won't be initialized",
-        );
-      } else {
-        logger.i("BUGSEE: deactivated in debug mode");
-      }
-      return;
-    } else if (bugseeConfigurationData.isBugseeEnabled ?? true) {
-      HttpOverrides.global = Bugsee.defaultHttpOverrides;
-      await Bugsee.launch(
-        bugseeToken,
-        appRunCallback: (isBugseeLaunched) {
-          if (!isBugseeLaunched) {
-            logger.e(
-              "BUGSEE: not initialized, verify bugsee token configuration",
-            );
-          }
-          _isBugSeeInitialized = isBugseeLaunched;
-        },
-        launchOptions: launchOptions,
+      logger.i(
+        "BUGSEE: token is null or invalid, bugsee won't be initialized",
       );
+      return;
+    }
+
+    if (bugseeConfigurationData.isBugseeEnabled ?? true) {
+      await launchBugseeLogger(bugseeToken);
     }
 
     bugseeIsEnabled = _isBugSeeInitialized;
@@ -115,12 +114,29 @@ final class _BugseeManager implements BugseeManager {
         (bugseeConfigurationData.isVideoCaptureEnabled ?? true);
   }
 
-  Future initializeLaunchOptions() async {
+  Future launchBugseeLogger(String bugseeToken) async {
+    HttpOverrides.global = Bugsee.defaultHttpOverrides;
+    await Bugsee.launch(
+      bugseeToken,
+      appRunCallback: (isBugseeLaunched) {
+        if (!isBugseeLaunched) {
+          logger.e(
+            "BUGSEE: not initialized, verify bugsee token configuration",
+          );
+        }
+        _isBugSeeInitialized = isBugseeLaunched;
+      },
+      launchOptions: launchOptions,
+    );
+  }
+
+  BugseeLaunchOptions? initializeLaunchOptions() {
     if (Platform.isAndroid) {
-      launchOptions = AndroidLaunchOptions();
+      return AndroidLaunchOptions();
     } else if (Platform.isIOS) {
-      launchOptions = IOSLaunchOptions();
+      return IOSLaunchOptions();
     }
+    return null;
   }
 
   @override
@@ -134,17 +150,32 @@ final class _BugseeManager implements BugseeManager {
   }
 
   @override
-  Future<void> updateBugseeEnabledValue(bool isBugseeEnabled) async {
-    if (isValidConfiguration) {
-      await bugseeRepository.setIsBugseeEnabled(isBugseeEnabled);
-      bugseeIsEnabled = isBugseeEnabled;
-      configurationHasChanged = bugseeIsEnabled != _isBugSeeInitialized;
-      captureVideoIsEnabled = bugseeIsEnabled;
+  Future<void> logUnhandledException({
+    required Exception exception,
+    StackTrace? stackTrace,
+  }) async {
+    if (bugseeIsEnabled) {
+      await Bugsee.logUnhandledException(exception);
     }
   }
 
   @override
-  Future<void> updateIsVideoCuptureValue(bool isVideoCaptureEnabled) async {
+  Future<void> setIsBugseeEnabled(bool isBugseeEnabled) async {
+    if (isValidConfiguration) {
+      await bugseeRepository.setIsBugseeEnabled(isBugseeEnabled);
+
+      isRequireRestart = _isBugSeeInitialized && isBugseeEnabled;
+      bugseeIsEnabled = isBugseeEnabled;
+      captureVideoIsEnabled = bugseeIsEnabled;
+
+      if (!isRequireRestart) {
+        await Bugsee.stop();
+      }
+    }
+  }
+
+  @override
+  Future<void> setIsVideoCaptureEnabled(bool isVideoCaptureEnabled) async {
     if (bugseeIsEnabled) {
       captureVideoIsEnabled = isVideoCaptureEnabled;
       await bugseeRepository.setIsVideoCaptureEnabled(isVideoCaptureEnabled);

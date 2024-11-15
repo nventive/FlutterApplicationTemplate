@@ -25,7 +25,7 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
     super.initState();
     isConfigEnabled = bugseeManager.bugseeIsEnabled;
     isCaptureVideoEnabled = bugseeManager.captureVideoIsEnabled;
-    requireRestart = bugseeManager.configurationHasChanged;
+    requireRestart = bugseeManager.isRequireRestart;
   }
 
   @override
@@ -53,7 +53,7 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
               Container(
                 color: const Color.fromARGB(170, 255, 0, 0),
                 child: const Text(
-                  "Bugsee config has changed please restart the app.",
+                  "In order to reactivate Bugsee logger restart the app.",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -66,11 +66,11 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
               label: 'Bugsee enabled',
               value: isConfigEnabled,
               onChanged: (value) async {
-                bugseeManager.updateBugseeEnabledValue(value);
+                await bugseeManager.setIsBugseeEnabled(value);
                 setState(() {
                   isConfigEnabled = bugseeManager.bugseeIsEnabled;
                   isCaptureVideoEnabled = bugseeManager.captureVideoIsEnabled;
-                  requireRestart = bugseeManager.configurationHasChanged;
+                  requireRestart = bugseeManager.isRequireRestart;
                 });
               },
             ),
@@ -78,7 +78,7 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
               label: 'Video capture enabled',
               value: isCaptureVideoEnabled,
               onChanged: (value) async {
-                bugseeManager.updateIsVideoCuptureValue(value);
+                await bugseeManager.setIsVideoCaptureEnabled(value);
                 setState(() {
                   isCaptureVideoEnabled = bugseeManager.captureVideoIsEnabled;
                 });
@@ -90,6 +90,12 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
           label: 'Log an exception',
           onPressed: () {
             bugseeManager.logException(exception: Exception());
+          },
+        ),
+        DiagnosticButton(
+          label: 'Log an unhandled exception',
+          onPressed: () {
+            bugseeManager.logUnhandledException(exception: Exception());
           },
         ),
         DiagnosticButton(

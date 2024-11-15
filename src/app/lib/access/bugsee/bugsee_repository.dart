@@ -5,13 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract interface class BugseeRepository {
   factory BugseeRepository() = _BugseeRepository;
 
-  ///Load the current bugsee configuration stored in shared prefs.
+  /// Load the current bugsee configuration stored in shared prefs.
   Future<BugseeConfigurationData> getBugseeConfiguration();
 
-  ///Update the current Bugsee enabled flag in shared prefs.
+  /// Update the current Bugsee enabled flag in shared prefs.
   Future setIsBugseeEnabled(bool isBugseeEnabled);
 
-  ///Update the current video captured or not flag in shared prefs.
+  /// Update the current video captured or not flag in shared prefs.
   Future setIsVideoCaptureEnabled(bool isVideoCaptureEnabled);
 }
 
@@ -38,7 +38,9 @@ final class _BugseeRepository implements BugseeRepository {
     );
 
     if (!isSaved) {
-      throw const PersistenceException();
+      throw PersistenceException(
+        message: 'Error while setting $_bugseeEnabledKey $isBugseeEnabled',
+      );
     }
   }
 
@@ -52,7 +54,9 @@ final class _BugseeRepository implements BugseeRepository {
     );
 
     if (!isSaved) {
-      throw const PersistenceException();
+      throw PersistenceException(
+        message: 'Error while setting $_videoCaptureKey $isVideoCaptureEnabled',
+      );
     }
   }
 }
