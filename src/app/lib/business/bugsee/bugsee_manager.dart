@@ -11,34 +11,34 @@ import 'package:logger/web.dart';
 const String bugseeTokenFormat =
     r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$';
 
-///Service related to initializing Bugsee service
+/// Service related to initializing Bugsee service
 abstract interface class BugseeManager {
   factory BugseeManager({
     required Logger logger,
     required BugseeRepository bugseeRepository,
   }) = _BugseeManager;
 
-  /// indicate if the app require a restart to reactivate the bugsee configurations
+  /// Indicate if the app require a restart to reactivate the bugsee configurations
   ///
   /// `true` only if `isConfigurationValid == true` and bugsee is turned on
   bool get isRestartRequired;
 
-  /// indicate if bugsee is enabled or not
+  /// Indicate if bugsee is enabled or not
   /// by default bugsee is enabled if `isConfigurationValid == true`.
   bool get isBugseeEnabled;
 
-  /// indicate whether video capturing is enabled or not.
+  /// Indicate whether video capturing is enabled or not.
   /// enabled by default if `isBugseeEnabled == true`.
   ///
   /// cannot be true if `isBugseeEnabled == false`.
   bool get isVideoCaptureEnabled;
 
-  /// indicate if bugsee configuration is valid
+  /// Indicate if bugsee configuration is valid
   /// config is valid if app in release mode and the provided token is valid
   /// following the [bugseeTokenFormat] regex.
   bool get isConfigurationValid;
 
-  /// initialize bugsee with given token
+  /// Initialize bugsee with given token
   /// bugsee is not available in debug mode
   /// * [bugseeToken]: nullable bugsee token, if null bugsee won't be initialized make sure you provide
   /// [BUGSEE_TOKEN] in the env using `--dart-define` or `launch.json` on vscode
