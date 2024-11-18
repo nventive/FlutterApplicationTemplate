@@ -5,8 +5,12 @@ final class BugseeConfigurationData {
   /// Indicate whether the video capturing feature in Bugsee is enabled or not.
   final bool? isVideoCaptureEnabled;
 
+  /// Indicate whether bugsee obscure application data in videos and images or not.
+  final bool? isDataObscrured;
+
   const BugseeConfigurationData({
-    required this.isBugseeEnabled,
-    required this.isVideoCaptureEnabled,
+    this.isBugseeEnabled,
+    this.isVideoCaptureEnabled,
+    this.isDataObscrured,
   });
 }

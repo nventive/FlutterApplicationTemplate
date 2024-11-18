@@ -13,11 +13,15 @@ abstract interface class BugseeRepository {
 
   /// Update the current video captured or not flag in shared prefs.
   Future setIsVideoCaptureEnabled(bool isVideoCaptureEnabled);
+
+  /// Update whether data is obscure in shared prefs.
+  Future setIsDataObscure(bool isDataObscure);
 }
 
 final class _BugseeRepository implements BugseeRepository {
   final String _bugseeEnabledKey = 'bugseeEnabledKey';
   final String _videoCaptureKey = 'videoCaptureKey';
+  final String _dataObscureKey = 'dataObscureKey';
 
   @override
   Future<BugseeConfigurationData> getBugseeConfiguration() async {
@@ -25,6 +29,7 @@ final class _BugseeRepository implements BugseeRepository {
     return BugseeConfigurationData(
       isBugseeEnabled: sharedPrefInstance.getBool(_bugseeEnabledKey),
       isVideoCaptureEnabled: sharedPrefInstance.getBool(_videoCaptureKey),
+      isDataObscrured: sharedPrefInstance.getBool(_dataObscureKey),
     );
   }
 
@@ -56,6 +61,22 @@ final class _BugseeRepository implements BugseeRepository {
     if (!isSaved) {
       throw PersistenceException(
         message: 'Error while setting $_videoCaptureKey $isVideoCaptureEnabled',
+      );
+    }
+  }
+
+  @override
+  Future setIsDataObscure(bool isDataObscured) async {
+    final sharedPrefInstance = await SharedPreferences.getInstance();
+
+    bool isSaved = await sharedPrefInstance.setBool(
+      _dataObscureKey,
+      isDataObscured,
+    );
+
+    if (!isSaved) {
+      throw PersistenceException(
+        message: 'Error while setting $_dataObscureKey $isDataObscured',
       );
     }
   }
