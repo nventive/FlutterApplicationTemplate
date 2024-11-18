@@ -23,9 +23,9 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
   @override
   void initState() {
     super.initState();
-    isConfigEnabled = bugseeManager.bugseeIsEnabled;
-    isCaptureVideoEnabled = bugseeManager.captureVideoIsEnabled;
-    requireRestart = bugseeManager.isRequireRestart;
+    isConfigEnabled = bugseeManager.isBugseeEnabled;
+    isCaptureVideoEnabled = bugseeManager.isVideoCaptureEnabled;
+    requireRestart = bugseeManager.isRestartRequired;
   }
 
   @override
@@ -34,7 +34,7 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
       children: [
         Column(
           children: [
-            if (!bugseeManager.isValidConfiguration)
+            if (!bugseeManager.isConfigurationValid)
               Container(
                 color: const Color.fromARGB(170, 255, 0, 0),
                 child: const Text(
@@ -68,9 +68,9 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
               onChanged: (value) async {
                 await bugseeManager.setIsBugseeEnabled(value);
                 setState(() {
-                  isConfigEnabled = bugseeManager.bugseeIsEnabled;
-                  isCaptureVideoEnabled = bugseeManager.captureVideoIsEnabled;
-                  requireRestart = bugseeManager.isRequireRestart;
+                  isConfigEnabled = bugseeManager.isBugseeEnabled;
+                  isCaptureVideoEnabled = bugseeManager.isVideoCaptureEnabled;
+                  requireRestart = bugseeManager.isRestartRequired;
                 });
               },
             ),
@@ -80,7 +80,7 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
               onChanged: (value) async {
                 await bugseeManager.setIsVideoCaptureEnabled(value);
                 setState(() {
-                  isCaptureVideoEnabled = bugseeManager.captureVideoIsEnabled;
+                  isCaptureVideoEnabled = bugseeManager.isVideoCaptureEnabled;
                 });
               },
             ),
