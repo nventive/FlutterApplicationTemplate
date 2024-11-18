@@ -101,7 +101,7 @@ final class _BugseeManager implements BugseeManager {
     BugseeConfigurationData bugseeConfigurationData =
         await bugseeRepository.getBugseeConfiguration();
 
-    launchOptions = initializeLaunchOptions();
+    launchOptions = _initializeLaunchOptions();
     _isBugSeeInitialized = false;
 
     if (kDebugMode) {
@@ -120,7 +120,7 @@ final class _BugseeManager implements BugseeManager {
     }
 
     if (bugseeConfigurationData.isBugseeEnabled ?? true) {
-      await launchBugseeLogger(bugseeToken);
+      await _launchBugseeLogger(bugseeToken);
     }
 
     isBugseeEnabled = _isBugSeeInitialized;
@@ -128,7 +128,7 @@ final class _BugseeManager implements BugseeManager {
         (bugseeConfigurationData.isVideoCaptureEnabled ?? true);
   }
 
-  Future launchBugseeLogger(String bugseeToken) async {
+  Future _launchBugseeLogger(String bugseeToken) async {
     HttpOverrides.global = Bugsee.defaultHttpOverrides;
     await Bugsee.launch(
       bugseeToken,
@@ -144,7 +144,7 @@ final class _BugseeManager implements BugseeManager {
     );
   }
 
-  BugseeLaunchOptions? initializeLaunchOptions() {
+  BugseeLaunchOptions? _initializeLaunchOptions() {
     if (Platform.isAndroid) {
       return AndroidLaunchOptions();
     } else if (Platform.isIOS) {
