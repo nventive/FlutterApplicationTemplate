@@ -1,4 +1,6 @@
-final class BugseeConfigurationData {
+import 'package:equatable/equatable.dart';
+
+final class BugseeConfigurationData extends Equatable {
   /// Gets whether the Bugsee SDK is enabled or not. if [Null] it fallbacks to a new installed app so it will be enabled.
   final bool? isBugseeEnabled;
 
@@ -6,11 +8,45 @@ final class BugseeConfigurationData {
   final bool? isVideoCaptureEnabled;
 
   /// Indicate whether bugsee obscure application data in videos and images or not.
-  final bool? isDataObscrured;
+  final bool? isDataObscured;
+
+  /// Indicate whether logs are collected or not.
+  final bool? isLogCollectionEnabled;
+
+  /// Indicate whether logs are filtred during reports or not.
+  final bool? isLogsFilterEnabled;
 
   const BugseeConfigurationData({
     this.isBugseeEnabled,
     this.isVideoCaptureEnabled,
-    this.isDataObscrured,
+    this.isDataObscured,
+    this.isLogCollectionEnabled,
+    this.isLogsFilterEnabled,
   });
+
+  BugseeConfigurationData copyWith({
+    bool? isBugseeEnabled,
+    bool? isVideoCaptureEnabled,
+    bool? isDataObscured,
+    bool? isLogCollectionEnabled,
+    bool? isLogsFilterEnabled,
+  }) =>
+      BugseeConfigurationData(
+        isBugseeEnabled: isBugseeEnabled ?? this.isBugseeEnabled,
+        isVideoCaptureEnabled:
+            isVideoCaptureEnabled ?? this.isVideoCaptureEnabled,
+        isDataObscured: isDataObscured ?? this.isDataObscured,
+        isLogCollectionEnabled:
+            isLogCollectionEnabled ?? this.isLogCollectionEnabled,
+        isLogsFilterEnabled: isLogsFilterEnabled ?? this.isLogsFilterEnabled,
+      );
+
+  @override
+  List<Object?> get props => [
+        isBugseeEnabled,
+        isVideoCaptureEnabled,
+        isDataObscured,
+        isLogCollectionEnabled,
+        isLogsFilterEnabled,
+      ];
 }

@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:app/business/bugsee/bugsee_config_state.dart';
 import 'package:app/business/bugsee/bugsee_manager.dart';
+import 'package:app/business/dad_jokes/dad_jokes_service.dart';
 import 'package:app/presentation/diagnostic/diagnostic_button.dart';
 import 'package:app/presentation/diagnostic/diagnostic_switch.dart';
 import 'package:flutter/foundation.dart';
@@ -89,6 +92,26 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
                 });
               },
             ),
+            DiagnosticSwitch(
+              label: 'Enabling log collection',
+              value: state.isLogCollectionEnabled,
+              onChanged: (value) async {
+                await bugseeManager.setIsLogsCollectionEnabled(value);
+                setState(() {
+                  state = bugseeManager.bugseeConfigState;
+                });
+              },
+            ),
+            DiagnosticSwitch(
+              label: 'Enable log filter',
+              value: state.isLogFilterEnabled,
+              onChanged: (value) async {
+                await bugseeManager.setIsLogFilterEnabeld(value);
+                setState(() {
+                  state = bugseeManager.bugseeConfigState;
+                });
+              },
+            ),
           ],
         ),
         DiagnosticButton(
@@ -101,6 +124,32 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
           label: 'Log an unhandled exception',
           onPressed: () {
             bugseeManager.logUnhandledException(exception: Exception());
+          },
+        ),
+        DiagnosticButton(
+          label: 'Log traces',
+          onPressed: () {
+            bugseeManager.logException(
+              exception: Exception(),
+              traces: {
+                'date': DateTime.now().millisecondsSinceEpoch,
+                'id': Random().nextInt(20),
+              },
+            );
+          },
+        ),
+        DiagnosticButton(
+          label: 'Log events',
+          onPressed: () {
+            bugseeManager.logException(
+              exception: Exception(),
+              events: {
+                'data': {
+                  'date': DateTime.now().millisecondsSinceEpoch,
+                  'id': Random().nextInt(20),
+                },
+              },
+            );
           },
         ),
         DiagnosticButton(

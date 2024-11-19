@@ -16,12 +16,20 @@ abstract interface class BugseeRepository {
 
   /// Update whether data is obscure in shared prefs.
   Future setIsDataObscure(bool isDataObscure);
+
+  /// Update whether [disableLogCollectionKey] flag.
+  Future setIsLogCollectionEnabled(bool isLogCollectionEnabled);
+
+  /// Update whether [disableLogFilterKey] flag.
+  Future setIsLogFilterEnabled(bool isLogFilterEnabled);
 }
 
 final class _BugseeRepository implements BugseeRepository {
   final String _bugseeEnabledKey = 'bugseeEnabledKey';
   final String _videoCaptureKey = 'videoCaptureKey';
   final String _dataObscureKey = 'dataObscureKey';
+  final String _disableLogCollectionKey = 'disableLogCollectionKey';
+  final String _disableLogFilterKey = 'disableLogFilterKey';
 
   @override
   Future<BugseeConfigurationData> getBugseeConfiguration() async {
@@ -29,7 +37,10 @@ final class _BugseeRepository implements BugseeRepository {
     return BugseeConfigurationData(
       isBugseeEnabled: sharedPrefInstance.getBool(_bugseeEnabledKey),
       isVideoCaptureEnabled: sharedPrefInstance.getBool(_videoCaptureKey),
-      isDataObscrured: sharedPrefInstance.getBool(_dataObscureKey),
+      isDataObscured: sharedPrefInstance.getBool(_dataObscureKey),
+      isLogCollectionEnabled:
+          sharedPrefInstance.getBool(_disableLogCollectionKey),
+      isLogsFilterEnabled: sharedPrefInstance.getBool(_disableLogFilterKey),
     );
   }
 
@@ -77,6 +88,40 @@ final class _BugseeRepository implements BugseeRepository {
     if (!isSaved) {
       throw PersistenceException(
         message: 'Error while setting $_dataObscureKey $isDataObscured',
+      );
+    }
+  }
+
+  @override
+  Future setIsLogCollectionEnabled(bool isLogCollected) async {
+    final sharedPrefInstance = await SharedPreferences.getInstance();
+
+    bool isSaved = await sharedPrefInstance.setBool(
+      _disableLogCollectionKey,
+      isLogCollected,
+    );
+
+    if (!isSaved) {
+      throw PersistenceException(
+        message:
+            'Error while setting $_disableLogCollectionKey $isLogCollected',
+      );
+    }
+  }
+
+  @override
+  Future setIsLogFilterEnabled(bool isLogFilterEnabled) async {
+    final sharedPrefInstance = await SharedPreferences.getInstance();
+
+    bool isSaved = await sharedPrefInstance.setBool(
+      _disableLogFilterKey,
+      isLogFilterEnabled,
+    );
+
+    if (!isSaved) {
+      throw PersistenceException(
+        message:
+            'Error while setting $_disableLogFilterKey $isLogFilterEnabled',
       );
     }
   }
