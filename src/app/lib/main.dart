@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:alice/alice.dart';
+import 'package:app/access/bugsee/bugsee_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_mocked_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_mocked_repository.dart';
@@ -17,6 +18,7 @@ import 'package:app/access/logger/logger_repository.dart';
 import 'package:app/access/mocking/mocking_repository.dart';
 import 'package:app/app.dart';
 import 'package:app/app_router.dart';
+import 'package:app/business/bugsee/bugsee_manager.dart';
 import 'package:app/business/dad_jokes/dad_jokes_service.dart';
 import 'package:app/business/diagnostics/diagnostics_service.dart';
 import 'package:app/business/environment/environment.dart';
@@ -35,7 +37,6 @@ late Logger _logger;
 
 Future<void> main() async {
   await initializeComponents();
-
   runApp(const App());
 }
 
@@ -43,6 +44,7 @@ Future initializeComponents({bool? isMocked}) async {
   WidgetsFlutterBinding.ensureInitialized();
   await _registerAndLoadEnvironment();
   await _registerAndLoadLoggers();
+  await _registerBugseeManager();
 
   _logger.d("Initialized environment and logger.");
 
@@ -115,6 +117,19 @@ Future _registerAndLoadLoggers() async {
   // Create a new instance of logger and insert it into the IoC.
   _logger = await GetIt.I.get<LoggerManager>().createLogInstance();
   GetIt.I.registerSingleton(_logger);
+}
+
+Future _registerBugseeManager() async {
+  GetIt.I.registerSingleton<BugseeRepository>(BugseeRepository());
+  GetIt.I.registerSingleton<BugseeManager>(
+    BugseeManager(
+      logger: GetIt.I.get<Logger>(),
+      bugseeRepository: GetIt.I.get<BugseeRepository>(),
+    ),
+  );
+  GetIt.I.get<BugseeManager>().initialize(
+        bugseeToken: const String.fromEnvironment('BUGSEE_TOKEN'),
+      );
 }
 
 /// Registers the HTTP client.

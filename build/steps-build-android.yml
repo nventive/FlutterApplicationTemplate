@@ -89,7 +89,7 @@ steps:
     profileMode: false
     projectDirectory: '${{ parameters.pathToSrc }}/app'
     verboseMode: true
-    dartDefine: ENV=$(applicationEnvironment)
+    dartDefineMulti: ENV=$(applicationEnvironment) BUGSEE_TOKEN=$(AndroidBugseeToken)
 
 - template: templates/flutter-diagnostics.yml
   parameters:

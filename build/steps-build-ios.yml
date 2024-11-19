@@ -95,7 +95,7 @@ steps:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
     verboseMode: true
     exportOptionsPlist: '$(exportOptions.secureFilePath)'
-    dartDefine: ENV=$(applicationEnvironment)
+    dartDefineMulti: ENV=$(applicationEnvironment) BUGSEE_TOKEN=$(iOSBugseeToken)
 
 - template: templates/flutter-diagnostics.yml
   parameters:

@@ -86,6 +86,7 @@ stages:
       firebaseJsonFile:  $(InternalFirebaseJson)
       firebaseOptionsDartFile:  $(InternalFirebaseOptionsDart)
       googleServicesJsonFile:  $(InternalGoogleServicesJson)
+      bugseeVariableGroup: 'FlutterApplicationTemplate.Bugsee.Tokens'
 
 - stage: AppCenter_TestFlight_Staging
   condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
