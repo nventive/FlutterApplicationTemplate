@@ -16,12 +16,15 @@ final class BugseeConfigurationData extends Equatable {
   /// Indicate whether logs are filtred during reports or not.
   final bool? isLogsFilterEnabled;
 
+  final bool? attachLogFileEnabled;
+
   const BugseeConfigurationData({
     this.isBugseeEnabled,
     this.isVideoCaptureEnabled,
     this.isDataObscured,
     this.isLogCollectionEnabled,
     this.isLogsFilterEnabled,
+    this.attachLogFileEnabled,
   });
 
   BugseeConfigurationData copyWith({
@@ -30,6 +33,7 @@ final class BugseeConfigurationData extends Equatable {
     bool? isDataObscured,
     bool? isLogCollectionEnabled,
     bool? isLogsFilterEnabled,
+    bool? attachLogFileEnabled,
   }) =>
       BugseeConfigurationData(
         isBugseeEnabled: isBugseeEnabled ?? this.isBugseeEnabled,
@@ -39,6 +43,7 @@ final class BugseeConfigurationData extends Equatable {
         isLogCollectionEnabled:
             isLogCollectionEnabled ?? this.isLogCollectionEnabled,
         isLogsFilterEnabled: isLogsFilterEnabled ?? this.isLogsFilterEnabled,
+        attachLogFileEnabled: attachLogFileEnabled ?? this.attachLogFileEnabled,
       );
 
   @override
@@ -48,5 +53,6 @@ final class BugseeConfigurationData extends Equatable {
         isDataObscured,
         isLogCollectionEnabled,
         isLogsFilterEnabled,
+        attachLogFileEnabled,
       ];
 }

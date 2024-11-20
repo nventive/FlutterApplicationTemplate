@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:app/business/bugsee/bugsee_config_state.dart';
 import 'package:app/business/bugsee/bugsee_manager.dart';
-import 'package:app/business/dad_jokes/dad_jokes_service.dart';
 import 'package:app/presentation/diagnostic/diagnostic_button.dart';
 import 'package:app/presentation/diagnostic/diagnostic_switch.dart';
 import 'package:flutter/foundation.dart';
@@ -21,11 +20,13 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
   final BugseeManager bugseeManager = GetIt.I.get<BugseeManager>();
 
   late BugseeConfigState state;
+  bool onPressItemLogException = false;
 
   @override
   void initState() {
     super.initState();
     state = bugseeManager.bugseeConfigState;
+    onPressItemLogException = bugseeManager.onPressExceptionActivated;
   }
 
   @override
@@ -112,6 +113,27 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
                 });
               },
             ),
+            DiagnosticSwitch(
+              label: 'Log exception on pressing dad joke item',
+              value: onPressItemLogException,
+              onChanged: (value) async {
+                bugseeManager.setOnPressExceptionActivated(value);
+                setState(() {
+                  onPressItemLogException =
+                      bugseeManager.onPressExceptionActivated;
+                });
+              },
+            ),
+            DiagnosticSwitch(
+              label: 'Attach log file',
+              value: state.attachLogFile,
+              onChanged: (value) async {
+                bugseeManager.setAttachLogFileEnabled(value);
+                setState(() {
+                  state = bugseeManager.bugseeConfigState;
+                });
+              },
+            ),
           ],
         ),
         DiagnosticButton(
@@ -127,7 +149,7 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
           },
         ),
         DiagnosticButton(
-          label: 'Log traces',
+          label: 'Log Exception with traces',
           onPressed: () {
             bugseeManager.logException(
               exception: Exception(),
@@ -139,7 +161,21 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
           },
         ),
         DiagnosticButton(
-          label: 'Log events',
+          label: 'Log Exception with events',
+          onPressed: () {
+            bugseeManager.logException(
+              exception: Exception(),
+              events: {
+                'data': {
+                  'date': DateTime.now().millisecondsSinceEpoch,
+                  'id': Random().nextInt(20),
+                },
+              },
+            );
+          },
+        ),
+        DiagnosticButton(
+          label: 'Delete all attribute',
           onPressed: () {
             bugseeManager.logException(
               exception: Exception(),

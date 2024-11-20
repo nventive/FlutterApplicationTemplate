@@ -18,6 +18,8 @@ abstract interface class LoggerManager {
     required Alice alice,
   }) = _LoggerManager;
 
+  File? get logFile;
+
   /// Gets whether console logging is enabled.
   bool get isConsoleLoggingEnabled;
 
@@ -53,6 +55,9 @@ final class _LoggerManager implements LoggerManager {
   late Logger _logger;
 
   File? _logFile;
+
+  @override
+  File? logFile;
 
   final String _fileName = "ApplicationTemplate.log";
 
@@ -97,6 +102,7 @@ final class _LoggerManager implements LoggerManager {
       final Directory appDocumentsDir =
           await getApplicationDocumentsDirectory();
       _logFile = File('${appDocumentsDir.path}/$_fileName');
+      logFile = _logFile;
       loggerOutputs.add(CustomFileOutput(file: _logFile!));
     }
     isFileLoggingEnabled = _initialIsFileLoggingEnabled;
@@ -126,6 +132,7 @@ final class _LoggerManager implements LoggerManager {
         _logger.t("Log file exists. It's time to delete it.");
 
         await _logFile!.delete();
+        logFile = null;
 
         _logger.i("The log file was deleted successfully.");
         return true;

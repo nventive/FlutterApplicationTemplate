@@ -17,11 +17,14 @@ abstract interface class BugseeRepository {
   /// Update whether data is obscure in shared prefs.
   Future setIsDataObscure(bool isDataObscure);
 
-  /// Update whether [disableLogCollectionKey] flag.
+  /// Update the logCollection flag in shared prefs.
   Future setIsLogCollectionEnabled(bool isLogCollectionEnabled);
 
-  /// Update whether [disableLogFilterKey] flag.
+  /// Update the logFilter flag in shared prefs.
   Future setIsLogFilterEnabled(bool isLogFilterEnabled);
+
+  /// Update the attachFile boolean flag in shared prefs.
+  Future setAttachLogFileEnabled(bool attachLogFile);
 }
 
 final class _BugseeRepository implements BugseeRepository {
@@ -30,6 +33,7 @@ final class _BugseeRepository implements BugseeRepository {
   final String _dataObscureKey = 'dataObscureKey';
   final String _disableLogCollectionKey = 'disableLogCollectionKey';
   final String _disableLogFilterKey = 'disableLogFilterKey';
+  final String _attachLogFileKey = 'attachLogFileKey';
 
   @override
   Future<BugseeConfigurationData> getBugseeConfiguration() async {
@@ -41,6 +45,7 @@ final class _BugseeRepository implements BugseeRepository {
       isLogCollectionEnabled:
           sharedPrefInstance.getBool(_disableLogCollectionKey),
       isLogsFilterEnabled: sharedPrefInstance.getBool(_disableLogFilterKey),
+      attachLogFileEnabled: sharedPrefInstance.getBool(_attachLogFileKey),
     );
   }
 
@@ -122,6 +127,22 @@ final class _BugseeRepository implements BugseeRepository {
       throw PersistenceException(
         message:
             'Error while setting $_disableLogFilterKey $isLogFilterEnabled',
+      );
+    }
+  }
+
+  @override
+  Future setAttachLogFileEnabled(bool attachLogFile) async {
+    final sharedPrefInstance = await SharedPreferences.getInstance();
+
+    bool isSaved = await sharedPrefInstance.setBool(
+      _attachLogFileKey,
+      attachLogFile,
+    );
+
+    if (!isSaved) {
+      throw PersistenceException(
+        message: 'Error while setting $_attachLogFileKey $attachLogFile',
       );
     }
   }

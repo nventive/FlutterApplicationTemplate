@@ -124,6 +124,7 @@ Future _registerBugseeManager() async {
   GetIt.I.registerSingleton<BugseeManager>(
     BugseeManager(
       logger: GetIt.I.get<Logger>(),
+      loggerManager: GetIt.I.get<LoggerManager>(),
       bugseeRepository: GetIt.I.get<BugseeRepository>(),
     ),
   );
