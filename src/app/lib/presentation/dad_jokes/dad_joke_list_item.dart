@@ -39,16 +39,6 @@ final class DadJokeListItem extends StatelessWidget {
         titleAlignment: ListTileTitleAlignment.top,
         contentPadding: const EdgeInsets.all(16),
         onTap: () async {
-          if (_bugseeManager.onPressExceptionActivated) {
-            _bugseeManager.logException(
-              exception: Exception(),
-              attributes: {
-                'id': dadJoke.id,
-                'title': dadJoke.title,
-              },
-            );
-          }
-
           if (dadJoke.isFavorite) {
             await _dadJokesService.removeFavoriteDadJoke(dadJoke);
           } else {

@@ -20,13 +20,11 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
   final BugseeManager bugseeManager = GetIt.I.get<BugseeManager>();
 
   late BugseeConfigState state;
-  bool onPressItemLogException = false;
 
   @override
   void initState() {
     super.initState();
     state = bugseeManager.bugseeConfigState;
-    onPressItemLogException = bugseeManager.onPressExceptionActivated;
   }
 
   @override
@@ -114,17 +112,6 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
               },
             ),
             DiagnosticSwitch(
-              label: 'Log exception on pressing dad joke item',
-              value: onPressItemLogException,
-              onChanged: (value) async {
-                bugseeManager.setOnPressExceptionActivated(value);
-                setState(() {
-                  onPressItemLogException =
-                      bugseeManager.onPressExceptionActivated;
-                });
-              },
-            ),
-            DiagnosticSwitch(
               label: 'Attach log file',
               value: state.attachLogFile,
               onChanged: (value) async {
@@ -143,24 +130,6 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
           },
         ),
         DiagnosticButton(
-          label: 'Log an unhandled exception',
-          onPressed: () {
-            bugseeManager.logUnhandledException(exception: Exception());
-          },
-        ),
-        DiagnosticButton(
-          label: 'Log Exception with traces',
-          onPressed: () {
-            bugseeManager.logException(
-              exception: Exception(),
-              traces: {
-                'date': DateTime.now().millisecondsSinceEpoch,
-                'id': Random().nextInt(20),
-              },
-            );
-          },
-        ),
-        DiagnosticButton(
           label: 'Log Exception with events',
           onPressed: () {
             bugseeManager.logException(
@@ -175,17 +144,29 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
           },
         ),
         DiagnosticButton(
-          label: 'Delete all attribute',
+          label: 'Add email attributes',
           onPressed: () {
-            bugseeManager.logException(
-              exception: Exception(),
-              events: {
-                'data': {
-                  'date': DateTime.now().millisecondsSinceEpoch,
-                  'id': Random().nextInt(20),
-                },
-              },
-            );
+            bugseeManager.addEmailAttribute('john.doe@nventive.com');
+          },
+        ),
+        DiagnosticButton(
+          label: 'Add name attribute',
+          onPressed: () {
+            bugseeManager.addAttributes({
+              'name': 'John Doe',
+            });
+          },
+        ),
+        DiagnosticButton(
+          label: 'Clear email attribute',
+          onPressed: () {
+            bugseeManager.clearEmailAttribute();
+          },
+        ),
+        DiagnosticButton(
+          label: 'Clear name attribute',
+          onPressed: () {
+            bugseeManager.clearAttribute('name');
           },
         ),
         DiagnosticButton(

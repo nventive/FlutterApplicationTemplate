@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:alice/alice.dart';
@@ -36,8 +37,14 @@ import 'package:logger/logger.dart';
 late Logger _logger;
 
 Future<void> main() async {
-  await initializeComponents();
-  runApp(const App());
+  _initializeBugseeManager();
+  runZonedGuarded(
+    () async {
+      await initializeComponents();
+      runApp(const App());
+    },
+    GetIt.I.get<BugseeManager>().inteceptor,
+  );
 }
 
 Future initializeComponents({bool? isMocked}) async {
@@ -119,17 +126,19 @@ Future _registerAndLoadLoggers() async {
   GetIt.I.registerSingleton(_logger);
 }
 
-Future _registerBugseeManager() async {
+void _initializeBugseeManager() {
   GetIt.I.registerSingleton<BugseeRepository>(BugseeRepository());
   GetIt.I.registerSingleton<BugseeManager>(
-    BugseeManager(
-      logger: GetIt.I.get<Logger>(),
-      loggerManager: GetIt.I.get<LoggerManager>(),
-      bugseeRepository: GetIt.I.get<BugseeRepository>(),
-    ),
+    BugseeManager(),
   );
+}
+
+Future _registerBugseeManager() async {
   GetIt.I.get<BugseeManager>().initialize(
         bugseeToken: const String.fromEnvironment('BUGSEE_TOKEN'),
+        logger: GetIt.I.get<Logger>(),
+        loggerManager: GetIt.I.get<LoggerManager>(),
+        bugseeRepository: GetIt.I.get<BugseeRepository>(),
       );
 }
 

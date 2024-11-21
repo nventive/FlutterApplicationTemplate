@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:app/access/bugsee/bugsee_configuration_data.dart';
 import 'package:app/access/bugsee/bugsee_repository.dart';
+import 'package:app/access/persistence_exception.dart';
 import 'package:app/business/bugsee/bugsee_config_state.dart';
 import 'package:app/business/logger/logger_manager.dart';
 import 'package:bugsee_flutter/bugsee_flutter.dart';
@@ -16,15 +17,10 @@ const String bugseeFilterRegex = r'.';
 
 /// Service related to initializing Bugsee service
 abstract interface class BugseeManager {
-  factory BugseeManager({
-    required Logger logger,
-    required LoggerManager loggerManager,
-    required BugseeRepository bugseeRepository,
-  }) = _BugseeManager;
+  factory BugseeManager() = _BugseeManager;
 
   /// Current BugseeManager state
   BugseeConfigState get bugseeConfigState;
-  bool get onPressExceptionActivated;
 
   /// Initialize bugsee with given token
   /// bugsee is not available in debug mode
@@ -32,6 +28,9 @@ abstract interface class BugseeManager {
   /// [BUGSEE_TOKEN] in the env using `--dart-define` or `launch.json` on vscode
   Future<void> initialize({
     String? bugseeToken,
+    required Logger logger,
+    required LoggerManager loggerManager,
+    required BugseeRepository bugseeRepository,
   });
 
   /// Manually log a provided exception with a stack trace
@@ -47,14 +46,6 @@ abstract interface class BugseeManager {
     StackTrace? stackTrace,
     Map<String, dynamic>? traces,
     Map<String, Map<String, dynamic>?>? events,
-    Map<String, dynamic>? attributes,
-  });
-
-  /// Manually log an unhandled exception with a stack trace
-  /// (critical severity exception in Bugsee dashboard)
-  Future<void> logUnhandledException({
-    required Exception exception,
-    StackTrace? stackTrace,
   });
 
   /// Manually update the current BugseeEnabled flag in shared prefs and in current manager singleton.
@@ -75,29 +66,26 @@ abstract interface class BugseeManager {
   /// Manually update isLogFilterEnabled flag in shared prefs.
   Future<void> setIsLogFilterEnabeld(bool value);
 
-  /// Manually update whether bugsee will catch exception when pressing
-  /// dadjoke item or not.
-  ///
-  /// By is set to `false`
-  void setOnPressExceptionActivated(bool value);
-
   /// Manually update whether Bugsee attach the log file with the reported
   /// exception or not.
   ///
   /// By default the log file is attached
   Future<void> setAttachLogFileEnabled(bool value);
+
+  //TODO add documentation
+  Future<void> inteceptor(Object error, StackTrace stackTrace);
+  Future<void> addAttributes(Map<String, dynamic> attributes);
+  Future<void> addEmailAttribute(String email);
+  Future<void> clearEmailAttribute();
+  Future<void> clearAttribute(String attribute);
 }
 
 final class _BugseeManager implements BugseeManager {
-  final Logger logger;
-  final LoggerManager loggerManager;
-  final BugseeRepository bugseeRepository;
+  late Logger logger;
+  late LoggerManager loggerManager;
+  late BugseeRepository bugseeRepository;
 
-  _BugseeManager({
-    required this.logger,
-    required this.loggerManager,
-    required this.bugseeRepository,
-  });
+  _BugseeManager();
 
   BugseeConfigState _currentState = const BugseeConfigState();
 
@@ -107,15 +95,19 @@ final class _BugseeManager implements BugseeManager {
   late bool _isBugSeeInitialized;
   late BugseeConfigurationData configurationData;
 
-  @override
-  bool onPressExceptionActivated = false;
-
   BugseeLaunchOptions? launchOptions;
 
   @override
   Future<void> initialize({
     String? bugseeToken,
+    required Logger logger,
+    required LoggerManager loggerManager,
+    required BugseeRepository bugseeRepository,
   }) async {
+    this.logger = logger;
+    this.loggerManager = loggerManager;
+    this.bugseeRepository = bugseeRepository;
+
     configurationData = await bugseeRepository.getBugseeConfiguration();
     configurationData = configurationData.copyWith(
       isLogCollectionEnabled: configurationData.isLogCollectionEnabled ??
@@ -231,7 +223,6 @@ final class _BugseeManager implements BugseeManager {
     StackTrace? stackTrace,
     Map<String, dynamic>? traces,
     Map<String, Map<String, dynamic>?>? events,
-    Map<String, dynamic>? attributes,
   }) async {
     if (_currentState.isBugseeEnabled) {
       if (traces != null) {
@@ -246,23 +237,7 @@ final class _BugseeManager implements BugseeManager {
         }
       }
 
-      if (attributes != null) {
-        for (var attribute in attributes.entries) {
-          await Bugsee.setAttribute(attribute.key, attribute.value);
-        }
-      }
-
       await Bugsee.logException(exception, stackTrace);
-    }
-  }
-
-  @override
-  Future<void> logUnhandledException({
-    required Exception exception,
-    StackTrace? stackTrace,
-  }) async {
-    if (_currentState.isBugseeEnabled) {
-      await Bugsee.logUnhandledException(exception);
     }
   }
 
@@ -346,11 +321,6 @@ final class _BugseeManager implements BugseeManager {
   }
 
   @override
-  void setOnPressExceptionActivated(bool value) {
-    onPressExceptionActivated = value;
-  }
-
-  @override
   Future<void> setAttachLogFileEnabled(bool value) async {
     if (_currentState.isBugseeEnabled) {
       await bugseeRepository.setAttachLogFileEnabled(value);
@@ -359,5 +329,45 @@ final class _BugseeManager implements BugseeManager {
         attachLogFile: value,
       );
     }
+  }
+
+  @override
+  Future<void> inteceptor(
+    Object error,
+    StackTrace stackTrace,
+  ) async {
+    String? message = switch (error.runtimeType) {
+      const (PersistenceException) => (error as PersistenceException).message,
+      _ => null,
+    };
+    await logException(
+      exception: Exception(error),
+      stackTrace: stackTrace,
+      traces: {
+        'message': message,
+      },
+    );
+  }
+
+  @override
+  Future<void> addAttributes(Map<String, dynamic> attributes) async {
+    for (var attribute in attributes.entries) {
+      await Bugsee.setAttribute(attribute.key, attribute.value);
+    }
+  }
+
+  @override
+  Future<void> clearAttribute(String attribute) async {
+    await Bugsee.clearAttribute(attribute);
+  }
+
+  @override
+  Future<void> addEmailAttribute(String email) async {
+    await Bugsee.setEmail(email);
+  }
+
+  @override
+  Future<void> clearEmailAttribute() async {
+    await Bugsee.clearEmail();
   }
 }
