@@ -40,10 +40,12 @@ Future<void> main() async {
   _initializeBugseeManager();
   runZonedGuarded(
     () async {
+      FlutterError.onError =
+          GetIt.I.get<BugseeManager>().inteceptRenderExceptions;
       await initializeComponents();
       runApp(const App());
     },
-    GetIt.I.get<BugseeManager>().inteceptor,
+    GetIt.I.get<BugseeManager>().inteceptExceptions,
   );
 }
 

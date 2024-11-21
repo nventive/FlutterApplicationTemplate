@@ -40,7 +40,6 @@ abstract interface class BugseeManager {
   ///* stackTrace: the strack trace of the exception, by default it's null
   ///* traces: the traces that led to the exception.
   ///* events: the events where the exception has been caught.
-  ///* attributes: data related to the exception.
   Future<void> logException({
     required Exception exception,
     StackTrace? stackTrace,
@@ -72,11 +71,30 @@ abstract interface class BugseeManager {
   /// By default the log file is attached
   Future<void> setAttachLogFileEnabled(bool value);
 
-  //TODO add documentation
-  Future<void> inteceptor(Object error, StackTrace stackTrace);
+  /// Intecept all unhandled exception thrown by the dart framework
+  Future<void> inteceptExceptions(Object error, StackTrace stackTrace);
+
+  /// Intercept all unhandled rending exception thrown by the Flutter framework
+  Future<void> inteceptRenderExceptions(FlutterErrorDetails error);
+
+  /// Manually add a map of attributes
+  /// - the map entry key is the attribute name
+  /// - the map entry value is the attribute value (string, int, boolean)
+  ///
+  /// Attributes will be attached to all reported exception unless app is uninstalled
+  /// or attributes are removed manually
   Future<void> addAttributes(Map<String, dynamic> attributes);
+
+  /// Manually add an email attached to all reported.
+  ///
+  /// The email will be attached to all reported exception unless app is uninstalled
+  /// or the email is removed manually.
   Future<void> addEmailAttribute(String email);
+
+  /// Manually remove the email attribute attached using [addEmailAttribute]
   Future<void> clearEmailAttribute();
+
+  /// Manually remove an attribute by the given key attached using [addAttributes]
   Future<void> clearAttribute(String attribute);
 }
 
@@ -332,7 +350,7 @@ final class _BugseeManager implements BugseeManager {
   }
 
   @override
-  Future<void> inteceptor(
+  Future<void> inteceptExceptions(
     Object error,
     StackTrace stackTrace,
   ) async {
@@ -369,5 +387,13 @@ final class _BugseeManager implements BugseeManager {
   @override
   Future<void> clearEmailAttribute() async {
     await Bugsee.clearEmail();
+  }
+
+  @override
+  Future<void> inteceptRenderExceptions(FlutterErrorDetails error) async {
+    await logException(
+      exception: Exception(error.exception),
+      stackTrace: error.stack,
+    );
   }
 }

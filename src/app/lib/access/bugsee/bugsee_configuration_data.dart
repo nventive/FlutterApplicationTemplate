@@ -16,6 +16,7 @@ final class BugseeConfigurationData extends Equatable {
   /// Indicate whether logs are filtred during reports or not.
   final bool? isLogsFilterEnabled;
 
+  /// Indicate whether attaching file in the Bugsee report is enabled or not
   final bool? attachLogFileEnabled;
 
   const BugseeConfigurationData({
