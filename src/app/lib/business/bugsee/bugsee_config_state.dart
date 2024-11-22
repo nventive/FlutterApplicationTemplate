@@ -1,5 +1,16 @@
 import 'package:equatable/equatable.dart';
 
+enum ConfigErrorEnum {
+  invalidReleaseMode(error: 'Bugsee is disabled in debug mode'),
+  invalidToken(error: 'Invalid token, cannot start Bugsee reporting'),
+  invalidPlatform(error: 'Bugsee cannot be configured on this platform');
+
+  final String error;
+  const ConfigErrorEnum({
+    required this.error,
+  });
+}
+
 final class BugseeConfigState extends Equatable {
   /// Indicate if the app require a restart to reactivate the bugsee configurations
   ///
@@ -45,6 +56,9 @@ final class BugseeConfigState extends Equatable {
   /// By default it's enabled.
   final bool attachLogFile;
 
+  /// Indicate the configuration error type (debug, invalid token or invalid platform)
+  final ConfigErrorEnum? configErrorEnum;
+
   const BugseeConfigState({
     this.isRestartRequired = false,
     this.isBugseeEnabled = false,
@@ -54,6 +68,7 @@ final class BugseeConfigState extends Equatable {
     this.isLogCollectionEnabled = false,
     this.isLogFilterEnabled = false,
     this.attachLogFile = false,
+    this.configErrorEnum,
   });
 
   BugseeConfigState copyWith({
@@ -65,6 +80,7 @@ final class BugseeConfigState extends Equatable {
     bool? isLogCollectionEnabled,
     bool? isLogFilterEnabled,
     bool? attachLogFile,
+    ConfigErrorEnum? configErrorEnum,
   }) =>
       BugseeConfigState(
         isRestartRequired: isRestartRequired ?? this.isRestartRequired,
@@ -77,6 +93,7 @@ final class BugseeConfigState extends Equatable {
             isLogCollectionEnabled ?? this.isLogCollectionEnabled,
         isVideoCaptureEnabled:
             isVideoCaptureEnabled ?? this.isVideoCaptureEnabled,
+        configErrorEnum: configErrorEnum ?? this.configErrorEnum,
       );
 
   @override

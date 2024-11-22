@@ -4,7 +4,6 @@ import 'package:app/business/bugsee/bugsee_config_state.dart';
 import 'package:app/business/bugsee/bugsee_manager.dart';
 import 'package:app/presentation/diagnostic/diagnostic_button.dart';
 import 'package:app/presentation/diagnostic/diagnostic_switch.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -33,14 +32,12 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
       children: [
         Column(
           children: [
-            if (!bugseeManager.bugseeConfigState.isConfigurationValid)
+            if (!state.isConfigurationValid)
               Container(
                 color: const Color.fromARGB(170, 255, 0, 0),
-                child: const Text(
-                  kDebugMode
-                      ? "Bugsee is disabled in debug mode."
-                      : "Invalid Bugsee token, capturing exceptions could not start",
-                  style: TextStyle(
+                child: Text(
+                  state.configErrorEnum?.error ?? '',
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

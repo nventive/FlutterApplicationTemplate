@@ -128,6 +128,15 @@ final class _BugseeManager implements BugseeManager {
     this.loggerManager = loggerManager;
     this.bugseeRepository = bugseeRepository;
 
+    if (!Platform.isIOS && !Platform.isAndroid) {
+      _currentState = _currentState.copyWith(
+        isConfigurationValid: false,
+        configErrorEnum: ConfigErrorEnum.invalidPlatform,
+      );
+      logger.i("BUGSEE: ${_currentState.configErrorEnum?.error}");
+      return;
+    }
+
     configurationData = await bugseeRepository.getBugseeConfiguration();
     configurationData = configurationData.copyWith(
       isLogCollectionEnabled: configurationData.isLogCollectionEnabled ??
@@ -155,8 +164,9 @@ final class _BugseeManager implements BugseeManager {
     if (kDebugMode) {
       _currentState = _currentState.copyWith(
         isConfigurationValid: false,
+        configErrorEnum: ConfigErrorEnum.invalidReleaseMode,
       );
-      logger.i("BUGSEE: deactivated in debug mode");
+      logger.i("BUGSEE: ${_currentState.configErrorEnum?.error}");
       return;
     }
 
@@ -164,9 +174,10 @@ final class _BugseeManager implements BugseeManager {
         !RegExp(bugseeTokenFormat).hasMatch(bugseeToken)) {
       _currentState = _currentState.copyWith(
         isConfigurationValid: false,
+        configErrorEnum: ConfigErrorEnum.invalidToken,
       );
       logger.i(
-        "BUGSEE: token is null or invalid, bugsee won't be initialized",
+        "BUGSEE: ${_currentState.configErrorEnum?.error}",
       );
       return;
     }
