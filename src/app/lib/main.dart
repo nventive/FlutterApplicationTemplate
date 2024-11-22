@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:alice/alice.dart';
@@ -36,15 +37,23 @@ import 'package:logger/logger.dart';
 late Logger _logger;
 
 Future<void> main() async {
-  await initializeComponents();
-  runApp(const App());
+  _initializeBugseeManager();
+  runZonedGuarded(
+    () async {
+      FlutterError.onError =
+          GetIt.I.get<BugseeManager>().inteceptRenderExceptions;
+      await initializeComponents();
+      await registerBugseeManager();
+      runApp(const App());
+    },
+    GetIt.I.get<BugseeManager>().inteceptExceptions,
+  );
 }
 
 Future initializeComponents({bool? isMocked}) async {
   WidgetsFlutterBinding.ensureInitialized();
   await _registerAndLoadEnvironment();
   await _registerAndLoadLoggers();
-  await _registerBugseeManager();
 
   _logger.d("Initialized environment and logger.");
 
@@ -119,16 +128,24 @@ Future _registerAndLoadLoggers() async {
   GetIt.I.registerSingleton(_logger);
 }
 
-Future _registerBugseeManager() async {
+void _initializeBugseeManager() {
   GetIt.I.registerSingleton<BugseeRepository>(BugseeRepository());
   GetIt.I.registerSingleton<BugseeManager>(
-    BugseeManager(
-      logger: GetIt.I.get<Logger>(),
-      bugseeRepository: GetIt.I.get<BugseeRepository>(),
-    ),
+    BugseeManager(),
   );
+}
+
+Future registerBugseeManager({bool? isMock, String? bugseeToken}) async {
+  if (!GetIt.I.isRegistered<BugseeManager>()) {
+    _initializeBugseeManager();
+  }
   GetIt.I.get<BugseeManager>().initialize(
-        bugseeToken: const String.fromEnvironment('BUGSEE_TOKEN'),
+        bugseeToken:
+            bugseeToken ?? const String.fromEnvironment('BUGSEE_TOKEN'),
+        logger: GetIt.I.get<Logger>(),
+        loggerManager: GetIt.I.get<LoggerManager>(),
+        bugseeRepository: GetIt.I.get<BugseeRepository>(),
+        isMock: isMock ?? false,
       );
 }
 

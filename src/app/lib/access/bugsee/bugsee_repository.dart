@@ -13,11 +13,27 @@ abstract interface class BugseeRepository {
 
   /// Update the current video captured or not flag in shared prefs.
   Future setIsVideoCaptureEnabled(bool isVideoCaptureEnabled);
+
+  /// Update whether data is obscure in shared prefs.
+  Future setIsDataObscure(bool isDataObscure);
+
+  /// Update the logCollection flag in shared prefs.
+  Future setIsLogCollectionEnabled(bool isLogCollectionEnabled);
+
+  /// Update the logFilter flag in shared prefs.
+  Future setIsLogFilterEnabled(bool isLogFilterEnabled);
+
+  /// Update the attachFile boolean flag in shared prefs.
+  Future setAttachLogFileEnabled(bool attachLogFile);
 }
 
 final class _BugseeRepository implements BugseeRepository {
   final String _bugseeEnabledKey = 'bugseeEnabledKey';
   final String _videoCaptureKey = 'videoCaptureKey';
+  final String _dataObscureKey = 'dataObscureKey';
+  final String _disableLogCollectionKey = 'disableLogCollectionKey';
+  final String _disableLogFilterKey = 'disableLogFilterKey';
+  final String _attachLogFileKey = 'attachLogFileKey';
 
   @override
   Future<BugseeConfigurationData> getBugseeConfiguration() async {
@@ -25,6 +41,11 @@ final class _BugseeRepository implements BugseeRepository {
     return BugseeConfigurationData(
       isBugseeEnabled: sharedPrefInstance.getBool(_bugseeEnabledKey),
       isVideoCaptureEnabled: sharedPrefInstance.getBool(_videoCaptureKey),
+      isDataObscured: sharedPrefInstance.getBool(_dataObscureKey),
+      isLogCollectionEnabled:
+          sharedPrefInstance.getBool(_disableLogCollectionKey),
+      isLogsFilterEnabled: sharedPrefInstance.getBool(_disableLogFilterKey),
+      attachLogFileEnabled: sharedPrefInstance.getBool(_attachLogFileKey),
     );
   }
 
@@ -56,6 +77,72 @@ final class _BugseeRepository implements BugseeRepository {
     if (!isSaved) {
       throw PersistenceException(
         message: 'Error while setting $_videoCaptureKey $isVideoCaptureEnabled',
+      );
+    }
+  }
+
+  @override
+  Future setIsDataObscure(bool isDataObscured) async {
+    final sharedPrefInstance = await SharedPreferences.getInstance();
+
+    bool isSaved = await sharedPrefInstance.setBool(
+      _dataObscureKey,
+      isDataObscured,
+    );
+
+    if (!isSaved) {
+      throw PersistenceException(
+        message: 'Error while setting $_dataObscureKey $isDataObscured',
+      );
+    }
+  }
+
+  @override
+  Future setIsLogCollectionEnabled(bool isLogCollected) async {
+    final sharedPrefInstance = await SharedPreferences.getInstance();
+
+    bool isSaved = await sharedPrefInstance.setBool(
+      _disableLogCollectionKey,
+      isLogCollected,
+    );
+
+    if (!isSaved) {
+      throw PersistenceException(
+        message:
+            'Error while setting $_disableLogCollectionKey $isLogCollected',
+      );
+    }
+  }
+
+  @override
+  Future setIsLogFilterEnabled(bool isLogFilterEnabled) async {
+    final sharedPrefInstance = await SharedPreferences.getInstance();
+
+    bool isSaved = await sharedPrefInstance.setBool(
+      _disableLogFilterKey,
+      isLogFilterEnabled,
+    );
+
+    if (!isSaved) {
+      throw PersistenceException(
+        message:
+            'Error while setting $_disableLogFilterKey $isLogFilterEnabled',
+      );
+    }
+  }
+
+  @override
+  Future setAttachLogFileEnabled(bool attachLogFile) async {
+    final sharedPrefInstance = await SharedPreferences.getInstance();
+
+    bool isSaved = await sharedPrefInstance.setBool(
+      _attachLogFileKey,
+      attachLogFile,
+    );
+
+    if (!isSaved) {
+      throw PersistenceException(
+        message: 'Error while setting $_attachLogFileKey $attachLogFile',
       );
     }
   }
