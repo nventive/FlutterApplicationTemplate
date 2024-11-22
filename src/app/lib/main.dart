@@ -43,6 +43,7 @@ Future<void> main() async {
       FlutterError.onError =
           GetIt.I.get<BugseeManager>().inteceptRenderExceptions;
       await initializeComponents();
+      await registerBugseeManager();
       runApp(const App());
     },
     GetIt.I.get<BugseeManager>().inteceptExceptions,
@@ -53,7 +54,6 @@ Future initializeComponents({bool? isMocked}) async {
   WidgetsFlutterBinding.ensureInitialized();
   await _registerAndLoadEnvironment();
   await _registerAndLoadLoggers();
-  await _registerBugseeManager();
 
   _logger.d("Initialized environment and logger.");
 
@@ -135,15 +135,17 @@ void _initializeBugseeManager() {
   );
 }
 
-Future _registerBugseeManager() async {
+Future registerBugseeManager({bool? isMock, String? bugseeToken}) async {
   if (!GetIt.I.isRegistered<BugseeManager>()) {
     _initializeBugseeManager();
   }
   GetIt.I.get<BugseeManager>().initialize(
-        bugseeToken: const String.fromEnvironment('BUGSEE_TOKEN'),
+        bugseeToken:
+            bugseeToken ?? const String.fromEnvironment('BUGSEE_TOKEN'),
         logger: GetIt.I.get<Logger>(),
         loggerManager: GetIt.I.get<LoggerManager>(),
         bugseeRepository: GetIt.I.get<BugseeRepository>(),
+        isMock: isMock ?? false,
       );
 }
 

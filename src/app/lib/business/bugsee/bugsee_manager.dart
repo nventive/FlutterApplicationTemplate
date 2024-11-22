@@ -28,6 +28,7 @@ abstract interface class BugseeManager {
   /// [BUGSEE_TOKEN] in the env using `--dart-define` or `launch.json` on vscode
   Future<void> initialize({
     String? bugseeToken,
+    bool isMock,
     required Logger logger,
     required LoggerManager loggerManager,
     required BugseeRepository bugseeRepository,
@@ -118,6 +119,7 @@ final class _BugseeManager implements BugseeManager {
   @override
   Future<void> initialize({
     String? bugseeToken,
+    bool isMock = false,
     required Logger logger,
     required LoggerManager loggerManager,
     required BugseeRepository bugseeRepository,
@@ -145,6 +147,11 @@ final class _BugseeManager implements BugseeManager {
     launchOptions = _initializeLaunchOptions();
     _isBugSeeInitialized = false;
 
+    if (isMock) {
+      _initializeBugsee(bugseeToken ?? '');
+      return;
+    }
+
     if (kDebugMode) {
       _currentState = _currentState.copyWith(
         isConfigurationValid: false,
@@ -163,15 +170,12 @@ final class _BugseeManager implements BugseeManager {
       );
       return;
     }
+    _initializeBugsee(bugseeToken);
+  }
 
-    _currentState = _currentState.copyWith(
-      isLogFilterEnabled: configurationData.isLogsFilterEnabled,
-      isLogCollectionEnabled: configurationData.isLogCollectionEnabled,
-      attachLogFile: configurationData.attachLogFileEnabled,
-    );
-
+  void _initializeBugsee(String bugseeToken) async {
     if (configurationData.isBugseeEnabled ?? true) {
-      await _launchBugseeLogger(bugseeToken);
+      _isBugSeeInitialized = await _launchBugseeLogger(bugseeToken);
     }
 
     _currentState = _currentState.copyWith(
@@ -180,10 +184,14 @@ final class _BugseeManager implements BugseeManager {
       isVideoCaptureEnabled: _isBugSeeInitialized &&
           (configurationData.isVideoCaptureEnabled ?? true),
       isDataObscured: configurationData.isDataObscured,
+      isLogFilterEnabled: configurationData.isLogsFilterEnabled,
+      isLogCollectionEnabled: configurationData.isLogCollectionEnabled,
+      attachLogFile: configurationData.attachLogFileEnabled,
     );
   }
 
-  Future _launchBugseeLogger(String bugseeToken) async {
+  Future<bool> _launchBugseeLogger(String bugseeToken) async {
+    bool isInitialized = false;
     HttpOverrides.global = Bugsee.defaultHttpOverrides;
     await Bugsee.launch(
       bugseeToken,
@@ -193,16 +201,17 @@ final class _BugseeManager implements BugseeManager {
             "BUGSEE: not initialized, verify bugsee token configuration",
           );
         }
-        _isBugSeeInitialized = isBugseeLaunched;
+        isInitialized = isBugseeLaunched;
       },
       launchOptions: launchOptions,
     );
-    if (_currentState.isLogFilterEnabled) {
+    if (configurationData.isLogsFilterEnabled ?? false) {
       Bugsee.setLogFilter(_filterBugseeLogs);
     }
-    if (_currentState.attachLogFile) {
+    if (configurationData.attachLogFileEnabled ?? false) {
       Bugsee.setAttachmentsCallback(_attachLogFile);
     }
+    return isInitialized;
   }
 
   BugseeLaunchOptions? _initializeLaunchOptions() {
