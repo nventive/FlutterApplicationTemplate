@@ -136,6 +136,9 @@ void _initializeBugseeManager() {
 }
 
 Future _registerBugseeManager() async {
+  if (!GetIt.I.isRegistered<BugseeManager>()) {
+    _initializeBugseeManager();
+  }
   GetIt.I.get<BugseeManager>().initialize(
         bugseeToken: const String.fromEnvironment('BUGSEE_TOKEN'),
         logger: GetIt.I.get<Logger>(),
