@@ -44,8 +44,8 @@ abstract interface class BugseeManager {
   Future<void> logException({
     required Exception exception,
     StackTrace? stackTrace,
-    Map<String, dynamic>? traces,
-    Map<String, Map<String, dynamic>?>? events,
+    Map<String, dynamic> traces,
+    Map<String, Map<String, dynamic>?> events,
   });
 
   /// Manually update the current BugseeEnabled flag in shared prefs and in current manager singleton.
@@ -141,16 +141,16 @@ final class _BugseeManager implements BugseeManager {
     configurationData = configurationData.copyWith(
       isLogCollectionEnabled: configurationData.isLogCollectionEnabled ??
           bool.parse(
-            dotenv.env['DISABLE_LOG_COLLECTION'] ?? 'true',
+            dotenv.env['BUGSEE_DISABLE_LOG_COLLECTION'] ?? 'true',
           ),
       isLogsFilterEnabled: configurationData.isLogsFilterEnabled ??
           bool.parse(
-            dotenv.env['FILTER_LOG_COLLECTION'] ?? 'true',
+            dotenv.env['BUGSEE_FILTER_LOG_COLLECTION'] ?? 'true',
           ),
       isDataObscured: configurationData.isDataObscured ??
-          bool.parse(dotenv.env['IS_DATA_OBSCURE'] ?? 'true'),
+          bool.parse(dotenv.env['BUGSEE_IS_DATA_OBSCURE'] ?? 'true'),
       attachLogFileEnabled: configurationData.attachLogFileEnabled ??
-          bool.parse(dotenv.env['ATTACH_LOG_FILE'] ?? 'true'),
+          bool.parse(dotenv.env['BUGSEE_ATTACH_LOG_FILE'] ?? 'true'),
     );
 
     launchOptions = _initializeLaunchOptions();
@@ -259,22 +259,16 @@ final class _BugseeManager implements BugseeManager {
   Future<void> logException({
     required Exception exception,
     StackTrace? stackTrace,
-    Map<String, dynamic>? traces,
-    Map<String, Map<String, dynamic>?>? events,
+    Map<String, dynamic> traces = const {},
+    Map<String, Map<String, dynamic>?> events = const {},
   }) async {
     if (_currentState.isBugseeEnabled) {
-      if (traces != null) {
-        for (var trace in traces.entries) {
-          await Bugsee.trace(trace.key, trace.value);
-        }
+      for (var trace in traces.entries) {
+        await Bugsee.trace(trace.key, trace.value);
       }
-
-      if (events != null) {
-        for (var event in events.entries) {
-          await Bugsee.event(event.key, event.value);
-        }
+      for (var event in events.entries) {
+        await Bugsee.event(event.key, event.value);
       }
-
       await Bugsee.logException(exception, stackTrace);
     }
   }

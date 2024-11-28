@@ -14,7 +14,7 @@ abstract interface class BugseeRepository {
   /// Update the current video captured or not flag in shared prefs.
   Future setIsVideoCaptureEnabled(bool isVideoCaptureEnabled);
 
-  /// Update whether data is obscure in shared prefs.
+  /// Update whether data is obscured in shared prefs.
   Future setIsDataObscure(bool isDataObscure);
 
   /// Update the logCollection flag in shared prefs.
@@ -29,23 +29,24 @@ abstract interface class BugseeRepository {
 
 final class _BugseeRepository implements BugseeRepository {
   final String _bugseeEnabledKey = 'bugseeEnabledKey';
-  final String _videoCaptureKey = 'videoCaptureKey';
-  final String _dataObscureKey = 'dataObscureKey';
-  final String _disableLogCollectionKey = 'disableLogCollectionKey';
-  final String _disableLogFilterKey = 'disableLogFilterKey';
-  final String _attachLogFileKey = 'attachLogFileKey';
+  final String _bugseeVideoCaptureKey = 'bugseeVideoCaptureKey';
+  final String _bugseeDataObscureKey = 'bugseeDataObscureKey';
+  final String _bugseeDisableLogCollectionKey = 'bugseeDisableLogCollectionKey';
+  final String _bugseeDisableLogFilterKey = 'bugseeDisableLogFilterKey';
+  final String _bugseeAttachLogFileKey = 'bugseeAttachLogFileKey';
 
   @override
   Future<BugseeConfigurationData> getBugseeConfiguration() async {
     final sharedPrefInstance = await SharedPreferences.getInstance();
     return BugseeConfigurationData(
       isBugseeEnabled: sharedPrefInstance.getBool(_bugseeEnabledKey),
-      isVideoCaptureEnabled: sharedPrefInstance.getBool(_videoCaptureKey),
-      isDataObscured: sharedPrefInstance.getBool(_dataObscureKey),
+      isVideoCaptureEnabled: sharedPrefInstance.getBool(_bugseeVideoCaptureKey),
+      isDataObscured: sharedPrefInstance.getBool(_bugseeDataObscureKey),
       isLogCollectionEnabled:
-          sharedPrefInstance.getBool(_disableLogCollectionKey),
-      isLogsFilterEnabled: sharedPrefInstance.getBool(_disableLogFilterKey),
-      attachLogFileEnabled: sharedPrefInstance.getBool(_attachLogFileKey),
+          sharedPrefInstance.getBool(_bugseeDisableLogCollectionKey),
+      isLogsFilterEnabled:
+          sharedPrefInstance.getBool(_bugseeDisableLogFilterKey),
+      attachLogFileEnabled: sharedPrefInstance.getBool(_bugseeAttachLogFileKey),
     );
   }
 
@@ -70,13 +71,14 @@ final class _BugseeRepository implements BugseeRepository {
     final sharedPrefInstance = await SharedPreferences.getInstance();
 
     bool isSaved = await sharedPrefInstance.setBool(
-      _videoCaptureKey,
+      _bugseeVideoCaptureKey,
       isVideoCaptureEnabled,
     );
 
     if (!isSaved) {
       throw PersistenceException(
-        message: 'Error while setting $_videoCaptureKey $isVideoCaptureEnabled',
+        message:
+            'Error while setting $_bugseeVideoCaptureKey $isVideoCaptureEnabled',
       );
     }
   }
@@ -86,13 +88,13 @@ final class _BugseeRepository implements BugseeRepository {
     final sharedPrefInstance = await SharedPreferences.getInstance();
 
     bool isSaved = await sharedPrefInstance.setBool(
-      _dataObscureKey,
+      _bugseeDataObscureKey,
       isDataObscured,
     );
 
     if (!isSaved) {
       throw PersistenceException(
-        message: 'Error while setting $_dataObscureKey $isDataObscured',
+        message: 'Error while setting $_bugseeDataObscureKey $isDataObscured',
       );
     }
   }
@@ -102,14 +104,14 @@ final class _BugseeRepository implements BugseeRepository {
     final sharedPrefInstance = await SharedPreferences.getInstance();
 
     bool isSaved = await sharedPrefInstance.setBool(
-      _disableLogCollectionKey,
+      _bugseeDisableLogCollectionKey,
       isLogCollected,
     );
 
     if (!isSaved) {
       throw PersistenceException(
         message:
-            'Error while setting $_disableLogCollectionKey $isLogCollected',
+            'Error while setting $_bugseeDisableLogCollectionKey $isLogCollected',
       );
     }
   }
@@ -119,14 +121,14 @@ final class _BugseeRepository implements BugseeRepository {
     final sharedPrefInstance = await SharedPreferences.getInstance();
 
     bool isSaved = await sharedPrefInstance.setBool(
-      _disableLogFilterKey,
+      _bugseeDisableLogFilterKey,
       isLogFilterEnabled,
     );
 
     if (!isSaved) {
       throw PersistenceException(
         message:
-            'Error while setting $_disableLogFilterKey $isLogFilterEnabled',
+            'Error while setting $_bugseeDisableLogFilterKey $isLogFilterEnabled',
       );
     }
   }
@@ -136,13 +138,13 @@ final class _BugseeRepository implements BugseeRepository {
     final sharedPrefInstance = await SharedPreferences.getInstance();
 
     bool isSaved = await sharedPrefInstance.setBool(
-      _attachLogFileKey,
+      _bugseeAttachLogFileKey,
       attachLogFile,
     );
 
     if (!isSaved) {
       throw PersistenceException(
-        message: 'Error while setting $_attachLogFileKey $attachLogFile',
+        message: 'Error while setting $_bugseeAttachLogFileKey $attachLogFile',
       );
     }
   }
