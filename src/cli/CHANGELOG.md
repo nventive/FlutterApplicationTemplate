@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
+## 0.21.1
+- Added conventional commit validation stage `stage-build.yml`
+
 ## 0.21.0
 - Add bugsee sdk in Fluttter template
 - Update build stage in `steps-build-android.yml` and `steps-build-ios` providing bugsee token
