@@ -41,7 +41,7 @@ Future<void> main() async {
   runZonedGuarded(
     () async {
       FlutterError.onError =
-          GetIt.I.get<BugseeManager>().inteceptRenderExceptions;
+          GetIt.I.get<BugseeManager>().inteceptRenderingExceptions;
       await initializeComponents();
       await registerBugseeManager();
       runApp(const App());

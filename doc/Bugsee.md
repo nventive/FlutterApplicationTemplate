@@ -1,53 +1,103 @@
-# Bugsee
+# Bugsee Integration Documentation
 
-This project include [Bugsee](https://www.bugsee.com/) reporting and Logging, for both Android and iOS apps.
-Bugsee lets you monitor and get instant log of unhandled exceptions with traces, events, stacktrace and videos/screenshots of the reported exception. More features are provided by Bugsee like data obscuration and log filter.
+This document provides a comprehensive guide to integrating and using **Bugsee** in your mobile application. Bugsee is a powerful tool for monitoring and debugging your app by capturing and reporting unhandled exceptions, providing insights into app crashes, user interactions, and more.
 
-For this implementation we've used [bugsee_flutter](https://pub.dev/packages/bugsee_flutter) package.
+## **Overview**
 
-- By default only release apps will have Bugsee reporting enabled, to enable Bugsee in debug mode add your token in `launch.json` add remove the check on debug mode in `BugseeManager` class.
-- **Token**
-    - Generate your token in order to test Bugsee logging and reporting 
-        - Head to [Bugsee dashboard](https://www.bugsee.com/)
-        - Create a new account
-        - Create a new Android/iOS (choose Flutter framework)
-        - Copy-paste the generated token into `launch.json`
+**Bugsee** helps developers quickly identify and troubleshoot crashes, bugs, and performance issues in mobile applications. By integrating Bugsee, developers can capture detailed logs, screen recordings, and contextual data (such as user attributes) to understand and fix issues faster.
 
+---
 
-## 1) Features
+## **Features**
 
-In this project we've implemented the following features of Bugsee:
-- [Manual invocation](https://docs.bugsee.com/sdk/flutter/manual/) helpfull for developers to test their Bugsee integration and setup with new tokens.
-- [Custom data](https://docs.bugsee.com/sdk/flutter/custom/) custom data could be attached to the logged exceptions (emails or other type of data)
-    - [Email](https://docs.bugsee.com/sdk/flutter/custom/#:~:text=Adding%20custom%20data-,User%20email,-When%20you%20already) this will identify the user whom experienced the exception/bug this will update the exception dashboard item from anonymous to the user's mail this data will be reported with every logged exception unless the app is deleted or removed manually.
-    - [Attributes](https://docs.bugsee.com/sdk/flutter/custom/#:~:text=User/Session%20attributes) attributes related to the user info, will be reported with every logged exception unless the app is deleted or removed manually.
-    - [Traces](https://docs.bugsee.com/sdk/flutter/custom/#:~:text=them%0ABugsee.clearAllAttributes()%3B-,Custom%20traces,-Traces%20may%20be) helpfull when developer want to track the change of specific value before the logging of the exception.
-    - [Events](https://docs.bugsee.com/sdk/flutter/custom/#:~:text=Custom%20events-,Events,-are%20identified%20by) highlight on which event the exception is logged, accept also json data attached to it.
-- [Exception Logging](https://docs.bugsee.com/sdk/flutter/logs/) the app automatically log every unhandled exception: Dart SDK exception are related to data or logic errors and Flutter  SDK errors that are related to layout and rendering issues. The implementation also offer an API to manually log an exception with traces and events.
-- [Video Capturing](https://docs.bugsee.com/sdk/flutter/privacy/video/) video capturing is by default enabled in this project, but it can be turned off using the `videoEnabled` flag in the launchOptions object for Android and iOS.
-- [Log reporting](https://docs.bugsee.com/sdk/flutter/privacy/logs/) all logs are filtered by default using the `_filterBugseeLogs` method, this can be turned off from the app or by removing the call to `setLogFilter` Bugsee method.
-- [Obscure Data](https://docs.bugsee.com/sdk/flutter/privacy/video/#:~:text=Protecting%20flutter%20views): data obscuration is by default enabled in the project in order to protect user-related data from being leaked through captured videos.
+This implementation of Bugsee leverages the following features to provide robust exception tracking and reporting:
 
-**Default configurations:**
-Data obscuration, log collection, log filter and attaching log file features are initialized from the `.env.staging` file.
+### 1. **Manual Invocation**
+   - Developers can trigger Bugsee for testing purposes or to verify the integration. You can also use different tokens for testing in different environments.
+   - Documentation: [Bugsee SDK Docs](https://docs.bugsee.com/)
+
+### 2. **Custom Data Reporting**
+   - Add additional user-specific data (like email addresses) or custom attributes to exception reports for better context.
+     - **Email:** Helps identify the specific user experiencing issues.
+     - **Attributes:** Attach custom key-value pairs for further context.
+     - **Traces:** Track specific values or conditions before an exception occurs.
+     - **Events:** Log events leading to exceptions and attach structured JSON data for detailed insights.
+   - Documentation: [Bugsee Custom Data](https://docs.bugsee.com/)
+
+### 3. **Exception Logging**
+   - Bugsee automatically captures unhandled exceptions in your Dart and Flutter code.
+     - **Dart Exceptions:** Captures logic and data errors.
+     - **Flutter Exceptions:** Captures rendering and layout errors.
+   - You can also manually log exceptions with additional context, such as traces and events.
+   - Documentation: [Bugsee Exception Logging](https://bugsee.com/)
+
+### 4. **Video Capture**
+   - Bugsee automatically captures screen recordings of user interactions that lead to exceptions. This helps developers visually understand what the user was doing when the issue occurred.
+   - You can disable video capture by setting the `videoEnabled` flag.
+   - Documentation: [Bugsee Flutter Installation](https://docs.bugsee.com/sdk/flutter/installation/)
+
+### 5. **Log Reporting and Filtering**
+   - Bugsee integrates with your app’s logging system. By default, logs are filtered to remove sensitive information to protect user privacy.
+   - You can customize log collection behavior using configuration options.
+   - Documentation: [Bugsee Log Reporting](https://docs.bugsee.com/sdk/flutter/installation/)
+
+### 6. **Data Obfuscation**
+   - Sensitive user data (like passwords or personal information) in captured videos is automatically obscured by default to prevent leaks.
+   - Documentation: [Bugsee Data Obscuration](https://docs.bugsee.com/sdk/flutter/installation/)
+
+---
+
+## **Default Configurations**
+
+Bugsee’s behavior can be controlled via environment settings, particularly for data obscuration, log collection, and file attachment. The default configurations are defined in the `.env.staging` file as follows:
+
+```env
+BUGSEE_IS_DATA_OBSCURE=true        # Enables data obscuration for captured videos
+BUGSEE_DISABLE_LOG_COLLECTION=true  # Disables log collection by default
+BUGSEE_FILTER_LOG_COLLECTION=false # Allows all logs unless manually filtered
+BUGSEE_ATTACH_LOG_FILE=true        # Attaches log files with Bugsee reports
 ```
-BUGSEE_IS_DATA_OBSCURE=true
-BUGSEE_DISABLE_LOG_COLLECTION=true
-BUGSEE_FILTER_LOG_COLLECTION=false
-BUGSEE_ATTACH_LOG_FILE=true
-```
 
-## 2) Implementation
-- [Bugsee Manager](../src/app/lib/business/bugsee/bugsee_manager.dart): a service class that handle the Bugsee intialization, capturing logs, customize Bugsee fields and features (Video capture, data obscure, logs filter...) .
-- [Bugsee Config State](../src/app/lib/business/bugsee/bugsee_config_state.dart): a state class holds all the actual Bugsee features status (whether enabled or not).
-- [Bugsee Repository](../src/app/lib/access/bugsee/bugsee_repository.dart): save and retrieve Bugsee configuration from the shared preference storage.
-- [Bugsee saved configuration](../src/app/lib/access/bugsee/bugsee_configuration_data.dart): holds the Bugsee saved configuration in shared preference, used in [Bugsee Manager](../src/app/lib/business/bugsee/bugsee_manager.dart) to initialize [Bugsee Config State](../src/app/lib/business/bugsee/bugsee_config_state.dart).
+Ensure that these values are properly set for different environments (e.g., staging, production).
 
-### Intecepting exceptions
-Bugsee implementation in this project, by default intecepts all the unhandled Dart and Flutter exception.
+---
 
-`main.dart`
+## **Implementation Details**
+
+The Bugsee integration consists of several key components for handling configuration, exception tracking, and reporting.
+
+### 1. **[Bugsee Manager](../src/app/lib/business/bugsee/bugsee_manager.dart)**
+   - Responsible for initializing Bugsee, capturing logs, and configuring Bugsee features (like video capture, data obfuscation, and log filtering).
+   
+### 2. **[Bugsee Config State](../src/app/lib/business/bugsee/bugsee_config_state.dart)**
+   - Maintains the current state of Bugsee’s features (enabled/disabled) within the app.
+
+### 3. **[Bugsee Repository](../src/app/lib/access/bugsee/bugsee_repository.dart)**
+   - Handles the saving and retrieving of Bugsee configurations from shared preferences.
+
+### 4. **[Bugsee Saved Configuration](../src/app/lib/access/bugsee/bugsee_configuration_data.dart)**
+   - Stores and manages the saved configurations used to initialize Bugsee upon app launch.
+
+---
+
+## **Exception Handling and Reporting**
+
+### Intercepting Exceptions
+By default, Bugsee intercepts all unhandled Dart and Flutter exceptions globally:
+
+1. **Dart Exceptions**:
+   - These are data or logic errors that happen within your Dart code.
+   
+2. **Flutter Exceptions**:
+   - These occur during layout or rendering issues.
+
+Both types of exceptions are captured and reported to Bugsee’s dashboard.
+
+The exceptions are intercepted using `runZonedGuarded` and `FlutterError.onError`:
+
 ```dart
+// main.dart
+
 runZonedGuarded(
     () async {
       FlutterError.onError =
@@ -58,11 +108,9 @@ runZonedGuarded(
     },
     GetIt.I.get<BugseeManager>().inteceptExceptions,
   );
-```
-the `inteceptExceptions` and `inteceptRenderExceptions` recerespectively report Dart and Flutter exceptions to the Bugsee Dashboard.
 
-`inteceptExceptions`
-```dart
+// bugsee_manager.dart
+
 @override
   Future<void> inteceptExceptions(
     Object error,
@@ -80,11 +128,8 @@ the `inteceptExceptions` and `inteceptRenderExceptions` recerespectively report 
       },
     );
   }
-```
 
-`inteceptRenderExceptions`
-```dart
-@override
+  @override
   Future<void> inteceptRenderExceptions(FlutterErrorDetails error) async {
     await logException(
       exception: Exception(error.exception),
@@ -93,49 +138,69 @@ the `inteceptExceptions` and `inteceptRenderExceptions` recerespectively report 
   }
 ```
 
-### Manually invoke report dialog
+### **Manually Reporting Issues**
 
-To manually display the report dialog, you call the `showCaptureLogReport` method from the `BugseeManager` class.
+You can manually trigger Bugsee to capture logs and display a report dialog using the `showCaptureLogReport` method:
 
 ```dart
 final bugseeManager = Get.I.get<BugseeManager>();
-bugseeManger.showCaptureLogReport();
+bugseeManager.showCaptureLogReport();
 ```
 
+This is useful for debugging specific scenarios or reporting custom issues.
 
-### Manually log an exception
+### **Manually Logging Exceptions**
 
-To manually log an exception, you call the `logException` method from the `BugseeManager` class. You can add traces and events to the reported exception.
+To manually log an exception (with or without additional traces), use the `logException` method:
 
 ```dart
 final bugseeManager = Get.I.get<BugseeManager>();
-bugseeManger.logException(exception: Exception());
+bugseeManager.logException(exception: Exception("Custom error"));
 ```
 
-
-### Add attributes
-
-To attach the user's email to the logged exception use `addEmailAttribute` method and to clear this attribute you can use `clearEmailAttribute`.
+You can add additional context **traces**:
 
 ```dart
-final bugseeManager = Get.I.get<BugseeManager>();
-bugseeManger.addEmailAttribute("johndoe@nventive.com");
-//some other code..
-bugseeManger.clearEmailAttribute();
+bugseeManager.logException(
+  exception: Exception("Custom error"),
+  traces: ["Trace 1", "Trace 2"],  // Add relevant traces
+);
 ```
 
-for other attributes you can use `addAttributes` with a map where key is the attribute name and value is the attribute value. To clear these attributes use `clearAttribute` and pass the attribute name to it.
+### **Adding User Attributes**
+
+To provide more context about the user experiencing the issue, you can add custom attributes such as an email address:
+
+- **Add Email Attribute**:
 
 ```dart
 final bugseeManager = Get.I.get<BugseeManager>();
-bugseeManger.addAttributes({
-    'name': 'john',
-    'age': 45,
+bugseeManager.addEmailAttribute("johndoe@nventive.com");
+```
+
+- **Clear Email Attribute**:
+
+```dart
+bugseeManager.clearEmailAttribute();
+```
+
+- **Add Custom Attributes**:
+
+You can also add custom key-value pairs as additional attributes to enrich the exception reports:
+
+```dart
+bugseeManager.addAttributes({
+  "userType": "premium",
+  "accountStatus": "active"
 });
-//some other code..
-bugseeManger.clearAttribute('name');
 ```
 
-## 3) Deployment
+## **Additional Resources**
 
-The Bugsee token is injected directly in the azure devops pipeline when building the Android/iOS app for release mode in the [Android Build Job](../build/steps-build-android.yml) and [iOS Build Job](../build/steps-build-ios.yml) under the `multiDartDefine` parameter.
+- [Bugsee SDK Documentation](https://docs.bugsee.com/)
+- [Bugsee Flutter Installation Guide](https://docs.bugsee.com/sdk/flutter/installation/)
+- [bugsee_flutter package](https://pub.dev/packages/bugsee_flutter)
+- [Handling Flutter errors](https://docs.flutter.dev/testing/errors)
+- [runZoneGuarded Error handling](https://api.flutter.dev/flutter/dart-async/runZonedGuarded.html)
+
+---

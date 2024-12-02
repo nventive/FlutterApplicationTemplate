@@ -45,7 +45,6 @@ abstract interface class BugseeManager {
     required Exception exception,
     StackTrace? stackTrace,
     Map<String, dynamic> traces,
-    Map<String, Map<String, dynamic>?> events,
   });
 
   /// Manually update the current BugseeEnabled flag in shared prefs and in current manager singleton.
@@ -76,7 +75,7 @@ abstract interface class BugseeManager {
   Future<void> inteceptExceptions(Object error, StackTrace stackTrace);
 
   /// Intercept all unhandled rending exception thrown by the Flutter framework
-  Future<void> inteceptRenderExceptions(FlutterErrorDetails error);
+  Future<void> inteceptRenderingExceptions(FlutterErrorDetails error);
 
   /// Manually add a map of attributes
   /// - the map entry key is the attribute name
@@ -97,6 +96,9 @@ abstract interface class BugseeManager {
 
   /// Manually remove an attribute by the given key attached using [addAttributes]
   Future<void> clearAttribute(String attribute);
+
+  /// Manually log Bugsee events that will be attached to the reported issues
+  void logEvents(Map<String, Map<String, dynamic>> events);
 }
 
 final class _BugseeManager implements BugseeManager {
@@ -260,14 +262,10 @@ final class _BugseeManager implements BugseeManager {
     required Exception exception,
     StackTrace? stackTrace,
     Map<String, dynamic> traces = const {},
-    Map<String, Map<String, dynamic>?> events = const {},
   }) async {
     if (_currentState.isBugseeEnabled) {
       for (var trace in traces.entries) {
         await Bugsee.trace(trace.key, trace.value);
-      }
-      for (var event in events.entries) {
-        await Bugsee.event(event.key, event.value);
       }
       await Bugsee.logException(exception, stackTrace);
     }
@@ -404,10 +402,17 @@ final class _BugseeManager implements BugseeManager {
   }
 
   @override
-  Future<void> inteceptRenderExceptions(FlutterErrorDetails error) async {
+  Future<void> inteceptRenderingExceptions(FlutterErrorDetails error) async {
     await logException(
       exception: Exception(error.exception),
       stackTrace: error.stack,
     );
+  }
+
+  @override
+  void logEvents(Map<String, Map<String, dynamic>> events) async {
+    for (var event in events.entries) {
+      Bugsee.event(event.key, event.value);
+    }
   }
 }

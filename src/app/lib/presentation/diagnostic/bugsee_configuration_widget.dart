@@ -89,7 +89,7 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
               },
             ),
             DiagnosticSwitch(
-              label: 'Enabling log collection',
+              label: 'Log collection enabled',
               value: state.isLogCollectionEnabled,
               onChanged: (value) async {
                 await bugseeManager.setIsLogsCollectionEnabled(value);
@@ -99,7 +99,7 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
               },
             ),
             DiagnosticSwitch(
-              label: 'Enable log filter',
+              label: 'Filter log enabled',
               value: state.isLogFilterEnabled,
               onChanged: (value) async {
                 await bugseeManager.setIsLogFilterEnabeld(value);
@@ -109,7 +109,7 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
               },
             ),
             DiagnosticSwitch(
-              label: 'Attach log file',
+              label: 'Log file attached',
               value: state.attachLogFile,
               onChanged: (value) async {
                 bugseeManager.setAttachLogFileEnabled(value);
@@ -127,11 +127,10 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
           },
         ),
         DiagnosticButton(
-          label: 'Log Exception with events',
+          label: 'Add events to the exception',
           onPressed: () {
-            bugseeManager.logException(
-              exception: Exception(),
-              events: {
+            bugseeManager.logEvents(
+              {
                 'data': {
                   'date': DateTime.now().millisecondsSinceEpoch,
                   'id': Random().nextInt(20),
