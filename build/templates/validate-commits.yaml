@@ -1,0 +1,11 @@
+# This template is used to validate that the commit messages follow the Conventional Commits specification (https://www.conventionalcommits.org/en/v1.0.0/).
+# Consider placing this at the beginning of the build pipeline to ensure that the commits are valid before proceeding with longer build steps.
+steps:
+  - task: CommitMessageValidator@1
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+    inputs:
+      regExPattern: '^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\([\w\.\-\p{Extended_Pictographic}]+\))?(!)?: ([\w \p{Extended_Pictographic}])+([\s\S]*)'
+      regExFlags: "um"
+      allCommitsMustMatch: true
+      prMode: true
+    displayName: 'Validate Commit Messages'

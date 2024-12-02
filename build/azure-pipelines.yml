@@ -30,8 +30,14 @@ variables:
 - template: variables.yml
 
 stages:
+- stage: Commit_Validation
+  dependsOn: []
+  jobs:
+    - template: stage-commit-validation.yaml
+    
 #-if false
 - stage: CopyTool_GeneratedApp
+  dependsOn: Commit_Validation
   jobs:
   - template: ../src/cli/.azuredevops/stage-test-cli.yaml
 
@@ -67,10 +73,9 @@ stages:
   - template: ../src/cli/.azuredevops/stage-publish-cli.yml
 
 #-endif
+
 - stage: Build_Staging
-#-if false
-  dependsOn: [] # This removes the implicit dependency on previous stage and causes this to run in parallel.
-#-endif
+  dependsOn: Commit_Validation
   jobs:
   - template: stage-build.yml
     parameters:
