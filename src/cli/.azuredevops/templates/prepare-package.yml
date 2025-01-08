@@ -32,3 +32,14 @@ steps:
 
 - powershell: Move-Item -Path $(Build.SourcesDirectory)\README.md -Destination ${{ parameters.pathToSrc }}\cli\README.md
   displayName: Move README into CLI Folder
+
+# Changes need to be committed LOCALLY to the repository to ensure a clean git state for the flutter pub publish step
+- task: PowerShell@2
+  displayName: 'Commit changes to repository'
+  inputs:
+    targetType: 'inline'
+    script: |
+      git config --global user.email "info@nventive.com"
+      git config --global user.name "Info Nventive"
+      git add ${{ parameters.pathToSrc }}/.
+      git commit -m "Updates create_command.dart with changes"
