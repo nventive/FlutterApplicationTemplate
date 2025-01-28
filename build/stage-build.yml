@@ -59,6 +59,9 @@
 - name: bugseeVariableGroup
   type: string
   default: ''
+- name: androidArtifactFormat
+  type: string
+  default: 'aab'
 
 jobs:
   - job: OnWindows_ReleaseNotes
@@ -123,6 +126,7 @@ jobs:
         firebaseJsonFile: '${{ parameters.firebaseJsonFile }}'
         firebaseOptionsDartFile: '${{ parameters.firebaseOptionsDartFile }}'
         googleServicesJsonFile: '${{ parameters.googleServicesJsonFile }}'
+        artifactTargetFormat: '${{ parameters.androidArtifactFormat }}'
 
   - job: OnMac_iOS
     pool:
