@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
+## 0.23.0
+- Update Flutter to 3.27.3 and update dependencies.
+
 ## 0.22.0
 - Moved Android distribution for Staging from App Center to Firebase App Distribution.
 

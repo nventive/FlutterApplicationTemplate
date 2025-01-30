@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:alice/alice.dart';
+import 'package:alice/model/alice_configuration.dart';
+import 'package:alice_dio/alice_dio_adapter.dart';
 import 'package:app/access/bugsee/bugsee_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_mocked_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
@@ -102,10 +104,10 @@ Future _registerAndLoadLoggers() async {
   // Register logging services in the IoC.
   GetIt.I.registerSingleton(LoggerRepository());
   GetIt.I.registerSingleton(
-    Alice(
+    Alice(configuration: AliceConfiguration(
       showNotification: false,
       navigatorKey: rootNavigatorKey,
-    ),
+    )),
   );
   GetIt.I.registerSingleton(
     LoggerManager(
@@ -136,7 +138,9 @@ Future _registerBugseeManager() async {
 void _registerHttpClient() {
   final dio = Dio();
 
-  dio.interceptors.add(GetIt.I.get<Alice>().getDioInterceptor());
+  final AliceDioAdapter aliceDioAdapter = AliceDioAdapter();
+  GetIt.I.get<Alice>().addAdapter(aliceDioAdapter);
+  dio.interceptors.add(aliceDioAdapter);
 
   GetIt.I.registerSingleton<Dio>(dio);
 }
