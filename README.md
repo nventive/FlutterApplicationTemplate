@@ -52,3 +52,21 @@ This project is licensed under the Apache 2.0 license. See the [LICENSE](LICENSE
 Please read [CONTRIBUTING](CONTRIBUTING.md) for details on the process for contributing to this project.
 
 Be mindful of our [Code of Conduct](CODE_OF_CONDUCT.md).
+
+To debug the app from within the template, run the following commands:
+1. First, go to the Flutter app directory.
+   ```ps
+   cd src/app
+   ```
+1. Restore the packages.
+   ```ps
+   flutter pub get
+   ```
+1. Run the code generators.
+   ```ps
+   flutter dart run build_runner build
+   ```
+1. Build and run the application.
+   ```ps
+   flutter run
+   ```
