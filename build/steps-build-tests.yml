@@ -28,11 +28,19 @@ steps:
     generateCodeCoverageReport: true
     projectDirectory: '${{ parameters.pathToSrc }}/app'
 
+- script: |
+    df -h
+  displayName: "Check Disk Space"
+
 - task: FlutterCommand@0
   displayName: "Run Integration Tests"
   inputs:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
     arguments: test integration_test/integration_test.dart --dart-define ENV=${{ parameters.applicationEnvironment }} -d all
+
+- script: |
+    df -h
+  displayName: "Check Disk Space"
 
 - template: templates/flutter-diagnostics.yml
   parameters:
