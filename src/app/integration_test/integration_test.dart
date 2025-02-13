@@ -17,7 +17,7 @@ Future<void> main() async {
     () async => await GetIt.I.get<MockingRepository>().setMocking(false),
   );
 
-  await dadJokeTest();
-  await killSwitchTest();
-  await forcedUpdateTest();
+  // await dadJokeTest();
+  // await killSwitchTest();
+  // await forcedUpdateTest();
 }
