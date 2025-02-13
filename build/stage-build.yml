@@ -94,7 +94,7 @@ jobs:
 
   - job: OnWindows_Tests
     pool:
-      vmImage : $(macOSHostedAgentImage)
+      vmImage : $(windowsHostedAgentImage)
     variables:
       ArtifactName: ${{ parameters.artifactName }}
       ApplicationEnvironment: ${{ parameters.applicationEnvironment }}

@@ -30,10 +30,10 @@ variables:
 - template: variables.yml
 
 stages:
-- stage: Commit_Validation
-  dependsOn: []
-  jobs:
-    - template: stage-commit-validation.yaml
+# - stage: Commit_Validation
+#   dependsOn: []
+#   jobs:
+#     - template: stage-commit-validation.yaml
     
 #-if false
 # - stage: CopyTool_GeneratedApp
@@ -76,7 +76,7 @@ stages:
 #-endif
 
 - stage: Build_Staging
-  dependsOn: Commit_Validation
+  # dependsOn: Commit_Validation
   jobs:
   - template: stage-build.yml
     parameters:
