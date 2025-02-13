@@ -10,6 +10,10 @@
   default: ''
 
 steps:
+- script: |
+    df -h
+  displayName: "Check Disk Space"
+
 - template: templates/flutter-install.yml
 
 #-if false
@@ -18,6 +22,10 @@ steps:
   artifact: GeneratedApp
 #-endif
 
+- script: |
+    df -h
+  displayName: "Check Disk Space"
+
 - template: templates/flutter-prepare.yml
   parameters:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
@@ -25,8 +33,21 @@ steps:
 - task: FlutterTest@0
   displayName: "Run Tests"
   inputs:
-    generateCodeCoverageReport: true
+    generateCodeCoverageReport: false
     projectDirectory: '${{ parameters.pathToSrc }}/app'
+
+- script: |
+    df -h
+  displayName: "Check Disk Space"
+  
+- script: |
+    echo "Cleaning up space..."
+    rm -rf ${{ parameters.pathToSrc }}/app/build
+  displayName: "Cleanup Space"
+
+- script: |
+    df -h
+  displayName: "Check Disk Space"
 
 - task: FlutterCommand@0
   displayName: "Run Integration Tests"
