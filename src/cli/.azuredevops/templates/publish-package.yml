@@ -7,6 +7,15 @@ parameters:
   default: true
 
 steps:
+  # We commit the pending changes before publishing the package to avoid the "GitStatusValidator" validation error by pub publish.
+  # This is necessary because of this issue: https://github.com/dart-lang/pub/issues/3807.
+- script: |
+    git config --global user.email "pipeline@azuredevops.com"
+    git config --global user.name "Azure DevOps Pipeline"
+    git add .
+    git commit -m "chore: Auto-commit before publishing package." || echo "No changes to commit."
+  displayName: 'Commit pending changes'
+
 - task: FlutterCommand@0
   displayName: 'Flutter Pub Publish Dry Run'
   condition: ${{ parameters.dryRun }}

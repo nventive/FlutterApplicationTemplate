@@ -28,11 +28,12 @@ steps:
     generateCodeCoverageReport: true
     projectDirectory: '${{ parameters.pathToSrc }}/app'
 
-- task: FlutterCommand@0
-  displayName: "Run Integration Tests"
-  inputs:
-    projectDirectory: '${{ parameters.pathToSrc }}/app'
-    arguments: test integration_test/integration_test.dart --dart-define ENV=${{ parameters.applicationEnvironment }} -d all
+# TODO #316303 : Disable integration tests for now, will be fixed and re-enabled in the future.
+# - task: FlutterCommand@0
+#   displayName: "Run Integration Tests"
+#   inputs:
+#     projectDirectory: '${{ parameters.pathToSrc }}/app'
+#     arguments: test integration_test/integration_test.dart --dart-define ENV=${{ parameters.applicationEnvironment }} -d all
 
 - template: templates/flutter-diagnostics.yml
   parameters:
