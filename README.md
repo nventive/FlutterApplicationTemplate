@@ -64,7 +64,7 @@ To debug the app from within the template, run the following commands:
    ```
 1. Run the code generators.
    ```ps
-   flutter dart run build_runner build
+   dart run build_runner build
    ```
 1. Build and run the application.
    ```ps
