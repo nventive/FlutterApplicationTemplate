@@ -114,7 +114,41 @@ See [Navigation.md](Navigation.md) for more details.
 
 ### State Management
 
-This application uses [Riverpod](https://pub.dev/packages/riverpod) to implement the MVVM pattern. The `ViewModel` class is used as a base class for all ViewModels.
+This application uses the MVVM pattern. The `ViewModel` class is used as a base class for all ViewModels.
+ViewModels have the concept of _dynamic properties_.
+These defined using accessors that call the `get` (or variants such as `getLazy`) and optionally `set` methods to automatically trigger widget rebuilds.
+
+Here is an example of a ViewModel showcasing the usage of dynamic properties.
+```dart
+class HomePageViewModel extends ViewModel {
+  // Regular property don't trigger rebuild if changed.
+  final String title = 'Flutter Demo Home Page';
+
+  // Dynamic properties triggers rebuild if changed.
+  int get counter => get('counter', 0);
+  set counter(int value) => set('counter', value);
+
+  List<HomeItemViewModel> get items => getLazy(
+      'items',
+      () => [
+            HomeItemViewModel('1'),
+            HomeItemViewModel('2'),
+            HomeItemViewModel('3'),
+          ]);
+
+  Future<int> get someData => getLazy('someData', _loadSomeData);
+  set someData(Future<int> value) => set('someData', value);
+
+  Future<int> _loadSomeData() async {
+    await Future.delayed(const Duration(seconds: 2));
+    return 42;
+  }
+
+  void reloadSomeData() {
+    someData = _loadSomeData();
+  }
+}
+```
 
 ### UI Framework
 
