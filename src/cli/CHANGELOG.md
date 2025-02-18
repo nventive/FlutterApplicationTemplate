@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
+## 0.24.1
+- Add `getFromStream` to have ViewModel properties that automatically update based on `Stream` sources.
+
 ## 0.24.0
 - Replace Riverpod in favor of a custom MVVM recipe with ViewModels to better align with the recommended [app architecture](https://docs.flutter.dev/app-architecture).
 
