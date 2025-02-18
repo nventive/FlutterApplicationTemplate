@@ -121,12 +121,16 @@ These defined using accessors that call the `get` (or variants such as `getLazy`
 Here is an example of a ViewModel showcasing the usage of dynamic properties.
 ```dart
 class HomePageViewModel extends ViewModel {
-  // Regular property don't trigger rebuild if changed.
+  // Regular properties don't trigger rebuild if changed.
   final String title = 'Flutter Demo Home Page';
 
   // Dynamic properties triggers rebuild if changed.
   int get counter => get('counter', 0);
   set counter(int value) => set('counter', value);
+
+  // Dynamic properties can be made using complex sources, such as streams.
+  int get autoCounter => getFromStream('autoCounter',
+      () => Stream.periodic(const Duration(seconds: 1), (i) => i), 0);
 
   List<HomeItemViewModel> get items => getLazy(
       'items',
