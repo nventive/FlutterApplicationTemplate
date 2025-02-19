@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter_application_generator/src/command_runner.dart';
 
 Future<void> main(List<String> arguments) async {
-  await _flushThenExit(await FlutterApplicationGeneratorCommandRunner().run(arguments));
+  await _flushThenExit(
+      await FlutterApplicationGeneratorCommandRunner().run(arguments));
 }
 
 /// Flushes the stdout and stderr streams, then exits the program with the given
