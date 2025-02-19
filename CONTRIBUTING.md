@@ -84,3 +84,20 @@ information on using pull requests.
 
 This project follows [Google's Open Source Community
 Guidelines](https://opensource.google.com/conduct/).
+
+## pub.dev score
+
+When making changes to the CLI, it's important to ensure that the resulting package is scored with the highest pub.dev score. The pub.dev score is a rating system that evaluates the quality of the package by evaluating common metrics (more info [here](https://pub.dev/help/scoring)). Before submitting your changes, please follow the following steps:
+
+1. Open a terminal / command prompt window and navigate to the project directory.
+2. Navigate to the `src/cli` directory.
+3. Run the `build_runner` to ensure the creation of required generated code, for example:
+```
+$ dart run build_runner build --delete-conflicting-outputs
+```
+4. Activate the `pana` tool by running `dart pub global activate pana`
+5. Run the `pana` tool by executing the `pana` command and save its output to a markdown file, for example:
+```
+$ pana > ~/temp/pana-analysis.md
+```
+6. Open the markdown file and observe the scores for each category, make sure that each (except the first one) has a perfect score (for example 20/20). If not, resolve any issues before submitting a pull request. The first category will resolve itself before being shipped to pub.dev (as it depends on automated tasks in the CI)
