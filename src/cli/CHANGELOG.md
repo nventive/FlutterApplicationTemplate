@@ -7,6 +7,7 @@ Prefix your items with `(Template)` if the change is about the template and not 
 
 ## 0.24.2
 - General improvements, including sample documentation (see `src/cli/example/README.md`).
+- Update versions of CI/CD tasks.
 
 ## 0.24.1
 - Add `getFromStream` to have ViewModel properties that automatically update based on `Stream` sources.
