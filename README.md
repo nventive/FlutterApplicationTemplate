@@ -53,8 +53,10 @@ Please read [CONTRIBUTING](CONTRIBUTING.md) for details on the process for contr
 
 Be mindful of our [Code of Conduct](CODE_OF_CONDUCT.md).
 
+### Application Template
+
 To debug the app from within the template, run the following commands:
-1. First, go to the Flutter app directory.
+1. Go to the Flutter app directory.
    ```ps
    cd src/app
    ```
@@ -64,9 +66,38 @@ To debug the app from within the template, run the following commands:
    ```
 1. Run the code generators.
    ```ps
-   dart run build_runner build
+   dart run build_runner build --delete-conflicting-outputs
    ```
 1. Build and run the application.
    ```ps
    flutter run
    ```
+
+### Command Line Interface
+
+To debug the CLI, do the following:
+
+1. Go to the CLI directory.
+   ```ps
+   cd src/cli
+   ```
+1. Restore the packages.
+   ```ps
+   flutter pub get
+   ```
+1. Run the code generators.
+   ```ps
+   dart run build_runner build --delete-conflicting-outputs
+   ```
+1. Set the variables value in `src/cli/lib/src/commands/create_command.dart` that would normally be done by the Pipeline
+   - `_commitHash`
+   - `_shortCommitHash`
+   - `_versionNumber`
+   - `_commitDate`
+   > 💡 You have to set real values, you should probably use the latest commit information or your own commit from your branch.
+   > 💡 If you click [here](https://github.com/nventive/FlutterApplicationTemplate/commit/d3391444b8e2503e7c7bf27c12b6283062aa0a1c), you have the commit hash in the URL, and the short one is displayed at the top right of the page `commit d339144`.
+   > 💡 The date can be any string of any format, it's just displayed, e.g. `2025-02-06`.
+   > 💡 The version number should be {Major.Minor.Patch}, e.g. `2.4.1`.
+1. Move the `README.md` into `src/cli` folder
+1. `dart pub global activate --source=path {Full Path}/src/cli`
+   > 💡 If you already have the CLI installed, you can use the `--overwrite` flag, but don't forget to reinstall it properly when you are done using `dart pub global activate flutter_application_generator --overwrite`.
