@@ -161,7 +161,7 @@ This applications uses [Flutter](https://flutter.dev/) as the UI framework.
 ### Design System
 
 This application uses resources from Material Design.
-The application's Theme Data is defined in the `global_theme_data` file in the `styles` folder.
+The application's theme data is defined in the `global_theme_data` file in the `styles` folder.
 Any other files related to the application's design system should be added to this folder.
 
 ### Localization
