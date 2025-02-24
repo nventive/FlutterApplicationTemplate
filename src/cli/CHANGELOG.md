@@ -7,6 +7,7 @@ Prefix your items with `(Template)` if the change is about the template and not 
 
 ## 0.24.3
 - Update CLI documentation.
+- Fix commit validation after a merge.
 
 ## 0.24.2
 - General improvements, including sample documentation (see `src/cli/example/README.md`).
