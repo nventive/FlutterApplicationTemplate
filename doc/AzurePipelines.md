@@ -15,7 +15,7 @@ These pipelines rely on a few variable groups and secrets in order to fully work
 
 At high level, the CI/CD pipelines do the following:
 - **Build** the app in **staging**.
-  - **Deploy** the staging app (to AppCenter and/or TestFlight and GooglePlay).
+  - **Deploy** the staging app (to Firebase App Distribution and/or TestFlight and GooglePlay).
 - **Build** the app in **production**.
   - **Deploy** the production app (to TestFlight and GooglePlay).
 
@@ -69,14 +69,14 @@ This is where the exact build steps are defined. These vary depending on the pla
 1. Build the application.
 1. Archive the application (if on iOS and depending on `IsPullRequestBuild`).
 1. Run the tests and publish both the test results and the code coverage results.
-1. Push the built artifacts (.ipa, .aab, release notes, etc.).
+1. Push the built artifacts (.ipa, .apk/.aab, release notes, etc.).
 1. Cleanup.
 
 The release stages are even more straigtforward than the build ones. One thing to note is that, for the same reason as it is done at the end of the build steps, a clean-up step is included in every stage.
 
-### AppCenter Release Stage ([stage-release-appcenter.yml](../build/stage-release-appcenter.yml))
+### Firebase App Distribution Release Stage ([stage-release-firebase-app-distribution.yml](../build/stage-release-firebase-app-distribution.yml))
 
-This stage is in charge of pushing the Android application to AppCenter.
+This stage is in charge of pushing the Android Firebase App Distribution.
 
 ### Apple AppStore Release Stage ([stage-release-appstore.yml](../build/stage-release-appstore.yml))
 

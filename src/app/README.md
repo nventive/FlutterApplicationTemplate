@@ -74,7 +74,7 @@ TODO: Fill the following table with your own pipelines.
 | Link | Code Entry Point | Goal | Triggers |
 |-|-|-|-|
 | [Name of Main Pipeline](link-to-pipeline)| [`build/azure-pipelines.yml`](.azure-pipelines.yml)| Build validation during pull request.| Pull requests.
-| [Name of Main Pipeline](link-to-pipeline)| [`build/azure-pipelines.yml`](.azure-pipelines.yml)| Build and deploy the application to AppCenter, TestFlight, and GooglePlay. | Changes on the `main` branch.<br/>Manual trigger.
+| [Name of Main Pipeline](link-to-pipeline)| [`build/azure-pipelines.yml`](.azure-pipelines.yml)| Build and deploy the application to Firebase App Distribution, TestFlight, and GooglePlay. | Changes on the `main` branch.<br/>Manual trigger.
 
 ## Additional Information
 

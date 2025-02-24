@@ -1,3 +1,4 @@
+import 'package:app/presentation/diagnostic/bugsee_configuration_widget.dart';
 import 'package:app/presentation/diagnostic/device_info_widget.dart';
 import 'package:app/presentation/diagnostic/environment_diagnostic_widget.dart';
 import 'package:app/presentation/diagnostic/logger_diagnostic_widget.dart';
@@ -23,13 +24,15 @@ final class _ExpandedDiagnosticPageState extends State<ExpandedDiagnosticPage>
     EnvironmentDiagnosticWidget(),
     LoggerDiagnosticWidget(),
     const MockingDiagnosticWidget(),
+    const BugseeConfigurationWidget(),
   ];
 
   int _selectedIndex = 0;
 
   @override
   void initState() {
-    _tabController = TabController(length: expandedDiagnosticWidgets.length, vsync: this);
+    _tabController =
+        TabController(length: expandedDiagnosticWidgets.length, vsync: this);
     super.initState();
   }
 
@@ -74,6 +77,9 @@ final class _ExpandedDiagnosticPageState extends State<ExpandedDiagnosticPage>
                     ),
                     Tab(
                       text: "Mocking",
+                    ),
+                    Tab(
+                      text: "Bugsee",
                     ),
                   ],
                   controller: _tabController,

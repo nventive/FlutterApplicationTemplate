@@ -1,12 +1,38 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
-## 0.21.0
+## 0.24.4
 - Added design system, including color scheme and fonts.
+
+## 0.24.3
+- Update CLI documentation.
+
+## 0.24.2
+- General improvements, including sample documentation (see `src/cli/example/README.md`).
+- Update versions of CI/CD tasks.
+
+## 0.24.1
+- Add `getFromStream` to have ViewModel properties that automatically update based on `Stream` sources.
+
+## 0.24.0
+- Replace Riverpod in favor of a custom MVVM recipe with ViewModels to better align with the recommended [app architecture](https://docs.flutter.dev/app-architecture).
+
+## 0.23.0
+- Update Flutter to 3.27.3 and update dependencies.
+
+## 0.22.0
+- Moved Android distribution for Staging from App Center to Firebase App Distribution.
+
+## 0.21.1
+- Added conventional commit validation stage `stage-build.yml`
+
+## 0.21.0
+- Add bugsee sdk in Fluttter template
+- Update build stage in `steps-build-android.yml` and `steps-build-ios` providing bugsee token
 
 ## 0.20.4
 - Updates to documentation

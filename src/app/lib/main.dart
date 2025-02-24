@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:alice/alice.dart';
+import 'package:alice/model/alice_configuration.dart';
+import 'package:alice_dio/alice_dio_adapter.dart';
+import 'package:app/access/bugsee/bugsee_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_mocked_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
 import 'package:app/access/dad_jokes/favorite_dad_jokes_mocked_repository.dart';
@@ -17,6 +20,7 @@ import 'package:app/access/logger/logger_repository.dart';
 import 'package:app/access/mocking/mocking_repository.dart';
 import 'package:app/app.dart';
 import 'package:app/app_router.dart';
+import 'package:app/business/bugsee/bugsee_manager.dart';
 import 'package:app/business/dad_jokes/dad_jokes_service.dart';
 import 'package:app/business/diagnostics/diagnostics_service.dart';
 import 'package:app/business/environment/environment.dart';
@@ -35,7 +39,6 @@ late Logger _logger;
 
 Future<void> main() async {
   await initializeComponents();
-
   runApp(const App());
 }
 
@@ -43,6 +46,7 @@ Future initializeComponents({bool? isMocked}) async {
   WidgetsFlutterBinding.ensureInitialized();
   await _registerAndLoadEnvironment();
   await _registerAndLoadLoggers();
+  await _registerBugseeManager();
 
   _logger.d("Initialized environment and logger.");
 
@@ -100,10 +104,10 @@ Future _registerAndLoadLoggers() async {
   // Register logging services in the IoC.
   GetIt.I.registerSingleton(LoggerRepository());
   GetIt.I.registerSingleton(
-    Alice(
+    Alice(configuration: AliceConfiguration(
       showNotification: false,
       navigatorKey: rootNavigatorKey,
-    ),
+    )),
   );
   GetIt.I.registerSingleton(
     LoggerManager(
@@ -117,11 +121,26 @@ Future _registerAndLoadLoggers() async {
   GetIt.I.registerSingleton(_logger);
 }
 
+Future _registerBugseeManager() async {
+  GetIt.I.registerSingleton<BugseeRepository>(BugseeRepository());
+  GetIt.I.registerSingleton<BugseeManager>(
+    BugseeManager(
+      logger: GetIt.I.get<Logger>(),
+      bugseeRepository: GetIt.I.get<BugseeRepository>(),
+    ),
+  );
+  GetIt.I.get<BugseeManager>().initialize(
+        bugseeToken: const String.fromEnvironment('BUGSEE_TOKEN'),
+      );
+}
+
 /// Registers the HTTP client.
 void _registerHttpClient() {
   final dio = Dio();
 
-  dio.interceptors.add(GetIt.I.get<Alice>().getDioInterceptor());
+  final AliceDioAdapter aliceDioAdapter = AliceDioAdapter();
+  GetIt.I.get<Alice>().addAdapter(aliceDioAdapter);
+  dio.interceptors.add(aliceDioAdapter);
 
   GetIt.I.registerSingleton<Dio>(dio);
 }

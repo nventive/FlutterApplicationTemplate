@@ -95,7 +95,7 @@ steps:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
     verboseMode: true
     exportOptionsPlist: '$(exportOptions.secureFilePath)'
-    dartDefine: ENV=$(applicationEnvironment)
+    dartDefineMulti: ENV=$(applicationEnvironment) BUGSEE_TOKEN=$(iOSBugseeToken)
 
 - template: templates/flutter-diagnostics.yml
   parameters:
@@ -135,6 +135,6 @@ steps:
   condition: always()
   artifact: $(ArtifactName)
 
-- task: PostBuildCleanup@3
+- task: PostBuildCleanup@4
   displayName: 'Post-Build Cleanup: Cleanup files to keep build server clean!'
   condition: always()

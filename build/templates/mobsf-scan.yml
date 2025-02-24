@@ -144,6 +144,6 @@ steps:
     ArtifactName: ${{parameters.artifactName}}_Security_Reports
     publishLocation: 'Container'
 
-- task: PostBuildCleanup@3
+- task: PostBuildCleanup@4
   displayName: 'Post-Build Cleanup: Cleanup files to keep build server clean!'
   condition: always()
