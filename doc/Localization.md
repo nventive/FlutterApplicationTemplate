@@ -18,3 +18,5 @@ String myString = local.myString;
 - The generated files are generated at [lib/l10n/gen_l10n](../src/app/lib/l10n/gen_l10n/) instead of the default location due to problems with the pipeline and artificial packages.
 
   > 💡 Please note that to be able to access the strings, you need to run `flutter pub get` to generate them.
+
+- After running the app for the first time, localization files should be created automatically, if not it might be necessary to run the command `flutter gen-l10n` to generate the localization files.
