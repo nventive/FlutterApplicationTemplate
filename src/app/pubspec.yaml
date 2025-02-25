@@ -59,6 +59,25 @@ flutter:
 
   assets:
     - assets/openSourceSoftwareLicenses.json
+    - assets/fonts/guillon_black.ttf
+    - assets/fonts/guillon_bold.ttf
+    - assets/fonts/guillon_light.ttf
+    - assets/fonts/guillon_regular.ttf
+    - assets/fonts/guillon_semibold.ttf
     - .env.dev
     - .env.staging
     - .env.prod
+
+  fonts:
+    - family: Guillon
+      fonts:
+        - asset: assets/fonts/guillon_light.ttf
+          weight: 300
+        - asset: assets/fonts/guillon_regular.ttf
+          weight: 400
+        - asset: assets/fonts/guillon_semibold.ttf
+          weight: 600
+        - asset: assets/fonts/guillon_bold.ttf
+          weight: 700
+        - asset: assets/fonts/guillon_black.ttf
+          weight: 900
