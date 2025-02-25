@@ -25,6 +25,7 @@ import 'package:app/business/diagnostics/diagnostics_service.dart';
 import 'package:app/business/environment/environment.dart';
 import 'package:app/business/environment/environment_manager.dart';
 import 'package:app/business/forced_update/update_required_service.dart';
+import 'package:app/business/inteceptor/exception_inteceptor.dart';
 import 'package:app/business/kill_switch/kill_switch_service.dart';
 import 'package:app/business/logger/logger_manager.dart';
 import 'package:app/business/mocking/mocking_manager.dart';
@@ -41,12 +42,12 @@ Future<void> main() async {
   runZonedGuarded(
     () async {
       FlutterError.onError =
-          GetIt.I.get<BugseeManager>().inteceptRenderingExceptions;
+          GetIt.I.get<ExceptionInteceptor>().inteceptRenderingExceptions;
       await initializeComponents();
       await registerBugseeManager();
       runApp(const App());
     },
-    GetIt.I.get<BugseeManager>().inteceptExceptions,
+    GetIt.I.get<ExceptionInteceptor>().inteceptException,
   );
 }
 
@@ -131,21 +132,26 @@ Future _registerAndLoadLoggers() async {
 void _initializeBugseeManager() {
   GetIt.I.registerSingleton<BugseeRepository>(BugseeRepository());
   GetIt.I.registerSingleton<BugseeManager>(
-    BugseeManager(),
+    BugseeManager(
+      bugseeRepository: GetIt.I.get<BugseeRepository>(),
+      logger: GetIt.I.get<Logger>(),
+      loggerManager: GetIt.I.get<LoggerManager>(),
+    ),
+  );
+  GetIt.I.registerSingleton<ExceptionInteceptor>(
+    ExceptionInteceptor(
+      bugseeManager: GetIt.I.get<BugseeManager>(),
+      logger: _logger,
+    ),
   );
 }
 
-Future registerBugseeManager({bool? isMock, String? bugseeToken}) async {
+Future registerBugseeManager() async {
   if (!GetIt.I.isRegistered<BugseeManager>()) {
     _initializeBugseeManager();
   }
   GetIt.I.get<BugseeManager>().initialize(
-        bugseeToken:
-            bugseeToken ?? const String.fromEnvironment('BUGSEE_TOKEN'),
-        logger: GetIt.I.get<Logger>(),
-        loggerManager: GetIt.I.get<LoggerManager>(),
-        bugseeRepository: GetIt.I.get<BugseeRepository>(),
-        isMock: isMock ?? false,
+        bugseeToken: const String.fromEnvironment('BUGSEE_TOKEN'),
       );
 }
 

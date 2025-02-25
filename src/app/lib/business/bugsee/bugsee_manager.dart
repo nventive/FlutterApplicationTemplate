@@ -17,7 +17,11 @@ const String bugseeFilterRegex = r'.';
 
 /// Service related to initializing Bugsee service
 abstract interface class BugseeManager {
-  factory BugseeManager() = _BugseeManager;
+  factory BugseeManager({
+    required BugseeRepository bugseeRepository,
+    required Logger logger,
+    required LoggerManager loggerManager,
+  }) = _BugseeManager;
 
   /// Current BugseeManager state
   BugseeConfigState get bugseeConfigState;
@@ -28,10 +32,6 @@ abstract interface class BugseeManager {
   /// [BUGSEE_TOKEN] in the env using `--dart-define` or `launch.json` on vscode
   Future<void> initialize({
     String? bugseeToken,
-    bool isMock,
-    required Logger logger,
-    required LoggerManager loggerManager,
-    required BugseeRepository bugseeRepository,
   });
 
   /// Manually log a provided exception with a stack trace
@@ -106,7 +106,11 @@ final class _BugseeManager implements BugseeManager {
   late LoggerManager loggerManager;
   late BugseeRepository bugseeRepository;
 
-  _BugseeManager();
+  _BugseeManager({
+    required this.bugseeRepository,
+    required this.logger,
+    required this.loggerManager,
+  });
 
   BugseeConfigState _currentState = const BugseeConfigState();
 
@@ -121,15 +125,7 @@ final class _BugseeManager implements BugseeManager {
   @override
   Future<void> initialize({
     String? bugseeToken,
-    bool isMock = false,
-    required Logger logger,
-    required LoggerManager loggerManager,
-    required BugseeRepository bugseeRepository,
   }) async {
-    this.logger = logger;
-    this.loggerManager = loggerManager;
-    this.bugseeRepository = bugseeRepository;
-
     if (!Platform.isIOS && !Platform.isAndroid) {
       _currentState = _currentState.copyWith(
         isConfigurationValid: false,
@@ -157,11 +153,6 @@ final class _BugseeManager implements BugseeManager {
 
     launchOptions = _initializeLaunchOptions();
     _isBugSeeInitialized = false;
-
-    if (isMock) {
-      _initializeBugsee(bugseeToken ?? '');
-      return;
-    }
 
     if (kDebugMode) {
       _currentState = _currentState.copyWith(
