@@ -31,13 +31,23 @@ steps:
   displayName: 'Pull MobSF Docker Image'
   condition: succeeded()
 
-- script: docker run -d -it --rm -e MOBSF_API_KEY='${{parameters.mobSfApiKey}}' -e DATA_UPLOAD_MAX_MEMORY_SIZE=209715200 -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
+# The mobSfApiKey parameter ideally should be a secret.
+- script: > 
+    docker run -d -it --rm -e MOBSF_API_KEY='${{parameters.mobSfApiKey}}' 
+    -e DATA_UPLOAD_MAX_MEMORY_SIZE=209715200 
+    -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
   displayName: 'Run MobSF Docker Image'
   condition: succeeded()
 
 - script: ls -R "$(System.ArtifactsDirectory)"
   displayName: 'List Downloaded Artifacts'
 
+  # For the next steps, we'll use PowerShell because it's easier to work with JSON responses
+  # *****************************************************************************************
+  # 1. Get file from the downloaded artifacts directory
+  # 2. Check if the server is running first, since we just launched it earlier.
+  # 3. Upload the file to MobSF
+  # 4. Get the file hash from the response and save it in a variable we'll use later
 - task: PowerShell@2
   displayName: 'Upload file to MobSF'
   inputs:
@@ -71,6 +81,7 @@ steps:
       Write-Host "File uploaded to MobSF successfully"
   condition: succeeded()
 
+  # Call v1/scan endpoint to start the scan and pass the mobSFApiKey and file hash
 - task: PowerShell@2
   displayName: 'Run MobSF Scan'
   inputs:
@@ -91,6 +102,7 @@ steps:
       Write-Host "Scan completed"
   condition: succeeded()
 
+  # Call v1/download_pdf endpoint and pass the mobSFApiKey and file hash
 - task: PowerShell@2
   displayName: 'Download MobSF PDF report'
   inputs:
@@ -114,7 +126,8 @@ steps:
       Invoke-WebRequest -Uri $reportUrl -Method Post -Headers $headers -Body $reportBody -OutFile $pdfFilePath
       Write-Host "PDF report downloaded to $pdfFilePath"
   condition: succeeded()
-  
+
+# Call v1/report_json endpoint and pass the mobSFApiKey and file hash
 - task: PowerShell@2
   displayName: 'Download MobSF Json report'
   inputs:
@@ -137,6 +150,7 @@ steps:
       Write-Host "JSON report downloaded to $jsonFilePath"
   condition: succeeded()
 
+# Call v1/report_json endpoint and pass the mobSFApiKey and file hash
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
