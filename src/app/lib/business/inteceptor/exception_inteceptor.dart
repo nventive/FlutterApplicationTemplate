@@ -8,10 +8,10 @@ abstract interface class ExceptionInteceptor {
     required Logger logger,
   }) = _ExceptionInteceptor;
 
-  /// Intecepts exceptions, logs them and sends them to Bugsee.
+  /// Intercepts exceptions, logs them and sends them to Bugsee.
   void inteceptException(Object exception, StackTrace stackTrace);
 
-  /// Intecepts rendering exceptions, logs them and sends them to Bugsee.
+  /// Intercepts rendering exceptions, logs them and sends them to Bugsee.
   Future<void> inteceptRenderingExceptions(FlutterErrorDetails error);
 }
 
