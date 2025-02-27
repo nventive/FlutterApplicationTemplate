@@ -1,7 +1,9 @@
+import 'dart:math';
+
+import 'package:app/business/bugsee/bugsee_config_state.dart';
 import 'package:app/business/bugsee/bugsee_manager.dart';
 import 'package:app/presentation/diagnostic/diagnostic_button.dart';
 import 'package:app/presentation/diagnostic/diagnostic_switch.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -16,16 +18,12 @@ class BugseeConfigurationWidget extends StatefulWidget {
 class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
   final BugseeManager bugseeManager = GetIt.I.get<BugseeManager>();
 
-  late bool isConfigEnabled;
-  late bool isCaptureVideoEnabled;
-  late bool requireRestart;
+  late BugseeConfigState state;
 
   @override
   void initState() {
     super.initState();
-    isConfigEnabled = bugseeManager.isBugseeEnabled;
-    isCaptureVideoEnabled = bugseeManager.isVideoCaptureEnabled;
-    requireRestart = bugseeManager.isRestartRequired;
+    state = bugseeManager.bugseeConfigState;
   }
 
   @override
@@ -34,14 +32,12 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
       children: [
         Column(
           children: [
-            if (!bugseeManager.isConfigurationValid)
+            if (!state.isConfigurationValid)
               Container(
                 color: const Color.fromARGB(170, 255, 0, 0),
-                child: const Text(
-                  kDebugMode
-                      ? "Bugsee is disabled in debug mode."
-                      : "Invalid Bugsee token, capturing exceptions could not start",
-                  style: TextStyle(
+                child: Text(
+                  state.configErrorEnum?.error ?? '',
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -49,11 +45,11 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
                   ),
                 ),
               ),
-            if (requireRestart)
+            if (state.isRestartRequired)
               Container(
                 color: const Color.fromARGB(170, 255, 0, 0),
                 child: const Text(
-                  "In order to reactivate Bugsee logger restart the app.",
+                  "Bugsee configuration changed. Please restart the application to apply the changes.",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -64,23 +60,61 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
               ),
             DiagnosticSwitch(
               label: 'Bugsee enabled',
-              value: isConfigEnabled,
+              value: state.isBugseeEnabled,
               onChanged: (value) async {
                 await bugseeManager.setIsBugseeEnabled(value);
                 setState(() {
-                  isConfigEnabled = bugseeManager.isBugseeEnabled;
-                  isCaptureVideoEnabled = bugseeManager.isVideoCaptureEnabled;
-                  requireRestart = bugseeManager.isRestartRequired;
+                  state = bugseeManager.bugseeConfigState;
                 });
               },
             ),
             DiagnosticSwitch(
               label: 'Video capture enabled',
-              value: isCaptureVideoEnabled,
+              value: state.isVideoCaptureEnabled,
               onChanged: (value) async {
                 await bugseeManager.setIsVideoCaptureEnabled(value);
                 setState(() {
-                  isCaptureVideoEnabled = bugseeManager.isVideoCaptureEnabled;
+                  state = bugseeManager.bugseeConfigState;
+                });
+              },
+            ),
+            DiagnosticSwitch(
+              label: 'Obscure data',
+              value: state.isDataObscured,
+              onChanged: (value) async {
+                await bugseeManager.setIsDataObscured(value);
+                setState(() {
+                  state = bugseeManager.bugseeConfigState;
+                });
+              },
+            ),
+            DiagnosticSwitch(
+              label: 'Log collection enabled',
+              value: state.isLogCollectionEnabled,
+              onChanged: (value) async {
+                await bugseeManager.setIsLogsCollectionEnabled(value);
+                setState(() {
+                  state = bugseeManager.bugseeConfigState;
+                });
+              },
+            ),
+            DiagnosticSwitch(
+              label: 'Filter log enabled',
+              value: state.isLogFilterEnabled,
+              onChanged: (value) async {
+                await bugseeManager.setIsLogFilterEnabeld(value);
+                setState(() {
+                  state = bugseeManager.bugseeConfigState;
+                });
+              },
+            ),
+            DiagnosticSwitch(
+              label: 'Log file attached',
+              value: state.attachLogFile,
+              onChanged: (value) async {
+                bugseeManager.setAttachLogFileEnabled(value);
+                setState(() {
+                  state = bugseeManager.bugseeConfigState;
                 });
               },
             ),
@@ -93,9 +127,42 @@ class _BugseeConfigurationWidgetState extends State<BugseeConfigurationWidget> {
           },
         ),
         DiagnosticButton(
-          label: 'Log an unhandled exception',
+          label: 'Add events to the exception',
           onPressed: () {
-            bugseeManager.logUnhandledException(exception: Exception());
+            bugseeManager.logEvents(
+              {
+                'data': {
+                  'date': DateTime.now().millisecondsSinceEpoch,
+                  'id': Random().nextInt(20),
+                },
+              },
+            );
+          },
+        ),
+        DiagnosticButton(
+          label: 'Add email attributes',
+          onPressed: () {
+            bugseeManager.addEmailAttribute('john.doe@nventive.com');
+          },
+        ),
+        DiagnosticButton(
+          label: 'Add name attribute',
+          onPressed: () {
+            bugseeManager.addAttributes({
+              'name': 'John Doe',
+            });
+          },
+        ),
+        DiagnosticButton(
+          label: 'Clear email attribute',
+          onPressed: () {
+            bugseeManager.clearEmailAttribute();
+          },
+        ),
+        DiagnosticButton(
+          label: 'Clear name attribute',
+          onPressed: () {
+            bugseeManager.clearAttribute('name');
           },
         ),
         DiagnosticButton(
