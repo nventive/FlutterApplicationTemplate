@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
+## 0.25.1
+- Update Flutter packages.
+
 ## 0.25.0
 - Added design system, including color scheme and fonts.
 
