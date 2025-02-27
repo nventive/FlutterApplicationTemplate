@@ -3,23 +3,23 @@
   # Make sure you have the following variable groups in your Azure pipeline library:
   #
   # FlutterApplicationTemplate.Distribution.Internal.Android
-  #   ApplicationIdentifier: This is the internal application id of the app for AppCenter releases. Note that this variable is used by Nimue to automatically change the package name.
+  #   ApplicationIdentifier: This is the internal application id of the app for Android releases.
   #   AndroidSigningKeyAlias: This is the keystore alias.
   #   AndroidSigningKeyPass: This is the keystore keypass (secured).
   #   AndroidSigningStorePass: This is the keystore storepass (secured).
   #
   # FlutterApplicationTemplate.Distribution.GooglePlay
-  #   ApplicationIdentifier: This is the official application id of the app that should go on the store. Note that this variable is used by Nimue to automatically change the package name.
+  #   ApplicationIdentifier: This is the official application id of the app that should go on the store.
   #   AndroidSigningKeyAlias: This is the keystore alias.
   #   AndroidSigningKeyPass: This is the keystore keypass (secured).
   #   AndroidSigningStorePass: This is the keystore storepass (secured).
   #
   # FlutterApplicationTemplate.Distribution.Internal.iOS
-  #   ApplicationIdentifier: This is the internal application id of the app for AppCenter releases. Note that this variable is used by Nimue to automatically change the bundle id.
+  #   ApplicationIdentifier: This is the internal application id of the app for iOS releases.
   #   AppleCertificatePassword: The certificate password (secured).
   #
   # FlutterApplicationTemplate.Distribution.AppStore
-  #   ApplicationIdentifier: The official bundle id of the app that should go on the store; the app will be resigned with this id. Note that this variable is used by Nimue to automatically change the bundle id.
+  #   ApplicationIdentifier: The official bundle id of the app that should go on the store; the app will be resigned with this id.
   #   AppleCertificatePassword: The certificate password (secured).
   #   AppleTeamId: The developer account team id (secured).
   #   AppleTeamName: The developer account team name.
@@ -54,23 +54,14 @@
   # Prerequisites - Service connections.
   # Make sure you have the following service connections in your Azure pipeline library.
   GooglePlayServiceConnection: GooglePlay-nventive-ApplicationTemplate
-  AppCenterServiceConnection: AppCenter-nventive-framework
   AppStoreServiceConnection: AppStore-nventive
-
-  # AppCenter slugs.
-  # The "app slug" corresponds to the identifiers of the app in AppCenter; to find it, navigate to the app in a browser and;
-  # the URL should look like this: https://appcenter.ms/orgs/{orgId}/apps/{appId}; the slug is simply: "{orgId}/{appId}".
-  AppCenterAndroidSlug: 'nventive-framework/Flutter-Application-Template'
-  AppCenterAndroidSlug_Production: 'nventive-framework/Flutter-Application-Template-Production'
-
-  # AppCenter Distribution Groups.
-  AppCenterDistributionGroup: '00000000-0000-0000-0000-000000000000'
+  FirebaseAppDistributionServiceConnection: com.nventive.flutterapplicationtemplate.firebaseappdistribution.json
 
   # Solution to build.
   ProjectName: FlutterApplicationTemplate
 
   # Flutter version.
-  FlutterVersion: '3.22.1'
+  FlutterVersion: '3.27.3'
 
   # Docker container to run MobSF.
   DockerVersion: '25.0.5'

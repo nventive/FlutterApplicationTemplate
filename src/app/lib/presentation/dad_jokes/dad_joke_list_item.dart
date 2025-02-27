@@ -13,8 +13,13 @@ final class DadJokeListItem extends StatelessWidget {
 
   /// The dad joke.
   final DadJoke dadJoke;
+  final Future<void> Function(DadJoke dadJoke) toggleIsFavorite;
 
-  DadJokeListItem({super.key, required this.dadJoke});
+  DadJokeListItem({
+    super.key,
+    required this.dadJoke,
+    required this.toggleIsFavorite,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +43,7 @@ final class DadJokeListItem extends StatelessWidget {
               ),
         titleAlignment: ListTileTitleAlignment.top,
         contentPadding: const EdgeInsets.all(16),
-        onTap: () async {
-          if (dadJoke.isFavorite) {
-            await _dadJokesService.removeFavoriteDadJoke(dadJoke);
-          } else {
-            await _dadJokesService.addFavoriteDadJoke(dadJoke);
-          }
-        },
+        onTap: () => toggleIsFavorite(dadJoke),
       ),
     );
   }

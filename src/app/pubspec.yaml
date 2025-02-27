@@ -9,25 +9,25 @@ environment:
 dependencies:
   dio: ^5.4.1
   equatable: ^2.0.5
-  firebase_analytics: ^10.10.4
-  firebase_core: ^2.30.1
-  firebase_remote_config: ^4.4.4
+  firebase_analytics: ^11.3.0
+  firebase_core: ^3.4.0
+  firebase_remote_config: ^5.1.0
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
-  flutter_riverpod: ^2.5.1
-  get_it: ^7.6.7
+  get_it: ^8.0.3
   go_router: ^14.0.0
   json_annotation: ^4.9.0
   package_info_plus: ^8.0.0
   retrofit: ^4.1.0
-  rxdart: ^0.27.7
+  rxdart: ^0.28.0
   url_launcher: ^6.2.6
   shared_preferences: ^2.2.3
   logger: ^2.2.0
   path_provider: ^2.1.3
   share_plus: ^9.0.0
-  alice: ^0.4.1
+  alice: ^1.0.0-dev.12
+  alice_dio: ^1.0.6
   flutter_localizations:
     sdk: flutter
   intl: any
@@ -43,18 +43,41 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^5.0.0
   package_rename: ^1.5.3
   build_runner: ^2.4.8
-  retrofit_generator: ^8.1.0
-  json_serializable: ^6.7.1
+  retrofit_generator: ^9.1.7
+  json_serializable: ^6.9.3
   mockito: ^5.4.4
+  custom_lint:
+  mvvm_lints:
+    path: ../mvvm_lints
+
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/openSourceSoftwareLicenses.json
+    - assets/fonts/guillon_black.ttf
+    - assets/fonts/guillon_bold.ttf
+    - assets/fonts/guillon_light.ttf
+    - assets/fonts/guillon_regular.ttf
+    - assets/fonts/guillon_semibold.ttf
     - .env.dev
     - .env.staging
     - .env.prod
+
+  fonts:
+    - family: Guillon
+      fonts:
+        - asset: assets/fonts/guillon_light.ttf
+          weight: 300
+        - asset: assets/fonts/guillon_regular.ttf
+          weight: 400
+        - asset: assets/fonts/guillon_semibold.ttf
+          weight: 600
+        - asset: assets/fonts/guillon_bold.ttf
+          weight: 700
+        - asset: assets/fonts/guillon_black.ttf
+          weight: 900

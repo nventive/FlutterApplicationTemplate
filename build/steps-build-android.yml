@@ -14,6 +14,8 @@ parameters:
   type: string
 - name: googleServicesJsonFile
   type: string
+- name: artifactTargetFormat
+  type: string
 
 steps:
 #-if false
@@ -82,7 +84,7 @@ steps:
 - task: FlutterBuild@0
   displayName: Build Project for Release
   inputs:
-    target: 'aab'
+    target: '${{ parameters.artifactTargetFormat }}'
     buildName: '$(MajorMinorPatch)'
     buildNumber: '$(PreReleaseNumber)'
     debugMode: false
@@ -99,7 +101,7 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy Binary Files'
   inputs:
-    contents: '**/app-release.aab'
+    contents: '**/app-release.${{ parameters.artifactTargetFormat }}'
     flattenFolders : true
     targetFolder: '$(Build.ArtifactStagingDirectory)'
 
@@ -108,6 +110,6 @@ steps:
   condition: always()
   artifact: $(ArtifactName)
 
-- task: PostBuildCleanup@3
+- task: PostBuildCleanup@4
   displayName: 'Post-Build Cleanup: Cleanup files to keep build server clean!'
   condition: always()

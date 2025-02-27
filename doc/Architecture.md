@@ -114,7 +114,45 @@ See [Navigation.md](Navigation.md) for more details.
 
 ### State Management
 
-This application uses [Riverpod](https://pub.dev/packages/riverpod) to implement the MVVM pattern. The `ViewModel` class is used as a base class for all ViewModels.
+This application uses the MVVM pattern. The `ViewModel` class is used as a base class for all ViewModels.
+ViewModels have the concept of _dynamic properties_.
+These defined using accessors that call the `get` (or variants such as `getLazy`) and optionally `set` methods to automatically trigger widget rebuilds.
+
+Here is an example of a ViewModel showcasing the usage of dynamic properties.
+```dart
+class HomePageViewModel extends ViewModel {
+  // Regular properties don't trigger rebuild if changed.
+  final String title = 'Flutter Demo Home Page';
+
+  // Dynamic properties triggers rebuild if changed.
+  int get counter => get('counter', 0);
+  set counter(int value) => set('counter', value);
+
+  // Dynamic properties can be made using complex sources, such as streams.
+  int get autoCounter => getFromStream('autoCounter',
+      () => Stream.periodic(const Duration(seconds: 1), (i) => i), 0);
+
+  List<HomeItemViewModel> get items => getLazy(
+      'items',
+      () => [
+            HomeItemViewModel('1'),
+            HomeItemViewModel('2'),
+            HomeItemViewModel('3'),
+          ]);
+
+  Future<int> get someData => getLazy('someData', _loadSomeData);
+  set someData(Future<int> value) => set('someData', value);
+
+  Future<int> _loadSomeData() async {
+    await Future.delayed(const Duration(seconds: 2));
+    return 42;
+  }
+
+  void reloadSomeData() {
+    someData = _loadSomeData();
+  }
+}
+```
 
 ### UI Framework
 
@@ -123,6 +161,8 @@ This applications uses [Flutter](https://flutter.dev/) as the UI framework.
 ### Design System
 
 This application uses resources from Material Design.
+The application's theme data is defined in the `global_theme_data` file in the `styles` folder.
+Any other files related to the application's design system should be added to this folder.
 
 ### Localization
 
