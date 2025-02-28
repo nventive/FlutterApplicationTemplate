@@ -112,7 +112,7 @@ stages:
       applicationEnvironment: Staging
       deploymentEnvironment: TestFlight
 
-# MOBSF SECURITY SCAN STAGING
+# Entry point for the STAGING security scan
 - stage: Security_Scan_Build_Staging
   dependsOn: Build_Staging
   jobs:
@@ -153,7 +153,7 @@ stages:
       serviceConnectionKeyFileName: $(FirebaseAppDistributionServiceConnection)
       artifactFileName: 'app-release.apk'
 
-# MOBSF SECURITY SCAN PRODUCTION
+# Entry point for the PRODUCTION security scan
 - stage: Security_Scan_Build_Production
   dependsOn: Build_Production
   jobs:
