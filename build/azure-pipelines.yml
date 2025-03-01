@@ -111,6 +111,8 @@ stages:
     parameters:
       applicationEnvironment: Staging
       deploymentEnvironment: TestFlight
+      iosVariableGroup: 'FlutterApplicationTemplate.Distribution.Internal.iOS'
+      ServiceConnection: $(InternalServiceConnection)
 
 # MOBSF SECURITY SCAN STAGING
 - stage: Security_Scan_Build_Staging
@@ -171,6 +173,8 @@ stages:
     parameters:
       applicationEnvironment: Production
       deploymentEnvironment: AppStore
+      iosVariableGroup: 'FlutterApplicationTemplate.Distribution.AppStore'
+      ServiceConnection: $(AppStoreServiceConnection)
 
 - stage: GooglePlay
   condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
