@@ -54,6 +54,7 @@
   # Prerequisites - Service connections.
   # Make sure you have the following service connections in your Azure pipeline library.
   GooglePlayServiceConnection: GooglePlay-nventive-ApplicationTemplate
+  InternalServiceConnection: AppStore-nventive
   AppStoreServiceConnection: AppStore-nventive
   FirebaseAppDistributionServiceConnection: com.nventive.flutterapplicationtemplate.firebaseappdistribution.json
 
@@ -76,7 +77,7 @@
 
   # Virtual machine images.
   windowsHostedAgentImage: 'windows-2022'
-  macOSHostedAgentImage: 'macOS-13'
+  macOSHostedAgentImage: 'macOS-15'
   ubuntuHostedAgentImage: 'ubuntu-22.04'
 
   # Name of the folder where the artefacts will be placed. Variable used in build and release phases.
