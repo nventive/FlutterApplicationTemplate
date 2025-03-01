@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
+## 0.25.2
+- Update iOS & Android minimum version targets.
+- Update macOS CI/CD agent.
+
 ## 0.25.1
 - Update Flutter packages.
 
@@ -38,8 +42,8 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Added conventional commit validation stage `stage-build.yml`
 
 ## 0.21.0
-- Add bugsee sdk in Fluttter template
-- Update build stage in `steps-build-android.yml` and `steps-build-ios` providing bugsee token
+- Add Bugsee SDK in Flutter template
+- Update build stage in `steps-build-android.yml` and `steps-build-ios` providing Bugsee token
 
 ## 0.20.4
 - Updates to documentation

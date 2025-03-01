@@ -1,6 +1,8 @@
 ﻿parameters:
   applicationEnvironment: '' # e.g. "Staging", "Production"
   deploymentEnvironment: '' # e.g. "GooglePlay", "AppStore", "Firebase App Distribution"
+  iosVariableGroup: ''
+  ServiceConnection: ''
 
 jobs:
 - deployment: AppStore_iOS_${{ parameters.deploymentEnvironment}}
@@ -11,7 +13,7 @@ jobs:
   environment: ${{ parameters.deploymentEnvironment }}
 
   variables:
-  - group: FlutterApplicationTemplate.Distribution.AppStore
+  - group: ${{ parameters.iosVariableGroup }}
   - name: artifactName
     value: $(iOSArtifactName)_${{ parameters.applicationEnvironment }}
 
