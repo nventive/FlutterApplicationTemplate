@@ -6,12 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
 ## 0.26.0
-- Add bugsee global inteceptor for dart exceptions to template app.
-- Add bugsee global inteceptor for flutter layout exceptions to template app.
-- Add bugsee custom attributes logging.
-- Add bugsee custom events logging.
-- Add bugsee custom traces logging.
-- Implement log file attach to reported bugsee exceptions.
+- Add Bugsee global inteceptor for dart exceptions to template app.
+- Add Bugsee global inteceptor for flutter layout exceptions to template app.
+- Add Bugsee custom attributes logging.
+- Add Bugsee custom events logging.
+- Add Bugsee custom traces logging.
+- Implement log file attach to reported Bugsee exceptions.
 - Implement obsucre data feature from reported videos.
 - Implement Bugsee enable log and log filter features.
 - Update diagnostic overlay to test Bugsee advanced features.
@@ -46,8 +46,8 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Added conventional commit validation stage `stage-build.yml`
 
 ## 0.21.0
-- Add bugsee sdk in Fluttter template
-- Update build stage in `steps-build-android.yml` and `steps-build-ios` providing bugsee token
+- Add Bugsee sdk in Fluttter template
+- Update build stage in `steps-build-android.yml` and `steps-build-ios` providing Bugsee token
 
 ## 0.20.4
 - Updates to documentation
