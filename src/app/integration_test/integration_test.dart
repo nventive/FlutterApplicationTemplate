@@ -12,7 +12,6 @@ import 'kill_switch_test.dart';
 Future<void> main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   await initializeComponents(isMocked: true);
-
   tearDownAll(
     () async => await GetIt.I.get<MockingRepository>().setMocking(false),
   );
