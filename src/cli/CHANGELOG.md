@@ -16,6 +16,9 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Implement Bugsee enable log and log filter features.
 - Update diagnostic overlay to test Bugsee advanced features.
 
+## 0.25.1
+- Update Flutter packages.
+
 ## 0.25.0
 - Added design system, including color scheme and fonts.
 
