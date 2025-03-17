@@ -19,7 +19,7 @@ jobs:
       - template: templates/mobsf-scan.yml
         parameters:
           platform: 'iOS'
-          fileExtension: $(ipaFileExtension)          
+          fileExtension: $(ipaFileExtension)
           mobSfApiKey: $(mobSfApiKey)
           artifactName: '$(iOSArtifactName)_${{ parameters.applicationEnvironment }}'
 

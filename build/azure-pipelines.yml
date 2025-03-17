@@ -104,13 +104,15 @@ stages:
       applicationEnvironment: Staging
       deploymentEnvironment: Firebase App Distribution
       androidVariableGroup: 'FlutterApplicationTemplate.Distribution.Internal.Android'
-      serviceConnectionKeyFileName: $(FirebaseAppDistributionServiceConnection)
+      firebaseAppDistributionJson: $(FirebaseAppDistributionJson)
       artifactFileName: 'app-release.apk'
 
   - template: stage-release-appstore.yml
     parameters:
       applicationEnvironment: Staging
       deploymentEnvironment: TestFlight
+      iosVariableGroup: 'FlutterApplicationTemplate.Distribution.Internal.iOS'
+      ServiceConnection: $(InternalServiceConnection)
 
 # MOBSF SECURITY SCAN STAGING
 - stage: Security_Scan_Build_Staging
@@ -150,7 +152,7 @@ stages:
       applicationEnvironment: Production
       deploymentEnvironment: Firebase App Distribution
       androidVariableGroup: 'FlutterApplicationTemplate.Distribution.GooglePlay'
-      serviceConnectionKeyFileName: $(FirebaseAppDistributionServiceConnection)
+      firebaseAppDistributionJson: $(FirebaseAppDistributionJson)
       artifactFileName: 'app-release.apk'
 
 # MOBSF SECURITY SCAN PRODUCTION
@@ -171,6 +173,8 @@ stages:
     parameters:
       applicationEnvironment: Production
       deploymentEnvironment: AppStore
+      iosVariableGroup: 'FlutterApplicationTemplate.Distribution.AppStore'
+      ServiceConnection: $(AppStoreServiceConnection)
 
 - stage: GooglePlay
   condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'))
