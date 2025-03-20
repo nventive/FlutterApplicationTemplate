@@ -101,3 +101,5 @@ $ dart run build_runner build --delete-conflicting-outputs
 $ pana > ~/temp/pana-analysis.md
 ```
 6. Open the markdown file and observe the scores for each category, make sure that each (except the first one) has a perfect score (for example 20/20). If not, resolve any issues before submitting a pull request. The first category will resolve itself before being shipped to pub.dev (as it depends on automated tasks in the CI)
+
+The CI also contains a step that calculates the pub.dev score prior to publishing.
