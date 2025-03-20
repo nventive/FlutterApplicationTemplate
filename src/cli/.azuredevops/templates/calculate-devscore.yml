@@ -1,0 +1,32 @@
+parameters:
+- name: pathToSrc
+  type: string
+  default: '$(Build.SourcesDirectory)/src/cli'
+- name: artifactName
+  type: string
+  default: ''
+
+steps:
+- powershell: Set-Location ${{ parameters.pathToSrc }}
+  displayName: 'Set Location to CLI Folder'
+
+- task: PowerShell@2
+  displayName: 'Execute Build Runner'
+  inputs:
+    targetType: 'inline'
+    script: |
+      cd ${{ parameters.pathToSrc }}
+      dart run build_runner build --delete-conflicting-outputs
+
+- script: |
+    dart pub global activate pana
+    cd ${{ parameters.pathToSrc }}
+    %LOCALAPPDATA%\Pub\Cache\bin\pana > $(Build.SourcesDirectory)/pana-analysis.md
+  displayName: 'Run Pana Analysis'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Pana Analysis'
+  inputs:
+    pathToPublish: '$(Build.SourcesDirectory)/pana-analysis.md'
+    artifactName: '${{ parameters.artifactName }}_PanaAnalysis'
+  condition: and(succeeded(), ne('${{ parameters.artifactName }}', ''))

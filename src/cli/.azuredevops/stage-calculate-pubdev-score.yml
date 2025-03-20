@@ -1,0 +1,21 @@
+parameters:
+- name: pathToSrc
+  type: string
+  default: '$(Build.SourcesDirectory)/src/cli'
+- name: artifactName
+  type: string
+  default: 'PubDev_Score_Staging'
+
+jobs:
+- job: OnWindows_CalculatePubDev_Score
+  pool:
+    vmImage : $(windowsHostedAgentImage)
+  steps:
+  - template: ../../../build/templates/flutter-install.yml
+    parameters:
+      projectDirectory: '${{ parameters.pathToSrc }}'
+
+  - template: templates/calculate-devscore.yml
+    parameters:
+      pathToSrc: '${{ parameters.pathToSrc }}'
+      artifactName: ${{parameters.artifactName}}

@@ -65,6 +65,15 @@ stages:
       googleServicesJsonFile:  $(InternalGoogleServicesJson)
       androidArtifactFormat: 'apk'
 
+- stage: Calculate_PubDev_Score
+  dependsOn:
+   - CopyTool_GeneratedApp
+   - Build_Staging_GeneratedApp
+  jobs:
+  - template: ../src/cli/.azuredevops/stage-calculate-pubdev-score.yml
+    parameters:
+      artifactName: 'PubDev_Score_Staging'
+
 - stage: Publish_Template_Package
   condition: and(succeeded(), eq(variables['IsPullRequestBuild'], 'false'), eq(variables['IsReleaseBranch'], 'true'))
   dependsOn:
