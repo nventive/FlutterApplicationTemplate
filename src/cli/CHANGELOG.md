@@ -7,6 +7,7 @@ Prefix your items with `(Template)` if the change is about the template and not 
 
 ## 0.25.3
 - Add local pub.dev score report.
+- Updated contributing documentation file.
 
 ## 0.25.2
 - Update iOS & Android minimum version targets.
