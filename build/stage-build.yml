@@ -64,73 +64,34 @@
   default: 'aab'
 
 jobs:
-  - job: OnWindows_ReleaseNotes
+  - job: OnMac_iOS
     pool:
-      vmImage : $(windowsHostedAgentImage)
-    variables:
-      ArtifactName: ${{ parameters.releaseNotesArtifactName }}
-      ApplicationEnvironment: ${{ parameters.applicationEnvironment }}
-    steps:
-      - template: steps-build-release-notes.yml
-        parameters:
-          removeHyperlinksFromReleaseNotes: ${{ parameters.removeHyperlinksFromReleaseNotes }}
-
-  - job: OnWindows_Windows
-    pool:
-      vmImage : $(windowsHostedAgentImage)
-    variables:
-    - name: ApplicationConfiguration
-      value: Release
-    - name: ArtifactName
-      value: $(WindowsArtifactName)_${{ parameters.applicationEnvironment }}
-    - name: ApplicationEnvironment
-      value: ${{ parameters.applicationEnvironment }}
-
-    steps:
-      - template: steps-build-windows.yml
-        parameters:
-          pathToSrc: ${{ parameters.pathToSrc }}
-          projectName: ${{ parameters.projectName }}
-
-  - job: OnWindows_Tests
-    pool:
-      vmImage : $(windowsHostedAgentImage)
-    variables:
-      ArtifactName: ${{ parameters.artifactName }}
-      ApplicationEnvironment: ${{ parameters.applicationEnvironment }}
-    steps:
-      - template: steps-build-tests.yml
-        parameters:
-          pathToSrc: ${{ parameters.pathToSrc }}
-          projectName: ${{ parameters.projectName }}
-          applicationEnvironment: ${{ parameters.applicationEnvironment }}
-
-  - job: OnWindows_Android
-    pool:
-      vmImage : $(windowsHostedAgentImage)
+      name: 'macOS-2023'
     variables:
     - name: ApplicationEnvironment
       value: ${{ parameters.applicationEnvironment }}
     - name: ArtifactName
-      value: ${{ parameters.androidArtifactName }}
+      value: ${{ parameters.iosArtifactName }}
 
-    - group: ${{ parameters.androidVariableGroup }}
+    - group: ${{ parameters.iosVariableGroup }}
 
     steps:
-    - template: steps-build-android.yml
+    - template: steps-build-ios.yml
       parameters:
         pathToSrc: ${{ parameters.pathToSrc }}
         projectName: ${{ parameters.projectName }}
-        androidKeystoreFile: ${{ parameters.androidKeyStoreFile }}
-        androidKeyStorePropertiesFile: ${{ parameters.androidKeyPropertiesFile }}
+        iosCertificateFile: ${{ parameters.iosCertificateFile }}
+        iosCertificatePassword: ${{ parameters.iosCertificatePassword }}
+        iosProvisioningProfileFile: ${{ parameters.iosProvisioningProfileFile }}
+        iosExportOptionsFile: ${{ parameters.iosExportOptionsFile }}
+        BannerVersionNameText: ${{ parameters.BannerVersionNameText }}
         firebaseJsonFile: '${{ parameters.firebaseJsonFile }}'
         firebaseOptionsDartFile: '${{ parameters.firebaseOptionsDartFile }}'
         googleServicesJsonFile: '${{ parameters.googleServicesJsonFile }}'
-        artifactTargetFormat: '${{ parameters.androidArtifactFormat }}'
 
-  - job: OnMac_iOS
+  - job: OnMac_iOS_Hosted
     pool:
-      vmImage: $(macOSHostedAgentImage)
+      vmImage: 'macOS-15'
     variables:
     - name: ApplicationEnvironment
       value: ${{ parameters.applicationEnvironment }}
