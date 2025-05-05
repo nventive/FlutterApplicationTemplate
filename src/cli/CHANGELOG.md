@@ -7,6 +7,7 @@ Prefix your items with `(Template)` if the change is about the template and not 
 
 ## 0.25.3
 - Add local pub.dev score report.
+- Add built-time validation requiring a pub.dev score threshold of 160.
 
 ## 0.25.2
 - Update iOS & Android minimum version targets.

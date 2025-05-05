@@ -9,7 +9,7 @@ parameters:
 jobs:
 - job: OnWindows_CalculatePubDev_Score
   pool:
-    vmImage : $(windowsHostedAgentImage)
+    vmImage : $(ubuntuHostedAgentImage)
   steps:
   - template: ../../../build/templates/flutter-install.yml
     parameters:
