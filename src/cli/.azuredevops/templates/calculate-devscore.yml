@@ -1,0 +1,85 @@
+parameters:
+- name: pathToSrc
+  type: string
+  default: '$(Build.SourcesDirectory)/src/cli'
+- name: artifactName
+  type: string
+  default: ''
+
+steps:
+- powershell: Set-Location ${{ parameters.pathToSrc }}
+  displayName: 'Set Location to CLI Folder'
+
+- powershell: Move-Item -Path $(Build.SourcesDirectory)\README.md -Destination ${{ parameters.pathToSrc }}\README.md
+  displayName: Move README into CLI Folder
+
+- task: PowerShell@2
+  displayName: 'Execute Build Runner'
+  inputs:
+    targetType: 'inline'
+    script: |
+      cd ${{ parameters.pathToSrc }}
+      dart run build_runner build --delete-conflicting-outputs
+
+- script: |
+    export PATH="$PATH:$HOME/.pub-cache/bin"
+    dart pub global activate pana
+    cd ${{ parameters.pathToSrc }}
+    pana --no-warning . > $(Build.SourcesDirectory)/pana-analysis.md
+  displayName: 'Run Pana Analysis'
+  
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Pana Analysis'
+  inputs:
+    pathToPublish: '$(Build.SourcesDirectory)/pana-analysis.md'
+    artifactName: '${{ parameters.artifactName }}_PanaAnalysis'
+  condition: and(succeeded(), ne('${{ parameters.artifactName }}', ''))
+
+- task: PowerShell@2
+  displayName: 'Validate Pana Score and Display Details'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $panaFile = "$(Build.SourcesDirectory)/pana-analysis.md"
+      if (Test-Path $panaFile) {
+          $content = Get-Content $panaFile
+          
+          # Extract the total score
+          $scoreLine = $content | Select-String -Pattern "Points: (\d+)/160"
+          if ($scoreLine -match "Points: (\d+)/160") {
+              $score = [int]$Matches[1]
+              Write-Host ""
+              Write-Host "Current Pana Score: $score/160"
+              Write-Host ""
+              
+              # Check if the score is below the threshold
+              if ($score -lt 160) {
+                  Write-Host "The score is below the threshold of 160."
+                  Write-Host ""
+                  
+                  # Extract sections with less than full points
+                  $lowScores = $content | Select-String -Pattern "### \[x\] \d+/\d+ points: .*"
+                  if ($lowScores) {
+                      Write-Host "Areas with reduced scores:"
+                      foreach ($line in $lowScores) {
+                          Write-Host $line.Line
+                      }
+                      Write-Host ""
+                  } else {
+                      Write-Host "No specific areas with reduced scores were found."
+                      Write-Host ""
+                  }
+                  
+                  exit 1
+              } else {
+                  Write-Host "The score meets the threshold. Build passed."
+                  Write-Host ""
+              }
+          } else {
+              Write-Error "Unable to find a valid score in the pana-analysis.md file."
+              exit 1
+          }
+      } else {
+          Write-Error "pana-analysis.md file not found."
+          exit 1
+      }

@@ -52,8 +52,8 @@ android {
 
     defaultConfig {
         applicationId "com.nventive.internal.flutterapptemplate"
-        minSdkVersion 30
-        targetSdkVersion 34
+        minSdkVersion 31
+        targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

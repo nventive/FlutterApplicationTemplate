@@ -16,6 +16,14 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Implement Bugsee enable log and log filter features.
 - Update diagnostic overlay to test Bugsee advanced features.
 
+## 0.25.3
+- Add local pub.dev score report.
+- Add built-time validation requiring a pub.dev score threshold of 160.
+
+## 0.25.2
+- Update iOS & Android minimum version targets.
+- Update macOS CI/CD agent.
+
 ## 0.25.1
 - Update Flutter packages.
 
@@ -49,7 +57,7 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Added conventional commit validation stage `stage-build.yml`
 
 ## 0.21.0
-- Add Bugsee sdk in Fluttter template
+- Add Bugsee SDK in Flutter template
 - Update build stage in `steps-build-android.yml` and `steps-build-ios` providing Bugsee token
 
 ## 0.20.4
