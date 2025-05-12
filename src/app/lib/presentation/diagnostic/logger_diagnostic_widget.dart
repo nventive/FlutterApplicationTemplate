@@ -1,4 +1,5 @@
 import 'package:alice/alice.dart';
+import 'package:app/business/app_review/app_review_service.dart';
 import 'package:app/business/logger/logger_manager.dart';
 import 'package:app/presentation/diagnostic/diagnostic_button.dart';
 import 'package:app/presentation/diagnostic/logging_configuration_widget.dart';
@@ -11,6 +12,7 @@ final class LoggerDiagnosticWidget extends StatelessWidget {
   final Logger _logger = GetIt.I.get<Logger>();
   final LoggerManager _loggerManager = GetIt.I.get<LoggerManager>();
   final Alice _alice = GetIt.I.get<Alice>();
+  final AppReviewService _appReviewService = GetIt.I.get<AppReviewService>();
 
   LoggerDiagnosticWidget({super.key});
 
@@ -112,6 +114,12 @@ final class LoggerDiagnosticWidget extends StatelessWidget {
         DiagnosticButton(
           label: 'OPEN CONSOLE',
           onPressed: () => _alice.showInspector(),
+        ),
+        DiagnosticButton(
+          label: 'PROMPT FOR REVIEW',
+          onPressed: () async {
+            await _appReviewService.promptForReview();
+          },
         ),
       ],
     );

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:alice/alice.dart';
 import 'package:alice/model/alice_configuration.dart';
 import 'package:alice_dio/alice_dio_adapter.dart';
+import 'package:app/access/app_review/app_review_repository.dart';
 import 'package:app/access/bugsee/bugsee_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_mocked_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
@@ -20,6 +21,7 @@ import 'package:app/access/logger/logger_repository.dart';
 import 'package:app/access/mocking/mocking_repository.dart';
 import 'package:app/app.dart';
 import 'package:app/app_router.dart';
+import 'package:app/business/app_review/app_review_service.dart';
 import 'package:app/business/bugsee/bugsee_manager.dart';
 import 'package:app/business/dad_jokes/dad_jokes_service.dart';
 import 'package:app/business/diagnostics/diagnostics_service.dart';
@@ -34,6 +36,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:review_service/src/review_service/review_prompter.dart';
 
 late Logger _logger;
 
@@ -104,7 +107,8 @@ Future _registerAndLoadLoggers() async {
   // Register logging services in the IoC.
   GetIt.I.registerSingleton(LoggerRepository());
   GetIt.I.registerSingleton(
-    Alice(configuration: AliceConfiguration(
+    Alice(
+        configuration: AliceConfiguration(
       showNotification: false,
       navigatorKey: rootNavigatorKey,
     )),
@@ -202,6 +206,7 @@ Future<void> _registerRepositories(bool? isMocked) async {
   }
 
   GetIt.I.registerSingleton(CurrentVersionRepository());
+  GetIt.I.registerSingleton(AppReviewRepository());
 }
 
 /// Registers the services.
@@ -230,6 +235,13 @@ void _registerServices() {
   GetIt.I.registerSingleton(
     KillSwitchService(
       GetIt.I.get<KillSwitchRepository>(),
+    ),
+  );
+
+  GetIt.I.registerSingleton(
+    AppReviewService(
+      GetIt.I.get<AppReviewRepository>(),
+      _logger,
     ),
   );
 }

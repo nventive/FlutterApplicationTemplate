@@ -32,6 +32,8 @@ dependencies:
     sdk: flutter
   intl: any
   bugsee_flutter: ^8.4.0
+  review_service: ^0.4.3
+  open_filex: ^4.6.0
 
 # This is required with alice installed unless this PR is merged https://github.com/jhomlala/alice/pull/171
 dependency_overrides:
