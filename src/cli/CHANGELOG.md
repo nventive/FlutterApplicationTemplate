@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
+## 0.25.4
+- Fix CocoaPods cache and dependency issues in iOS build pipeline.
+- Improve CocoaPods deintegration and cache cleaning process in CI/CD.
+
 ## 0.25.3
 - Add local pub.dev score report.
 - Add built-time validation requiring a pub.dev score threshold of 160.
