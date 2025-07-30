@@ -15,6 +15,18 @@ GitHub Issue: #
 
 <!-- (Please describe the changes that this PR introduces.) -->
 
+## GitHub Copilot Template Used (if applicable)
+<!-- Check if you used any of the GitHub Copilot prompt templates during development -->
+
+- [ ] [Feature Development Template](.github/prompt-templates/feature-development.md)
+- [ ] [Bug Fix Template](.github/prompt-templates/bug-fix.md)  
+- [ ] [Refactoring Template](.github/prompt-templates/refactoring.md)
+- [ ] [Testing Template](.github/prompt-templates/testing.md)
+- [ ] [UI Component Template](.github/prompt-templates/ui-component.md)
+- [ ] [API Integration Template](.github/prompt-templates/api-integration.md)
+- [ ] [Performance Optimization Template](.github/prompt-templates/performance-optimization.md)
+- [ ] None - developed without template assistance
+
 
 ## Impact on version
 <!-- Please select one or more based on your commits. -->
@@ -49,6 +61,16 @@ No matter your changes, these checks always apply.
 Based on your changes these checks may not apply.
 - [ ] Automated tests for the changes have been added/updated.
 - [ ] Tested on all relevant platforms
+
+### Architecture & Code Quality
+For significant changes, ensure architecture patterns are followed.
+- [ ] **MVVM Pattern**: ViewModels extend base ViewModel class and handle UI state
+- [ ] **Clean Architecture**: Proper separation between Access/Business/Presentation layers  
+- [ ] **Dependency Injection**: Services registered in GetIt and injected properly
+- [ ] **Repository Pattern**: Data access uses repository interfaces with Retrofit
+- [ ] **Error Handling**: Appropriate exception handling and user-friendly error messages
+- [ ] **Performance**: No performance regressions, efficient widget usage
+- [ ] **Testing**: Unit tests for business logic, widget tests for UI components
 
 ## Other information
 

@@ -1,0 +1,138 @@
+# Copilot Workspace Configuration
+
+# Flutter/Dart specific settings for GitHub Copilot
+version: 1
+
+# Project context for better suggestions
+project:
+  type: "flutter"
+  language: "dart"
+  architecture: "mvvm-clean-architecture"
+  
+  # Key technologies used in this project
+  technologies:
+    - "flutter"
+    - "dart"
+    - "rxdart"
+    - "get_it"
+    - "retrofit"
+    - "dio"
+    - "go_router"
+    - "firebase"
+    - "mockito"
+
+# Code style preferences
+preferences:
+  # Dart/Flutter specific preferences
+  dart:
+    use_trailing_commas: true
+    prefer_const_constructors: true
+    always_declare_return_types: true
+    use_package_imports: true
+    
+  # Architecture patterns
+  architecture:
+    layer_separation: true
+    dependency_injection: "get_it"
+    state_management: "mvvm_custom"
+    
+  # Testing preferences
+  testing:
+    framework: "flutter_test"
+    mocking: "mockito"
+    coverage_threshold: 80
+
+# File patterns and templates
+patterns:
+  # Repository pattern
+  repository:
+    interface: "abstract interface class {Name}Repository"
+    implementation: "final class _{Name}Repository implements {Name}Repository"
+    location: "lib/access/{feature}/"
+    
+  # Service pattern  
+  service:
+    interface: "abstract interface class {Name}Service implements Disposable"
+    implementation: "final class _{Name}Service implements {Name}Service"
+    location: "lib/business/{feature}/"
+    
+  # ViewModel pattern
+  viewmodel:
+    class: "class {Name}ViewModel extends ViewModel"
+    location: "lib/presentation/{feature}/"
+    
+  # Widget pattern
+  widget:
+    stateless: "final class {Name} extends StatelessWidget"
+    mvvm: "final class {Name} extends MvvmWidget<{Name}ViewModel>"
+    location: "lib/presentation/{feature}/"
+
+# Common imports for different file types
+imports:
+  repository:
+    - "package:dio/dio.dart"
+    - "package:retrofit/retrofit.dart"
+    
+  service:
+    - "package:get_it/get_it.dart"
+    - "package:logger/logger.dart"
+    - "package:rxdart/rxdart.dart"
+    
+  viewmodel:
+    - "package:app/presentation/mvvm/view_model.dart"
+    - "package:get_it/get_it.dart"
+    
+  widget:
+    - "package:flutter/material.dart"
+    - "package:app/presentation/mvvm/mvvm_widget.dart"
+    - "package:app/l10n/localization_extensions.dart"
+
+# Suggestions for common tasks
+suggestions:
+  # When creating a new feature
+  new_feature:
+    - "Create data models in lib/access/{feature}/data/"
+    - "Create repository interface with Retrofit annotations"
+    - "Create service with business logic"  
+    - "Create ViewModel extending from ViewModel base class"
+    - "Create Page widget extending MvvmWidget"
+    - "Register dependencies in GetIt"
+    - "Add routes to GoRouter configuration"
+    - "Add localization strings"
+    - "Write unit tests for service and ViewModel"
+    
+  # When fixing bugs
+  bug_fix:
+    - "Check logs for error messages"
+    - "Add debug logging to trace issue"
+    - "Create test case that reproduces the bug"
+    - "Fix with minimal changes"
+    - "Verify fix doesn't break existing functionality"
+    
+  # When optimizing performance
+  performance:
+    - "Use ListView.builder for large lists"
+    - "Add const constructors where possible"
+    - "Check for memory leaks in streams and subscriptions"
+    - "Profile with Flutter Inspector"
+    - "Optimize image loading and caching"
+
+# Quality gates
+quality:
+  # Code quality requirements
+  code:
+    max_cyclomatic_complexity: 10
+    max_lines_per_method: 50
+    max_parameters: 5
+    
+  # Testing requirements
+  testing:
+    min_coverage_percentage: 80
+    require_unit_tests: true
+    require_widget_tests: true
+    
+  # Performance requirements
+  performance:
+    max_build_time_ms: 100
+    max_frame_time_ms: 16
+    max_memory_usage_mb: 150
