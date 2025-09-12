@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
+## 0.26.0
+- Add Bugsee global inteceptor for dart exceptions to template app.
+- Add Bugsee global inteceptor for flutter layout exceptions to template app.
+- Add Bugsee custom attributes logging.
+- Add Bugsee custom events logging.
+- Add Bugsee custom traces logging.
+- Implement log file attach to reported Bugsee exceptions.
+- Implement obsucre data feature from reported videos.
+- Implement Bugsee enable log and log filter features.
+- Update diagnostic overlay to test Bugsee advanced features.
 ## 0.25.4
 - Fix CocoaPods cache and dependency issues in iOS build pipeline.
 - Improve CocoaPods deintegration and cache cleaning process in CI/CD.

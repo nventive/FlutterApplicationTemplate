@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:alice/alice.dart';
@@ -26,6 +27,7 @@ import 'package:app/business/diagnostics/diagnostics_service.dart';
 import 'package:app/business/environment/environment.dart';
 import 'package:app/business/environment/environment_manager.dart';
 import 'package:app/business/forced_update/update_required_service.dart';
+import 'package:app/business/inteceptor/exception_inteceptor.dart';
 import 'package:app/business/kill_switch/kill_switch_service.dart';
 import 'package:app/business/logger/logger_manager.dart';
 import 'package:app/business/mocking/mocking_manager.dart';
@@ -38,15 +40,23 @@ import 'package:logger/logger.dart';
 late Logger _logger;
 
 Future<void> main() async {
-  await initializeComponents();
-  runApp(const App());
+  _initializeBugseeManager();
+  runZonedGuarded(
+    () async {
+      FlutterError.onError =
+          GetIt.I.get<ExceptionInteceptor>().inteceptRenderingExceptions;
+      await initializeComponents();
+      await registerBugseeManager();
+      runApp(const App());
+    },
+    GetIt.I.get<ExceptionInteceptor>().inteceptException,
+  );
 }
 
 Future initializeComponents({bool? isMocked}) async {
   WidgetsFlutterBinding.ensureInitialized();
   await _registerAndLoadEnvironment();
   await _registerAndLoadLoggers();
-  await _registerBugseeManager();
 
   _logger.d("Initialized environment and logger.");
 
@@ -121,14 +131,27 @@ Future _registerAndLoadLoggers() async {
   GetIt.I.registerSingleton(_logger);
 }
 
-Future _registerBugseeManager() async {
+void _initializeBugseeManager() {
   GetIt.I.registerSingleton<BugseeRepository>(BugseeRepository());
   GetIt.I.registerSingleton<BugseeManager>(
     BugseeManager(
-      logger: GetIt.I.get<Logger>(),
       bugseeRepository: GetIt.I.get<BugseeRepository>(),
+      logger: GetIt.I.get<Logger>(),
+      loggerManager: GetIt.I.get<LoggerManager>(),
     ),
   );
+  GetIt.I.registerSingleton<ExceptionInteceptor>(
+    ExceptionInteceptor(
+      bugseeManager: GetIt.I.get<BugseeManager>(),
+      logger: _logger,
+    ),
+  );
+}
+
+Future registerBugseeManager() async {
+  if (!GetIt.I.isRegistered<BugseeManager>()) {
+    _initializeBugseeManager();
+  }
   GetIt.I.get<BugseeManager>().initialize(
         bugseeToken: const String.fromEnvironment('BUGSEE_TOKEN'),
       );
