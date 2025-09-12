@@ -15,6 +15,9 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Implement obsucre data feature from reported videos.
 - Implement Bugsee enable log and log filter features.
 - Update diagnostic overlay to test Bugsee advanced features.
+## 0.25.4
+- Fix CocoaPods cache and dependency issues in iOS build pipeline.
+- Improve CocoaPods deintegration and cache cleaning process in CI/CD.
 
 ## 0.25.3
 - Add local pub.dev score report.

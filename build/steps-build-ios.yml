@@ -64,6 +64,25 @@ steps:
   parameters:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
 
+- task: CmdLine@2
+  displayName: 'Clean CocoaPods Cache'
+  inputs:
+    script: |
+      cd '${{ parameters.pathToSrc }}/app/ios'
+      rm -rf Pods
+      rm -rf Podfile.lock
+      pod deintegrate
+      pod cache clean --all
+    workingDirectory: '${{ parameters.pathToSrc }}/app'
+
+- task: CmdLine@2
+  displayName: 'Install CocoaPods Dependencies'
+  inputs:
+    script: |
+      cd '${{ parameters.pathToSrc }}/app/ios'
+      pod install --repo-update
+    workingDirectory: '${{ parameters.pathToSrc }}/app'
+
 - task: PowerShell@2
   displayName: 'Execute Package Rename'
   condition: eq(variables['ApplicationEnvironment'], 'Production')
