@@ -22,6 +22,10 @@ final class AppShell extends StatelessWidget {
             icon: const Icon(Icons.favorite),
             label: context.local.favoriteDadJokesPageLabel,
           ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.chat),
+            label: 'AI Chat', // TODO: Add localization
+          ),
         ],
         currentIndex: navigationShell.currentIndex,
         onTap: navigationShell.goBranch,

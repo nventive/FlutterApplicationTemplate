@@ -32,11 +32,15 @@ dependencies:
     sdk: flutter
   intl: any
   bugsee_flutter: ^8.4.0
+  # Azure AI and authentication dependencies
+  provider: ^6.1.1  # For state management in UI
+  http: ^1.2.0  # HTTP client for Azure services
 
 # This is required with alice installed unless this PR is merged https://github.com/jhomlala/alice/pull/171
 dependency_overrides:
   share_plus: ^9.0.0
   package_info_plus: ^8.0.0
+  open_filex: ^4.7.0
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +59,7 @@ dev_dependencies:
 
 
 flutter:
+  generate: true
   uses-material-design: true
 
   assets:

@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:alice/alice.dart';
 import 'package:alice/model/alice_configuration.dart';
 import 'package:alice_dio/alice_dio_adapter.dart';
+import 'package:app/access/agentic/agentic_api_client.dart';
+import 'package:app/access/agentic/agentic_api_client_mock.dart';
 import 'package:app/access/bugsee/bugsee_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_mocked_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
@@ -20,6 +22,7 @@ import 'package:app/access/logger/logger_repository.dart';
 import 'package:app/access/mocking/mocking_repository.dart';
 import 'package:app/app.dart';
 import 'package:app/app_router.dart';
+import 'package:app/business/agentic/agentic_service.dart';
 import 'package:app/business/bugsee/bugsee_manager.dart';
 import 'package:app/business/dad_jokes/dad_jokes_service.dart';
 import 'package:app/business/diagnostics/diagnostics_service.dart';
@@ -218,6 +221,15 @@ void _registerServices() {
     DiagnosticsService(
       GetIt.I.get<DiagnosticsRepository>(),
     ),
+  );
+
+  // Register Agentic Service
+  GetIt.I.registerSingleton<IAgenticApiClient>(
+    AgenticApiClientMock(), // Use mock by default, can be replaced with real implementation
+  );
+
+  GetIt.I.registerSingleton<IAgenticService>(
+    AgenticService(GetIt.I.get<IAgenticApiClient>()),
   );
 
   GetIt.I.registerSingleton(
