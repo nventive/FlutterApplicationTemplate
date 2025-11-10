@@ -36,9 +36,7 @@ final class CreateCommand extends Command<int> {
   ///
   /// {@macro create_command}
   ///
-  CreateCommand({
-    required Logger logger,
-  }) : _logger = logger {
+  CreateCommand({required Logger logger}) : _logger = logger {
     argParser
       ..addOption(
         'destinationDirectory',
@@ -106,11 +104,15 @@ final class CreateCommand extends Command<int> {
     );
 
     // Rename the extracted directory to the project name.
-    final destinationProjectDirectory =
-        await extractedDirectory.rename('$destinationDirectory/$projectName');
+    final destinationProjectDirectory = await extractedDirectory.rename(
+      '$destinationDirectory/$projectName',
+    );
 
-    final flutterProjectDirectoryPath =
-        path.join(destinationProjectDirectory.path, 'src', 'app');
+    final flutterProjectDirectoryPath = path.join(
+      destinationProjectDirectory.path,
+      'src',
+      'app',
+    );
 
     await _applyRenameConfiguration(
       flutterProjectDirectoryPath,
@@ -123,7 +125,8 @@ final class CreateCommand extends Command<int> {
     await _deleteUnnecessaryFiles(destinationProjectDirectory.path);
 
     await _removeCommentedOutBlocks(
-        '${destinationProjectDirectory.path}/build');
+      '${destinationProjectDirectory.path}/build',
+    );
 
     await _updateAppReadme(
       inputPath: path.join(flutterProjectDirectoryPath, 'README.md'),
@@ -134,8 +137,9 @@ final class CreateCommand extends Command<int> {
     );
 
     // Delete the old README.md file.
-    await File(path.join(destinationProjectDirectory.path, 'README.md'))
-        .delete();
+    await File(
+      path.join(destinationProjectDirectory.path, 'README.md'),
+    ).delete();
 
     return ExitCode.success.code;
   }
@@ -152,24 +156,15 @@ final class CreateCommand extends Command<int> {
     }
 
     if (argResults?['projectName'] == null) {
-      throw UsageException(
-        'Please provide a project name.',
-        usage,
-      );
+      throw UsageException('Please provide a project name.', usage);
     }
 
     if (argResults?['applicationName'] == null) {
-      throw UsageException(
-        'Please provide an application name.',
-        usage,
-      );
+      throw UsageException('Please provide an application name.', usage);
     }
 
     if (argResults?['packageName'] == null) {
-      throw UsageException(
-        'Please provide a package name.',
-        usage,
-      );
+      throw UsageException('Please provide a package name.', usage);
     }
   }
 
@@ -192,8 +187,9 @@ final class CreateCommand extends Command<int> {
 
     if (response.statusCode == 200) {
       /// File to store the downloaded zip file
-      final zipFile =
-          File(path.join(Directory.systemTemp.path, '$_commitHash.tar.gz'));
+      final zipFile = File(
+        path.join(Directory.systemTemp.path, '$_commitHash.tar.gz'),
+      );
 
       /// Write the response bytes to the zip file
       await zipFile.writeAsBytes(response.bodyBytes);
@@ -202,8 +198,9 @@ final class CreateCommand extends Command<int> {
       final bytes = await zipFile.readAsBytes();
 
       /// Decode the gzipped tarball
-      final archive =
-          TarDecoder().decodeBytes(GZipDecoder().decodeBytes(bytes));
+      final archive = TarDecoder().decodeBytes(
+        GZipDecoder().decodeBytes(bytes),
+      );
 
       /// Extract the project to the extract directory
       for (final file in archive) {
@@ -215,8 +212,9 @@ final class CreateCommand extends Command<int> {
           await outputFile.writeAsBytes(file.content as List<int>);
         } else {
           /// Create a new directory in the extract directory
-          await Directory(path.join(extractDirectory.path, filename))
-              .create(recursive: true);
+          await Directory(
+            path.join(extractDirectory.path, filename),
+          ).create(recursive: true);
         }
       }
 
@@ -224,7 +222,8 @@ final class CreateCommand extends Command<int> {
       await zipFile.delete();
 
       _logger.info(
-          'GitHub project downloaded and extracted to ${extractDirectory.path}.');
+        'GitHub project downloaded and extracted to ${extractDirectory.path}.',
+      );
 
       return Directory(
         path.join(
@@ -234,7 +233,8 @@ final class CreateCommand extends Command<int> {
       );
     } else {
       _logger.err(
-          'Failed to download GitHub project. Status code: ${response.statusCode}.');
+        'Failed to download GitHub project. Status code: ${response.statusCode}.',
+      );
       throw Exception('Failed to download GitHub project.');
     }
   }
@@ -278,8 +278,9 @@ final class CreateCommand extends Command<int> {
     }
 
     // Save the updated content back to the YAML file.
-    renameConfigurationFile =
-        await renameConfigurationFile.writeAsString(newContent.join('\n'));
+    renameConfigurationFile = await renameConfigurationFile.writeAsString(
+      newContent.join('\n'),
+    );
 
     // Apply new configuration.
     await Process.run('flutter', ['pub', 'get'], runInShell: true);
@@ -303,8 +304,9 @@ final class CreateCommand extends Command<int> {
     }
 
     // Save the updated content back to the YAML file.
-    renameConfigurationFile =
-        await renameConfigurationFile.writeAsString(newContent.join('\n'));
+    renameConfigurationFile = await renameConfigurationFile.writeAsString(
+      newContent.join('\n'),
+    );
 
     // Navigate back to the root directory.
     Directory.current = destinationProjectDirectoryPath;
@@ -336,9 +338,7 @@ final class CreateCommand extends Command<int> {
       path.join(destinationProjectDirectoryPath, 'CONTRIBUTING.md'),
     ).delete();
 
-    await File(
-      path.join(destinationProjectDirectoryPath, 'LICENSE'),
-    ).delete();
+    await File(path.join(destinationProjectDirectoryPath, 'LICENSE')).delete();
   }
 
   ///
@@ -416,14 +416,22 @@ final class CreateCommand extends Command<int> {
     final content = await File(inputPath).readAsString();
 
     // Replace placeholders with the provided values.
-    var modifiedContent =
-        content.replaceAll('{{app-template-version}}', versionNumber);
+    var modifiedContent = content.replaceAll(
+      '{{app-template-version}}',
+      versionNumber,
+    );
     modifiedContent = modifiedContent.replaceAll(
-        '{{app-template-commit-short-sha}}', commitShortSha);
+      '{{app-template-commit-short-sha}}',
+      commitShortSha,
+    );
     modifiedContent = modifiedContent.replaceAll(
-        '{{app-template-commit-full-sha}}', commitFullSha);
-    modifiedContent =
-        modifiedContent.replaceAll('{{app-template-commit-date}}', commitDate);
+      '{{app-template-commit-full-sha}}',
+      commitFullSha,
+    );
+    modifiedContent = modifiedContent.replaceAll(
+      '{{app-template-commit-date}}',
+      commitDate,
+    );
 
     // Write the modified content to the output file.
     await File(outputPath).writeAsString(modifiedContent);

@@ -62,7 +62,7 @@
   ProjectName: FlutterApplicationTemplate
 
   # Flutter version.
-  FlutterVersion: '3.27.3'
+  FlutterVersion: '3.35.6'
 
   # Docker container to run MobSF.
   DockerVersion: '25.0.5'
