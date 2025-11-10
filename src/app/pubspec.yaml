@@ -4,19 +4,19 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.4.0 <4.0.0'
+  sdk: '>=3.8.0 <4.0.0'
 
 dependencies:
   dio: ^5.4.1
   equatable: ^2.0.5
-  firebase_analytics: ^11.3.0
-  firebase_core: ^3.4.0
-  firebase_remote_config: ^5.1.0
+  firebase_analytics: ^12.0.4
+  firebase_core: ^4.2.1
+  firebase_remote_config: ^6.1.1
   flutter:
     sdk: flutter
-  flutter_dotenv: ^5.1.0
-  get_it: ^8.0.3
-  go_router: ^14.0.0
+  flutter_dotenv: ^6.0.0
+  get_it: ^9.0.5
+  go_router: ^17.0.0
   json_annotation: ^4.9.0
   package_info_plus: ^8.0.0
   retrofit: ^4.1.0
@@ -25,28 +25,23 @@ dependencies:
   shared_preferences: ^2.2.3
   logger: ^2.2.0
   path_provider: ^2.1.3
-  share_plus: ^9.0.0
-  alice: ^1.0.0-dev.12
-  alice_dio: ^1.0.6
+  share_plus: ^11.1.0
+  alice: ^1.0.0
+  alice_dio: ^1.0.7
   flutter_localizations:
     sdk: flutter
   intl: any
   bugsee_flutter: ^8.4.0
-
-# This is required with alice installed unless this PR is merged https://github.com/jhomlala/alice/pull/171
-dependency_overrides:
-  share_plus: ^9.0.0
-  package_info_plus: ^8.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   integration_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   package_rename: ^1.5.3
   build_runner: ^2.4.8
-  retrofit_generator: ^9.1.7
+  retrofit_generator: ^10.0.0
   json_serializable: ^6.9.3
   mockito: ^5.4.4
   custom_lint:
@@ -56,6 +51,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
     - assets/openSourceSoftwareLicenses.json

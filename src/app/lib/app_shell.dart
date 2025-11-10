@@ -12,19 +12,19 @@ final class AppShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+      bottomNavigationBar: NavigationBar(
+        destinations: <NavigationDestination>[
+          NavigationDestination(
             icon: const Icon(Icons.theater_comedy),
             label: context.local.dadJokesPageLabel,
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: const Icon(Icons.favorite),
             label: context.local.favoriteDadJokesPageLabel,
           ),
         ],
-        currentIndex: navigationShell.currentIndex,
-        onTap: navigationShell.goBranch,
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: navigationShell.goBranch,
       ),
     );
   }

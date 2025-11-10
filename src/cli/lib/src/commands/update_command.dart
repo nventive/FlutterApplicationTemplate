@@ -16,11 +16,9 @@ final class UpdateCommand extends Command<int> {
   final PubUpdater _pubUpdater;
 
   /// {@macro update_command}
-  UpdateCommand({
-    required Logger logger,
-    PubUpdater? pubUpdater,
-  })  : _logger = logger,
-        _pubUpdater = pubUpdater ?? PubUpdater();
+  UpdateCommand({required Logger logger, PubUpdater? pubUpdater})
+    : _logger = logger,
+      _pubUpdater = pubUpdater ?? PubUpdater();
 
   @override
   String get description => 'Update the CLI.';
