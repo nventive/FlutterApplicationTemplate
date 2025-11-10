@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
 ## 0.26.0
-- Update flutter to 3.35.6 and update dependancies.
+- Update flutter to 3.35.6 and update dependencies.
 - Now compliant with [16 KB Google Play compatibility requirement](https://developer.android.com/guide/practices/page-sizes)
 - Use Material3 navigation bar
 
