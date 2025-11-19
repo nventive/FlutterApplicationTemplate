@@ -28,6 +28,7 @@ dependencies:
   share_plus: ^11.1.0
   alice: ^1.0.0
   alice_dio: ^1.0.7
+  crypto: ^3.0.3
   flutter_localizations:
     sdk: flutter
   intl: any

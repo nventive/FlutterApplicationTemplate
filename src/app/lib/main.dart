@@ -18,6 +18,9 @@ import 'package:app/access/kill_switch/kill_switch_repository.dart';
 import 'package:app/access/kill_switch/kill_switch_repository_mock.dart';
 import 'package:app/access/logger/logger_repository.dart';
 import 'package:app/access/mocking/mocking_repository.dart';
+import 'package:app/access/play_integrity/play_integrity_repository.dart';
+import 'package:app/access/play_integrity/play_integrity_repository_impl.dart';
+import 'package:app/access/play_integrity/play_integrity_repository_mock.dart';
 import 'package:app/app.dart';
 import 'package:app/app_router.dart';
 import 'package:app/business/bugsee/bugsee_manager.dart';
@@ -29,6 +32,7 @@ import 'package:app/business/forced_update/update_required_service.dart';
 import 'package:app/business/kill_switch/kill_switch_service.dart';
 import 'package:app/business/logger/logger_manager.dart';
 import 'package:app/business/mocking/mocking_manager.dart';
+import 'package:app/business/play_integrity/play_integrity_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -104,7 +108,8 @@ Future _registerAndLoadLoggers() async {
   // Register logging services in the IoC.
   GetIt.I.registerSingleton(LoggerRepository());
   GetIt.I.registerSingleton(
-    Alice(configuration: AliceConfiguration(
+    Alice(
+        configuration: AliceConfiguration(
       showNotification: false,
       navigatorKey: rootNavigatorKey,
     )),
@@ -189,6 +194,9 @@ Future<void> _registerRepositories(bool? isMocked) async {
     GetIt.I.registerSingleton<KillSwitchRepository>(
       KillSwitchRepositoryMock(),
     );
+    GetIt.I.registerSingleton<PlayIntegrityRepository>(
+      PlayIntegrityRepositoryMock(),
+    );
   } else {
     var fireBaseRemoteConfigRepository =
         FirebaseRemoteConfigRepository(_logger);
@@ -198,6 +206,9 @@ Future<void> _registerRepositories(bool? isMocked) async {
     );
     GetIt.I.registerSingleton<KillSwitchRepository>(
       fireBaseRemoteConfigRepository,
+    );
+    GetIt.I.registerSingleton<PlayIntegrityRepository>(
+      PlayIntegrityRepositoryImpl(_logger),
     );
   }
 
@@ -230,6 +241,13 @@ void _registerServices() {
   GetIt.I.registerSingleton(
     KillSwitchService(
       GetIt.I.get<KillSwitchRepository>(),
+    ),
+  );
+
+  GetIt.I.registerSingleton(
+    PlayIntegrityService(
+      GetIt.I.get<PlayIntegrityRepository>(),
+      _logger,
     ),
   );
 }
