@@ -22,6 +22,10 @@ final class AppShell extends StatelessWidget {
             icon: const Icon(Icons.favorite),
             label: context.local.favoriteDadJokesPageLabel,
           ),
+          NavigationDestination(
+            icon: const Icon(Icons.verified_user),
+            label: 'App Check',
+          ),
         ],
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: navigationShell.goBranch,

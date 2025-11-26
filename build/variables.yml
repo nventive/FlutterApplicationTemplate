@@ -28,15 +28,15 @@
   # Make sure you have the following secured files in your Azure pipeline library.
   #
   # Android.
-  InternalKeystore: com.nventive.internal.flutterapptemplate.jks # This is the internal keystore used for internal builds.
-  InternalKeyProperties: com.nventive.internal.flutterapptemplate.key.properties # This is the internal key properties used for internal builds.
+  InternalKeystore: com.nventive.internal.flutterappcheckpoc.jks # This is the internal keystore used for internal builds.
+  InternalKeyProperties: com.nventive.internal.flutterappcheckpoc.key.properties # This is the internal key properties used for internal builds.
   GooglePlayKeystore: com.nventive.flutterapptemplate.jks # This is the official keystore used for Google Play.
   GooglePlayKeyProperties: com.nventive.flutterapptemplate.key.properties # This is the official key properties used for Google Play.
   aabFileExtension: aab # This is the file extension for Android App Bundles.
 
   # iOS.
-  InternalProvisioningProfile: com.nventive.internal.flutterapptemplate.mobileprovision # This is the internal provisioning profile for internal builds.
-  InternalExportOptions: com.nventive.internal.flutterapptemplate.exportOptions.plist # This is the export options file for internal builds.
+  InternalProvisioningProfile: com.nventive.internal.flutterappcheckpoc.mobileprovision # This is the internal provisioning profile for internal builds.
+  InternalExportOptions: com.nventive.internal.flutterappcheckpoc.exportOptions.plist # This is the export options file for internal builds.
   InternalCertificate: nventive.p12 # This is the certificate from the nventive Apple account used to sign internal builds.
   AppStoreProvisioningProfile: com.nventive.flutterapptemplate.mobileprovision # This is the client provisioning profile for the AppStore (Production distribution).
   AppStoreExportOptions: com.nventive.flutterapptemplate.exportOptions.plist # This is the export options file for the AppStore (Production distribution) builds.

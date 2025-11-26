@@ -32,7 +32,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "com.nventive.internal.flutterapptemplate"
+    namespace "com.nventive.internal.flutterappcheckpoc"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -51,7 +51,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.nventive.internal.flutterapptemplate"
+        applicationId "com.nventive.internal.flutterappcheckpoc"
         minSdkVersion 31
         targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()

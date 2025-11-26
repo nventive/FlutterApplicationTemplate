@@ -43,7 +43,7 @@ jobs:
     - powershell: $(DartToolPath)/dart pub global activate --source=path ${{ parameters.pathToSrc }}/cli
       displayName: 'Install Flutter Application Generator'
 
-    - powershell: $(DartToolPath)/dart pub global run flutter_application_generator create --destinationDirectory $(Pipeline.Workspace) --projectName GeneratedApp --applicationName GeneratedApp --packageName com.nventive.internal.flutterapptemplate --organizationName nventive
+    - powershell: $(DartToolPath)/dart pub global run flutter_application_generator create --destinationDirectory $(Pipeline.Workspace) --projectName GeneratedApp --applicationName GeneratedApp --packageName com.nventive.internal.flutterappcheckpoc --organizationName nventive
       displayName: 'Generate Project'
 
     - publish: $(Pipeline.Workspace)/GeneratedApp

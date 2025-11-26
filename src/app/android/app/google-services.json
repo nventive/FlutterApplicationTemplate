@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "139514080243",
-    "project_id": "flutterapplicationtempla-79caa",
-    "storage_bucket": "flutterapplicationtempla-79caa.appspot.com"
+    "project_number": "247344237480",
+    "project_id": "play-integrity-poc-7cd08",
+    "storage_bucket": "play-integrity-poc-7cd08.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:139514080243:android:877033ea3d429ad3f0c086",
+        "mobilesdk_app_id": "1:247344237480:android:0a6e229b1d4c3e0cfbab9d",
         "android_client_info": {
-          "package_name": "com.nventive.internal.flutterapptemplate"
+          "package_name": "com.nventive.internal.flutterappcheckpoc"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDYwPrW2yvBCfSGnAf1E4SddbRfk02P_m0"
+          "current_key": "AIzaSyBE4ib2TgIR4bkBzKr7iiKgK4i7zHQek4E"
         }
       ],
       "services": {

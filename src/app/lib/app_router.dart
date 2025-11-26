@@ -1,4 +1,5 @@
 import 'package:app/app_shell.dart';
+import 'package:app/presentation/app_check/app_check_status_page.dart';
 import 'package:app/presentation/dad_jokes/dad_jokes_page.dart';
 import 'package:app/presentation/dad_jokes/favorite_dad_jokes.dart';
 import 'package:app/presentation/forced_update/forced_update_page.dart';
@@ -14,6 +15,7 @@ final _homeNavigatorKey = GlobalKey<NavigatorState>();
 
 const String home = '/';
 const String favoriteDadJokesPagePath = '/favorites';
+const String appCheckStatusPagePath = '/appcheck';
 const String forcedUpdatePagePath = '/forcedUpdate';
 const String killSwitchPagePath = '/killswitch';
 String? currentPath;
@@ -54,6 +56,15 @@ final router = GoRouter(
                 GoRoute(
                   path: favoriteDadJokesPagePath,
                   builder: (context, state) => const FavoriteDadJokesPage(),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              observers: [GoRouterObserver(GetIt.I.get<Logger>())],
+              routes: [
+                GoRoute(
+                  path: appCheckStatusPagePath,
+                  builder: (context, state) => const AppCheckStatusPage(),
                 ),
               ],
             ),

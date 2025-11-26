@@ -5,6 +5,7 @@ import 'package:app/access/forced_update/data/version.dart';
 import 'package:app/access/forced_update/minimum_version_repository.dart';
 import 'package:app/access/kill_switch/kill_switch_repository.dart';
 import 'package:app/firebase_options.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -27,6 +28,16 @@ class FirebaseRemoteConfigRepository
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+
+    // Initialize Firebase App Check with debug provider for development
+    // For production, change to AndroidProvider.playIntegrity for Android
+    // and AppleProvider.appAttest or AppleProvider.deviceCheck for iOS
+    await FirebaseAppCheck.instance.activate(
+      androidProvider: AndroidProvider.debug,
+      appleProvider: AppleProvider.debug,
+    );
+
+    _logger.i("Firebase App Check has been activated.");
 
     FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
     await remoteConfig.setConfigSettings(

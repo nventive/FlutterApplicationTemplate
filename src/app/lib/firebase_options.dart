@@ -53,20 +53,20 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDYwPrW2yvBCfSGnAf1E4SddbRfk02P_m0',
-    appId: '1:139514080243:android:877033ea3d429ad3f0c086',
-    messagingSenderId: '139514080243',
-    projectId: 'flutterapplicationtempla-79caa',
-    storageBucket: 'flutterapplicationtempla-79caa.appspot.com',
+    apiKey: 'AIzaSyBE4ib2TgIR4bkBzKr7iiKgK4i7zHQek4E',
+    appId: '1:247344237480:android:0a6e229b1d4c3e0cfbab9d',
+    messagingSenderId: '247344237480',
+    projectId: 'play-integrity-poc-7cd08',
+    storageBucket: 'play-integrity-poc-7cd08.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBFk8N8HIqLpUxi1WKPZYIYAEu4SJPEFGI',
-    appId: '1:139514080243:ios:b64a363f3d032097f0c086',
-    messagingSenderId: '139514080243',
-    projectId: 'flutterapplicationtempla-79caa',
-    storageBucket: 'flutterapplicationtempla-79caa.appspot.com',
-    iosBundleId: 'com.nventive.internal.flutterapptemplate',
+    apiKey: 'AIzaSyDNZM-mIASHWDQbeRXEszWUWkcG3x4SLeg',
+    appId: '1:247344237480:ios:07db2757f4c181effbab9d',
+    messagingSenderId: '247344237480',
+    projectId: 'play-integrity-poc-7cd08',
+    storageBucket: 'play-integrity-poc-7cd08.firebasestorage.app',
+    iosBundleId: 'com.nventive.internal.flutterappcheckpoc',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
@@ -85,6 +85,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '139514080243',
     projectId: 'flutterapplicationtempla-79caa',
     storageBucket: 'flutterapplicationtempla-79caa.appspot.com',
-    iosBundleId: 'com.nventive.internal.flutterapptemplate',
+    iosBundleId: 'com.nventive.internal.flutterappcheckpoc',
   );
 }
