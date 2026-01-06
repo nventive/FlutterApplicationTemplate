@@ -62,7 +62,7 @@
   ProjectName: FlutterApplicationTemplate
 
   # Flutter version.
-  FlutterVersion: '3.35.6'
+  FlutterVersion: '3.38.5'
 
   # Docker container to run MobSF.
   DockerVersion: '25.0.5'
@@ -76,7 +76,7 @@
   mobSfApiKey: '8181'
 
   # Virtual machine images.
-  windowsHostedAgentImage: 'windows-2022'
+  windowsHostedAgentImage: 'windows-2025'
   macOSHostedAgentImage: 'macOS-15'
   ubuntuHostedAgentImage: 'ubuntu-22.04'
 
