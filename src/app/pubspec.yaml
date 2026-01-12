@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.8.0 <4.0.0'
+  sdk: ^3.10.4
 
 dependencies:
   dio: ^5.4.1
@@ -19,7 +19,7 @@ dependencies:
   go_router: ^17.0.0
   json_annotation: ^4.9.0
   package_info_plus: ^8.0.0
-  retrofit: ^4.1.0
+  retrofit: ^4.9.2
   rxdart: ^0.28.0
   url_launcher: ^6.2.6
   shared_preferences: ^2.2.3
@@ -31,7 +31,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
-  bugsee_flutter: ^8.4.0
+  bugsee_flutter: ^8.6.9
 
 dev_dependencies:
   flutter_test:
@@ -41,7 +41,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   package_rename: ^1.5.3
   build_runner: ^2.4.8
-  retrofit_generator: ^10.0.0
+  retrofit_generator: ^10.2.0
   json_serializable: ^6.9.3
   mockito: ^5.4.4
   custom_lint:
