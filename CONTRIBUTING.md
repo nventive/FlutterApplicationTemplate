@@ -1,105 +1,144 @@
-# How to Contribute
 
-We'd love to accept your patches, contributions and suggestions to this project.
-Here are a few small guidelines you need to follow.
 
-## Code of conduct
+# Contributing to FlutterApplicationTemplate
 
-To better foster an open, innovative and inclusive community please refer to our
-[Code of Conduct](CODE_OF_CONDUCT.md) when contributing.
-
-### Report a bug
-
-If you think you've found a bug, please log a new issue in the [GitHub issue
-tracker. When filing issues, please use our [issue
-template](.github/ISSUE_TEMPLATE.md). The best way to get your bug fixed is to
-be as detailed as you can be about the problem. Providing a minimal project with
-steps to reproduce the problem is ideal. Here are questions you can answer
-before you file a bug to make sure you're not missing any important information.
-
-1. Did you read the documentation?
-2. Did you include the snippet of broken code in the issue?
-3. What are the *EXACT* steps to reproduce this problem?
-4. What specific version or build are you using?
-5. What operating system are you using?
-
-GitHub supports
-[markdown](https://help.github.com/articles/github-flavored-markdown/), so when
-filing bugs make sure you check the formatting before clicking submit.
-
-### Make a suggestion
-
-If you have an idea for a new feature or enhancement let us know by filing an
-issue. To help us understand and prioritize your idea please provide as much
-detail about your scenario and why the feature or enhancement would be useful.
-
-## Contributing code and content
-
-This is an open source project and we welcome code and content contributions
-from the community.
-
-**Identifying the scale**
-
-If you would like to contribute to this project, first identify the scale of
-what you would like to contribute. If it is small (grammar/spelling or a bug
-fix) feel free to start working on a fix.
-
-If you are submitting a feature or substantial code contribution, please discuss
-it with the team. You might also read these two blogs posts on contributing
-code: [Open Source Contribution
-Etiquette](http://tirania.org/blog/archive/2010/Dec-31.html) by Miguel de Icaza
-and [Don't "Push" Your Pull
-Requests](https://www.igvita.com/2011/12/19/dont-push-your-pull-requests/) by
-Ilya Grigorik. Note that all code submissions will be rigorously reviewed and
-tested by the project team, and only those that meet an extremely high bar for
-both quality and design/roadmap appropriateness will be merged into the source.
-
-**Obtaining the source code**
-
-If you are an outside contributor, please fork the repository to your account.
-See the GitHub documentation for [forking a
-repo](https://help.github.com/articles/fork-a-repo/) if you have any questions
-about this. 
-
-**Submitting a pull request**
-
-If you don't know what a pull request is read this article:
-https://help.github.com/articles/using-pull-requests. Make sure the repository
-can build and all tests pass, as well as follow the current coding guidelines.
-When submitting a pull request, please use our [pull request
-template](.github/PULL_REQUEST_TEMPLATE.md).
-
-Pull requests should all be done to the **main** branch.
+Thank you for considering contributing to **FlutterApplicationTemplate**! 🚀
+This document explains how to get involved, report issues, suggest improvements, or contribute code to the project.
 
 ---
 
-## Code reviews
+## Table of Contents
 
-All submissions, including submissions by project members, require review. We
-use GitHub pull requests for this purpose. Consult [GitHub
-Help](https://help.github.com/articles/about-pull-requests/) for more
-information on using pull requests.
+* [Code of Conduct](#code-of-conduct)
+* [Getting Started](#getting-started)
+* [How to Contribute](#how-to-contribute)
 
-## Community Guidelines
+  * [Bug Reports](#bug-reports)
+  * [Feature Requests](#feature-requests)
+  * [Code Contributions](#code-contributions)
+* [Development Guide](#development-guide)
+* [Pull Request Process](#pull-request-process)
+* [Style Guide](#style-guide)
+* [License](#license)
 
-This project follows [Google's Open Source Community
-Guidelines](https://opensource.google.com/conduct/).
+---
 
-## pub.dev score
+## Code of Conduct
 
-When making changes to the CLI, it's important to ensure that the resulting package is scored with the highest pub.dev score. The pub.dev score is a rating system that evaluates the quality of the package by evaluating common metrics (more info [here](https://pub.dev/help/scoring)). Before submitting your changes, please follow the following steps:
+By participating in this project, you agree to abide by our [Code of Conduct](./CODE_OF_CONDUCT.md). Please read it carefully and help us maintain a welcoming and respectful community.
 
-1. Open a terminal / command prompt window and navigate to the project directory.
-2. Navigate to the `src/cli` directory.
-3. Run the `build_runner` to ensure the creation of required generated code, for example:
+---
+
+## Getting Started
+
+To run the project locally, follow the instructions in the [README.md](./README.md). Make sure you:
+
+* Have Flutter and Dart installed.
+* Run `flutter doctor -v` to verify your setup.
+
+---
+
+## How to Contribute
+
+We welcome all kinds of contributions!
+
+### Bug Reports
+
+If you find a bug, please:
+
+1. Check the [open issues](https://github.com/nventive/FlutterApplicationTemplate/issues) to see if it’s already reported.
+2. If not, [open a new issue](https://github.com/nventive/FlutterApplicationTemplate/issues/new) with:
+
+   * A clear title
+   * Steps to reproduce the issue
+   * Expected vs. actual behavior
+   * Screenshots/logs (if applicable)
+   * Flutter and Dart versions (output of `flutter doctor -v`)
+
+### Feature Requests
+
+We welcome ideas for new features! Please include:
+
+* A use case or problem you’re solving
+* A proposed solution or approach
+* Any alternatives you’ve considered
+
+### Code Contributions
+
+If you want to contribute code:
+
+1. **Fork the repository**
+2. **Create a feature branch**:
+
+   ```bash
+   git checkout -b feature/my-new-feature
+   ```
+3. **Make your changes** and test them locally
+4. **Commit your changes**
+   Use conventional commit messages (e.g. `feat: add support for custom themes`)
+5. **Push to your fork**
+6. **Open a pull request** targeting the `main` branch
+   Describe your changes clearly and reference any related issues
+
+---
+
+## Development Guide
+
+### Application (App)
+
+```bash
+cd src/app
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs
+flutter run
 ```
-$ dart run build_runner build --delete-conflicting-outputs
-```
-4. Activate the `pana` tool by running `dart pub global activate pana`
-5. Run the `pana` tool by executing the `pana` command and save its output to a markdown file, for example:
-```
-$ pana > ~/temp/pana-analysis.md
-```
-6. Open the markdown file and observe the scores for each category, make sure that each (except the first one) has a perfect score (for example 20/20). If not, resolve any issues before submitting a pull request. The first category will resolve itself before being shipped to pub.dev (as it depends on automated tasks in the CI)
 
-The CI also contains a step that calculates the pub.dev score prior to publishing.
+### CLI Tool
+
+```bash
+cd src/cli
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs
+```
+
+Manually update values in `src/cli/lib/src/commands/create_command.dart`:
+
+* `_commitHash`
+* `_shortCommitHash`
+* `_versionNumber` (e.g. `2.4.1`)
+* `_commitDate` (any string format, e.g. `2025-06-01`)
+
+To activate the CLI locally:
+
+```bash
+dart pub global activate --source=path {Full Path}/src/cli
+```
+
+Use `--overwrite` if already activated.
+
+---
+
+## Pull Request Process
+
+* Submit pull requests to the `main` branch.
+* Ensure all changes are tested and formatted.
+* Update documentation if needed.
+* At least one maintainer must approve before merging.
+
+---
+
+## Style Guide
+
+* Format code using `flutter format .`
+* Follow Dart and Flutter conventions.
+* Use null safety consistently.
+* Add unit or widget tests when applicable.
+
+---
+
+## License
+
+By contributing, you agree that your contributions will be licensed under the [Apache 2.0 License](./LICENSE).
+
+---
+Happy coding! 💙
