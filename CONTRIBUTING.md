@@ -10,8 +10,9 @@ To better foster an open, innovative and inclusive community please refer to our
 
 ### Report a bug
 
-If you think you've found a bug, please log a new issue in the [GitHub issue
-tracker. When filing issues, please use our [issue
+If you think you've found a bug, please log a new issue in the
+[GitHub issue tracker](https://github.com/nventive/FlutterApplicationTemplate/issues).
+When filing issues, please use our [issue
 template](.github/ISSUE_TEMPLATE.md). The best way to get your bug fixed is to
 be as detailed as you can be about the problem. Providing a minimal project with
 steps to reproduce the problem is ideal. Here are questions you can answer

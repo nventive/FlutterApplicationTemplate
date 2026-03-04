@@ -5,7 +5,7 @@ This could be used for example when the server is down for some time, to avoid t
 
 To trigger the kill switch, we subscribe to the `isKillSwitchActivatedStream` `stream` from the `KillSwitchService` in the [Main](../src/app/lib/main.dart).
 
-If the kill switch is activated, the user is brought to the `KillSwitchPage` where he can see a message that tells him the app is currently unavailable.
-If the kill switch is deactivated afterwards, the user is brought back to the initial navigation flow, which means he will be in the login page if he is not connected and to the home page if he is connected. 
+If the kill switch is activated, the user is brought to the `KillSwitchPage` where they can see a message that tells them the app is currently unavailable.
+If the kill switch is deactivated afterwards, the user is brought back to the initial navigation flow, which means they will be on the login page if they are not connected and on the home page if they are connected. 
 
 Whether the kill switch is activated or not on mobile and web platforms is defined in a [remote config](FirebaseRemoteConfig.md).

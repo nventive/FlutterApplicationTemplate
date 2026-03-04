@@ -18,16 +18,16 @@ abstract interface class LoggerRepository {
 
 /// Implementation of [LoggerRepository].
 final class _LoggerRepository implements LoggerRepository {
-  /// The key used to store the selected environment in shared preferences.
+  /// The key used to store the logging configuration in shared preferences.
   final String _consoleLoggingKey = 'consoleLogging';
-  final String _fileloggingKey = 'fileLogging';
+  final String _fileLoggingKey = 'fileLogging';
 
   @override
   Future<LoggingConfigurationData> getLoggingConfiguration() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     return LoggingConfigurationData(
       isConsoleLoggingEnabled: sharedPreferences.getBool(_consoleLoggingKey),
-      isFileLoggingEnabled: sharedPreferences.getBool(_fileloggingKey),
+      isFileLoggingEnabled: sharedPreferences.getBool(_fileLoggingKey),
     );
   }
 
@@ -48,7 +48,7 @@ final class _LoggerRepository implements LoggerRepository {
   Future setIsFileLoggingEnabled(bool isFileLoggingEnabled) async {
     final sharedPreferences = await SharedPreferences.getInstance();
     var isSaved = await sharedPreferences.setBool(
-      _fileloggingKey,
+      _fileLoggingKey,
       isFileLoggingEnabled,
     );
 

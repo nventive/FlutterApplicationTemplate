@@ -4,10 +4,10 @@ import 'package:app/access/mocking/mocking_repository.dart';
 abstract interface class MockingManager {
   factory MockingManager(MockingRepository mockingRepository) = _MockingManager;
 
-  /// Gets whether file logging is enabled.
+  /// Gets whether mocking is enabled.
   bool get isMockingEnabled;
 
-  /// Gets whether mocking configuration been changed via either [setIsConsoleLoggingEnabled].
+  /// Gets whether mocking configuration has been changed via [setIsMockingEnabled].
   bool get hasConfigurationBeenChanged;
 
   /// Sets whether mocking should be enabled on next app launch.

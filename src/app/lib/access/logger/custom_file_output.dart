@@ -9,7 +9,7 @@ final class CustomFileOutput extends LogOutput {
   final bool _overrideExisting;
   final Encoding _encoding;
 
-  /// Regex used to remove ansi color codes from from log files.
+  /// Regex used to remove ansi color codes from log files.
   final _ansiPattern = RegExp(r'\x1B\[\d+(;\d+)*m');
 
   /// It's a reference to [_file] used to write logs inside.

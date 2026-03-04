@@ -11,19 +11,19 @@ parameters:
 steps:
   - task: DownloadSecureFile@1
     name: firebaseJson
-    displayName: "Download Keystore from Secure Files"
+    displayName: "Download firebaseJson from Secure Files"
     inputs:
       secureFile: ${{ parameters.firebaseJsonFile }}
   
   - task: DownloadSecureFile@1
     name: firebaseOptionsDart
-    displayName: "Download Keystore from Secure Files"
+    displayName: "Download firebaseOptionsDart from Secure Files"
     inputs:
       secureFile: ${{ parameters.firebaseOptionsDartFile }}
 
   - task: DownloadSecureFile@1
     name: googleServicesJson
-    displayName: "Download Keystore from Secure Files"
+    displayName: "Download googleServicesJson from Secure Files"
     inputs:
       secureFile: ${{ parameters.googleServicesJsonFile }}
 

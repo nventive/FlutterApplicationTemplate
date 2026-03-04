@@ -82,7 +82,7 @@ See [ForcedUpdate.md](ForcedUpdate.md) for more details.
 
 ### Kill Switch
 
-This application contains Kill switch feature.
+This application contains a kill switch feature.
 
 See [KillSwitch.md](KillSwitch.md) for more details.
 
@@ -96,7 +96,7 @@ See [HTTP.md](HTTP.md) for more details.
 
 ### Local Storage
 
-This applications uses [Shared Preferences](https://pub.dev/packages/shared_preferences) to store data locally.
+This application uses [Shared Preferences](https://pub.dev/packages/shared_preferences) to store data locally.
 
 ### JSON Serialization
 

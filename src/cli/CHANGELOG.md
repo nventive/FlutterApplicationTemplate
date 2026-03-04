@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
+## 0.26.2
+- Fix issue with dispose in VM.
+- Fix errors in documentation.
+
 ## 0.26.1
 - Update flutter to 3.38.5 and update dependencies.
 - iOS now uses UIScene life cycle,
@@ -60,7 +64,7 @@ Prefix your items with `(Template)` if the change is about the template and not 
 
 ## 0.21.0
 - Add Bugsee SDK in Flutter template
-- Update build stage in `steps-build-android.yml` and `steps-build-ios` providing Bugsee token
+- Update build stage in `steps-build-android.yml` and `steps-build-ios.yml` providing Bugsee token
 
 ## 0.20.4
 - Updates to documentation
@@ -123,7 +127,7 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Added Alice as a tool to see logs in app.
 - Fix diagnostic overlay dismiss behavior so it's not permanent.
 - Added test for the UpdateRequiredService and fixed bug where remote config was not updating correctly.
-- Added functionnal tests examples.
+- Added functional tests examples.
 - Fixed minor bug where the current path was not being updated properly.
 - Added localization.
 - Added test for the killswitch.

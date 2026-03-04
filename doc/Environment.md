@@ -1,6 +1,6 @@
 # Environments
 
-We use `.env` files to store environment configuration with the help of [dotenv](https://pub.dev/packages/dotenv).
+We use `.env` files to store environment configuration with the help of [flutter_dotenv](https://pub.dev/packages/flutter_dotenv).
 
 ## Runtime environments
 
@@ -42,6 +42,6 @@ Multiple environment features can be tested from the diagnostics overlay.
 This is configured in [EnvironmentPickerWidget](../src/app/lib/presentation/diagnostic/environment_picker_widget.dart).
 
 - You can see the current runtime environment.
-- You can see what the environment will be overriden to. 
+- You can see what the environment will be overridden to. 
 - You can switch to another runtime environment.
 - You can reset the environment to its default value.

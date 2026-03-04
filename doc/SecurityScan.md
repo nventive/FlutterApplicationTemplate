@@ -43,7 +43,7 @@ This job mirrors the iOS security scan job but targets Android applications. It 
      - `artifactName`: The name of the Android artifact, appended with the specified applicationEnvironment.
 
 ## Usage
-### How to Add the the new Stage for Security Scan
+### How to Add the new Stage for Security Scan
 
 > 1. Create a new `stage`. (*stage: Security_Scan_Build_[Environment]*)
 > 2. Configure the `dependsOn` property to the stage is creating the build, like `Build_Staging` and `Build_Production`.

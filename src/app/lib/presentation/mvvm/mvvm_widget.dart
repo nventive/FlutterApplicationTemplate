@@ -53,9 +53,9 @@ class _MvvmWidgetState<TViewModel extends ViewModel>
 
   @override
   void dispose() {
-    super.dispose();
     _viewModel.removeListener(onPropertyChanged);
     _viewModel.dispose();
+    super.dispose();
   }
 
   @override

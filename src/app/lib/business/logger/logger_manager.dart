@@ -24,10 +24,10 @@ abstract interface class LoggerManager {
   /// Gets whether file logging is enabled.
   bool get isFileLoggingEnabled;
 
-  /// Gets whether logging configuration been changed via either [setIsConsoleLoggingEnabled] or [setIsFileLoggingEnabled].
+  /// Gets whether logging configuration has been changed via either [setIsConsoleLoggingEnabled] or [setIsFileLoggingEnabled].
   bool get hasConfigurationBeenChanged;
 
-  /// Create an instancee of [Logger].
+  /// Create an instance of [Logger].
   Future<Logger> createLogInstance();
 
   /// Deletes log file
@@ -178,7 +178,7 @@ final class _LoggerManager implements LoggerManager {
     await _loggerRepository.setIsConsoleLoggingEnabled(isConsoleLoggingEnabled);
 
     this.isConsoleLoggingEnabled = isConsoleLoggingEnabled;
-    hasConfigurationBeenChanged = _checkIfChangesHasBeenMade();
+    hasConfigurationBeenChanged = _checkIfChangesHaveBeenMade();
   }
 
   @override
@@ -186,10 +186,10 @@ final class _LoggerManager implements LoggerManager {
     await _loggerRepository.setIsFileLoggingEnabled(isFileLoggingEnabled);
 
     this.isFileLoggingEnabled = isFileLoggingEnabled;
-    hasConfigurationBeenChanged = _checkIfChangesHasBeenMade();
+    hasConfigurationBeenChanged = _checkIfChangesHaveBeenMade();
   }
 
-  bool _checkIfChangesHasBeenMade() =>
+  bool _checkIfChangesHaveBeenMade() =>
       isConsoleLoggingEnabled != _initialIsConsoleLoggingEnabled ||
       isFileLoggingEnabled != _initialIsFileLoggingEnabled;
 }
