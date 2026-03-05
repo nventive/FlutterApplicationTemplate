@@ -17,13 +17,16 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Pull pull-request-bot action
+        run: git clone --depth 1 --branch v2 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/nventive/pull-request-bot.git .github/actions/pull-request-bot
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Run Pull Request Bot
-        uses: nventive/pull-request-bot@v2
-        with:
-          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
-          config-path: "./pull-request-bot.json"
+        run: node .github/actions/pull-request-bot/dist/index.js
+        env:
+          INPUT_API-KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          INPUT_CONFIG-PATH: "./pull-request-bot.json"
