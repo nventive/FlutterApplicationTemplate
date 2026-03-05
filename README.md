@@ -53,6 +53,11 @@ Please read [CONTRIBUTING](CONTRIBUTING.md) for details on the process for contr
 
 Be mindful of our [Code of Conduct](CODE_OF_CONDUCT.md).
 
+## CI/CD & Automation
+
+- [Azure Pipelines](doc/AzurePipelines.md) — Build, test, and release pipelines.
+- [GitHub Actions](doc/GitHubActions.md) — Pull request automation (conventional commits validation, AI-powered code review).
+
 ### Application Template
 
 To debug the app from within the template, run the following commands:

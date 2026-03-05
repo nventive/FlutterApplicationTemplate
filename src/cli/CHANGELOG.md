@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 Prefix your items with `(Template)` if the change is about the template and not the resulting application.
 
+## 0.26.3
+- Add PR bot to check PRs in GitHub.
+
 ## 0.26.2
 - Fix issue with dispose in VM.
 - Fix errors in documentation.

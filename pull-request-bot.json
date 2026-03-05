@@ -1,0 +1,18 @@
+{
+  "claude_code": {
+    "model": "opus"
+  },
+  "file_filter": {
+    "exclude_patterns": ["tests/**", "**/*.test.js"],
+    "max_file_size": 327680
+  },
+  "auto_fix": {
+    "enabled": true,
+    "confidence_threshold": 0.85,
+    "max_fixes_per_file": 5
+  },
+  "pr_description": {
+    "enabled": true,
+    "mode": "append"
+  }
+}

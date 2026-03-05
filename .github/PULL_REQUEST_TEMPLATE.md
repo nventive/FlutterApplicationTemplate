@@ -38,7 +38,8 @@ No matter your changes, these checks always apply.
   - If you create a new header, it aligns with the **Impact on version** section and matches what is generated in the build pipeline.
 - [ ] Documentation files were updated according with the changes.
   - Update `README.md` and `src/cli/CLI.md` if you made changes to **templating**.
-  - Update `AzurePipelines.md` and `src/app/README.md` if you made changes to **pipelines**.
+  - Update `AzurePipelines.md` and `src/app/README.md` if you made changes to **Azure Pipelines**.
+  - Update `GitHubActions.md` if you made changes to **GitHub Actions workflows**.
   - Update `Diagnostics.md` if you made changes to **diagnostic tools**.
   - Update `Architecture.md` and its diagrams if you made **architecture decisions** or if you introduced new **recipes**.
   - ...and so forth: Make sure you update the documentation files associated to the recipes you changed. Review the topics by looking at the content of the `doc/` folder.
