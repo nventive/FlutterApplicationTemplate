@@ -81,6 +81,11 @@ use GitHub pull requests for this purpose. Consult [GitHub
 Help](https://help.github.com/articles/about-pull-requests/) for more
 information on using pull requests.
 
+> 💡 Pull requests are automatically reviewed by an **AI-powered PR Review Bot**
+> in addition to human reviewers. The bot may post review comments and suggest
+> fixes on your pull request. See [GitHubActions.md](doc/GitHubActions.md) for
+> details on how this is configured.
+
 ## Community Guidelines
 
 This project follows [Google's Open Source Community
