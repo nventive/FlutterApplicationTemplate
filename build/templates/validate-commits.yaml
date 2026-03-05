@@ -39,7 +39,7 @@ steps:
         }
 
         if($invalidCommits.count -gt 0) {
-          Write-Error "The following commit messages do no follow the Conventional Commits standard: `n$($invalidCommits -join "`n")"
+          Write-Error "The following commit messages do not follow the Conventional Commits standard: `n$($invalidCommits -join "`n")"
           exit 1
         } else {
           Write-Host "All commit messages are valid."

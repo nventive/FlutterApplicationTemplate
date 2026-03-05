@@ -27,7 +27,7 @@ For more documentation on testing, read the references listed at the bottom.
     	dynamic matcher, {
     	// added in case of failure
     	String? reason,
-    	// true or a String with the reasion to skip
+    	// true or a String with the reason to skip
     	dynamic skip,
     	}
     )
@@ -127,11 +127,11 @@ For more documentation on testing, read the references listed at the bottom.
     }
     ```
 
-## Functionnal/Integration Testing
+## Functional/Integration Testing
 
-- We use [integration_test](https://docs.flutter.dev/testing/integration-tests) to create functionnal/integration tests. You can create a test like this :
+- We use [integration_test](https://docs.flutter.dev/testing/integration-tests) to create functional/integration tests. You can create a test like this :
 
-	```cs
+	```dart
 	// Import the test package
 	import 'package:flutter_test/flutter_test.dart';
 	import 'package:integration_test/integration_test.dart';
@@ -163,17 +163,17 @@ For more documentation on testing, read the references listed at the bottom.
   They are all run in the same `main` because of [this issue](https://github.com/flutter/flutter/issues/135673).
 
   To test different behaviors and interactions between the components of the app you need to simulate user interactions with the tester.tap(target) method like this:
-  ```cs
+  ```dart
   await tester.tap(dadJokes.first);
   ```
 
 - To assert the result of a test, use `expect()` exactly like with unit tests.
 
-- tester.pumpAndSettle() is used both to trigger a frame change and to wait for the last pump to have settled before moving on. For example, we use it after pumping the app widget and we also use it when we naviguated and we want to update the UI.
+- tester.pumpAndSettle() is used both to trigger a frame change and to wait for the last pump to have settled before moving on. For example, we use it after pumping the app widget and we also use it when we navigated and we want to update the UI.
 
 ### Mocking
 
-For functionnal testing we use the decorator pattern because we are testing the actual behavior of the app so we don't wanna use mockito to mock the logic of the classes of the app. 
+For functional testing we use the decorator pattern because we are testing the actual behavior of the app so we don't want to use mockito to mock the logic of the classes of the app. 
 To use the decorator pattern you simply call the mocking repository and the method called setMocking(true). 
 It's important to set the mocking in the main function before the tests otherwise the mocking doesn't take effect. 
 In most cases, except for api tests, the data sources (repositories) should be mocked for integration testing. 

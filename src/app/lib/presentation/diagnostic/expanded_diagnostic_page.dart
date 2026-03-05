@@ -6,7 +6,7 @@ import 'package:app/presentation/diagnostic/mocking_diagnostic_widget.dart';
 import 'package:app/presentation/diagnostic/navigation_diagnostic_widget.dart';
 import 'package:flutter/material.dart';
 
-/// A page in the expanded diagnosticoverlay that holds other diagnostic widgets.
+/// A page in the expanded diagnostic overlay that holds other diagnostic widgets.
 final class ExpandedDiagnosticPage extends StatefulWidget {
   const ExpandedDiagnosticPage({super.key});
 

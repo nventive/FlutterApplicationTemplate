@@ -43,7 +43,7 @@ class FirebaseRemoteConfigRepository
       "is_kill_switch_active": false,
     });
 
-    _logger.i("Firebase has been Initialized and registered in the container.");
+    _logger.i("Firebase has been initialized and registered in the container.");
 
     // Listen to updates to the remote config. This is only available on mobile platforms.
     if (Platform.isAndroid || Platform.isIOS) {
@@ -54,7 +54,7 @@ class FirebaseRemoteConfigRepository
       });
     }
 
-    // Fetch and activate gets the data from the server and makes it available trough the singleton.
+    // Fetch and activate gets the data from the server and makes it available through the singleton.
     remoteConfig.fetchAndActivate().then((_) {
       _updateRemoteConfig();
     });

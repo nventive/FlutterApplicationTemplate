@@ -2,7 +2,7 @@ import 'package:app/business/mocking/mocking_manager.dart';
 import 'package:app/presentation/diagnostic/diagnostic_switch.dart';
 import 'package:flutter/material.dart';
 
-/// Widget that handles logging configuration switching.
+/// Widget that handles mocking configuration switching.
 final class MockingConfigurationWidget extends StatefulWidget {
   final MockingManager _mockingManager;
 

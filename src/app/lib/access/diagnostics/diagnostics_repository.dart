@@ -12,7 +12,7 @@ abstract interface class DiagnosticsRepository {
   Future disableDiagnostics();
 }
 
-/// Implementation of [DiagnosticRepository].
+/// Implementation of [DiagnosticsRepository].
 final class _DiagnosticsRepository implements DiagnosticsRepository {
   /// The key used to store the diagnostic dismissed state in shared preferences.
   final String _diagnosticDisabledKey = 'diagnosticDisabled';

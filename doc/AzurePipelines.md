@@ -72,7 +72,7 @@ This is where the exact build steps are defined. These vary depending on the pla
 1. Push the built artifacts (.ipa, .apk/.aab, release notes, etc.).
 1. Cleanup.
 
-The release stages are even more straigtforward than the build ones. One thing to note is that, for the same reason as it is done at the end of the build steps, a clean-up step is included in every stage.
+The release stages are even more straightforward than the build ones. One thing to note is that, for the same reason as it is done at the end of the build steps, a clean-up step is included in every stage.
 
 ### Firebase App Distribution Release Stage ([stage-release-firebase-app-distribution.yml](../build/stage-release-firebase-app-distribution.yml))
 
@@ -88,6 +88,12 @@ This should only be run for configurations that properly sign the application.
 
 Similar to the App Store stage, this stage pushes the **AAB** produced by the build to the Google Play Store.
 This is also meant for a properly signed AAB.
+
+### Security Scan Stage ([stage-security-scan.yml](../build/stage-security-scan.yml))
+
+This stage runs a static application security testing (SAST) scan on the built application binaries using MobSF.
+
+See [SecurityScan.md](SecurityScan.md) for more details.
 
 This pipeline should be setup as a **scheduled pipeline** that runs every night and **should NOT be part of build validation**.
 PRs should not be blocked when APIs are down.

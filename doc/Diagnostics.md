@@ -15,7 +15,7 @@ This is useful when you want to see something happening live.
 The default buttons include commands such as the following.
 - **Expand/Minimize** opens or closes the expanded view of the overlay.
 - **Move** moves the overlay left or right.
-- **X** hides the overlay for the remaining of the app cycle.
+- **X** hides the overlay for the remainder of the app cycle.
     - If you want to permanently hide the diagnostic, go to the environment section within the expanded overlay.
 
 ## Expanded overlay widgets
@@ -23,6 +23,6 @@ The default buttons include commands such as the following.
 The expanded diagnostics overlay has by default two widgets.
 
 The navigation widget has some buttons with commands on them that allow you to do some navigation in the app.
-The DeviceInfo widgets contains some information on the device and the app.
+The DeviceInfo widget contains some information on the device and the app.
 The environment widget which lets the user change the environment. See [Environment.md](./Environment.md) for more details.
 The loggers widget which lets the user test logging and modify logging configuration. See [Logging.md](./Logging.md) for more details.

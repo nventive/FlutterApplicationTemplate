@@ -58,10 +58,11 @@ abstract class ViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
-    super.dispose();
     for (final subscription in _streamSubscriptions.values) {
       subscription.cancel();
     }
     _streamSubscriptions.clear();
+
+    super.dispose();
   }
 }

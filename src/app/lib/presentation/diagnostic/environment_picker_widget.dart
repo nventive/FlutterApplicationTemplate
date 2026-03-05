@@ -16,12 +16,12 @@ class _EnvironmentPickerWidgetState extends State<EnvironmentPickerWidget> {
   final _environmentManager = GetIt.I<EnvironmentManager>();
 
   bool _restartRequired = false;
-  late Enum selectedEnviroment;
+  late Enum selectedEnvironment;
 
   _EnvironmentPickerWidgetState() {
-    selectedEnviroment =
+    selectedEnvironment =
         _environmentManager.next ?? _environmentManager.current;
-    _restartRequired = selectedEnviroment != _environmentManager.current;
+    _restartRequired = selectedEnvironment != _environmentManager.current;
   }
 
   @override
@@ -45,14 +45,14 @@ class _EnvironmentPickerWidgetState extends State<EnvironmentPickerWidget> {
         ..._environmentManager.environments.map(
           (environment) => Material(
             child: CheckboxListTile(
-              value: environment == selectedEnviroment,
+              value: environment == selectedEnvironment,
               key: ValueKey(environment),
               title: Text(environment.toString()),
               onChanged: (value) async {
                 _environmentManager.setEnvironment(environment);
 
                 setState(() {
-                  selectedEnviroment = environment;
+                  selectedEnvironment = environment;
                   _restartRequired = environment != _environmentManager.current;
                 });
               },

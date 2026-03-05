@@ -51,14 +51,14 @@ Future initializeComponents({bool? isMocked}) async {
   _logger.d("Initialized environment and logger.");
 
   _registerHttpClient();
-  _logger.i("HttpClient has been Initialized and registered in the container.");
+  _logger.i("HttpClient has been initialized and registered in the container.");
 
   await _registerRepositories(isMocked);
   _logger
-      .i("Repositories has been Initialized and registered in the container.");
+      .i("Repositories have been initialized and registered in the container.");
 
   _registerServices();
-  _logger.i("Services has been Initialized and registered in the container.");
+  _logger.i("Services have been initialized and registered in the container.");
 
   GetIt.I.get<UpdateRequiredService>().waitForUpdateRequired().then((value) {
     _logger.d("Force update is now required.");
