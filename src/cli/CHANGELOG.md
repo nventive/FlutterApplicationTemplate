@@ -8,15 +8,16 @@ Prefix your items with `(Template)` if the change is about the template and not 
 ## 0.26.2
 - Fix issue with dispose in VM.
 - Fix errors in documentation.
+- Fix issue with Bugsee and xcprivacy files.
 
 ## 0.26.1
 - Update flutter to 3.38.5 and update dependencies.
-- iOS now uses UIScene life cycle,
+- iOS now uses UIScene life cycle.
 
 ## 0.26.0
 - Update flutter to 3.35.6 and update dependencies.
-- Now compliant with [16 KB Google Play compatibility requirement](https://developer.android.com/guide/practices/page-sizes)
-- Use Material3 navigation bar
+- Now compliant with [16 KB Google Play compatibility requirement](https://developer.android.com/guide/practices/page-sizes).
+- Use Material3 navigation bar.
 
 ## 0.25.4
 - Fix CocoaPods cache and dependency issues in iOS build pipeline.
@@ -60,17 +61,17 @@ Prefix your items with `(Template)` if the change is about the template and not 
 - Moved Android distribution for Staging from App Center to Firebase App Distribution.
 
 ## 0.21.1
-- Added conventional commit validation stage `stage-build.yml`
+- Added conventional commit validation stage `stage-build.yml`.
 
 ## 0.21.0
-- Add Bugsee SDK in Flutter template
-- Update build stage in `steps-build-android.yml` and `steps-build-ios.yml` providing Bugsee token
+- Add Bugsee SDK in Flutter template.
+- Update build stage in `steps-build-android.yml` and `steps-build-ios.yml` providing Bugsee token.
 
 ## 0.20.4
-- Updates to documentation
+- Updates to documentation.
 
 ## 0.20.3
-- (CI/CD) Fixes an authentication issue with pub.dev
+- (CI/CD) Fixes an authentication issue with pub.dev.
 
 ## 0.20.2
 - (Template) Fixes an issue with the CLI in which the build fails during template generation because of a missing required file.
@@ -78,7 +79,7 @@ Prefix your items with `(Template)` if the change is about the template and not 
 ## 0.20.1
 - Fix CI/CD artifact name for Android.
 - Fix CI/CD to install gcloud CLI Tool.
-- Fix CI/CD build number
+- Fix CI/CD build number.
 
 ## 0.20.0
 - Configured MobSF security scan on Android and iOS for Staging and Production builds. 

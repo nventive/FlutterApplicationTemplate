@@ -46,5 +46,26 @@ post_install do |installer|
       config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
     end
+
+    # Workaround: move .xcprivacy files from Sources to Resources build phase.
+    # Some pods (e.g. bugsee_flutter) incorrectly place PrivacyInfo.xcprivacy in
+    # the Sources phase, causing "no rule to process file ... of type 'text.xml'"
+    # during xcodebuild archive.
+    sources_phase = target.build_phases.find { |p| p.is_a?(Xcodeproj::Project::Object::PBXSourcesBuildPhase) }
+    next unless sources_phase
+
+    xcprivacy_files = sources_phase.files.select { |f| f.file_ref&.path&.end_with?('.xcprivacy') }
+    next if xcprivacy_files.empty?
+
+    resources_phase = target.build_phases.find { |p| p.is_a?(Xcodeproj::Project::Object::PBXResourcesBuildPhase) }
+    resources_phase ||= target.new_resources_build_phase
+
+    xcprivacy_files.each do |build_file|
+      file_ref = build_file.file_ref
+      sources_phase.remove_file_reference(file_ref)
+      unless resources_phase.files.map(&:file_ref).include?(file_ref)
+        resources_phase.add_file_reference(file_ref)
+      end
+    end
   end
 end
