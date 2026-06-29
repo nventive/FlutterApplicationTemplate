@@ -1,16 +1,16 @@
-import 'package:alice/alice.dart';
 import 'package:app/business/logger/logger_manager.dart';
 import 'package:app/presentation/diagnostic/diagnostic_button.dart';
 import 'package:app/presentation/diagnostic/logging_configuration_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 /// A widget that provides tools to devs to configure and test logging in the app.
 final class LoggerDiagnosticWidget extends StatelessWidget {
   final Logger _logger = GetIt.I.get<Logger>();
   final LoggerManager _loggerManager = GetIt.I.get<LoggerManager>();
-  final Alice _alice = GetIt.I.get<Alice>();
+  final Talker _talker = GetIt.I.get<Talker>();
 
   LoggerDiagnosticWidget({super.key});
 
@@ -111,7 +111,11 @@ final class LoggerDiagnosticWidget extends StatelessWidget {
         ),
         DiagnosticButton(
           label: 'OPEN CONSOLE',
-          onPressed: () => _alice.showInspector(),
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => TalkerScreen(talker: _talker),
+            ),
+          ),
         ),
       ],
     );

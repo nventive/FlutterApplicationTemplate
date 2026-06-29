@@ -28,7 +28,7 @@ final class TalkerOutput extends LogOutput {
       case Level.fatal:
         _talker.critical(message, error, stackTrace);
       default:
-        _talker.log(message, error: error, stackTrace: stackTrace);
+        _talker.log(message, exception: error, stackTrace: stackTrace);
     }
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:io';
 
-import 'package:alice/alice.dart';
-import 'package:app/access/logger/alice_output.dart';
+import 'package:app/access/logger/talker_output.dart';
 import 'package:app/access/logger/logger_repository.dart';
 import 'package:app/access/logger/custom_console_output.dart';
 import 'package:app/access/logger/custom_file_output.dart';
@@ -10,12 +9,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 /// Service that manages everything related to logging.
 abstract interface class LoggerManager {
   factory LoggerManager({
     required LoggerRepository loggerRepository,
-    required Alice alice,
+    required Talker talker,
   }) = _LoggerManager;
 
   /// Gets whether console logging is enabled.
@@ -48,7 +48,7 @@ abstract interface class LoggerManager {
 /// Implementation of [LoggerManager].
 final class _LoggerManager implements LoggerManager {
   final LoggerRepository _loggerRepository;
-  final Alice _alice;
+  final Talker _talker;
 
   late Logger _logger;
 
@@ -70,9 +70,9 @@ final class _LoggerManager implements LoggerManager {
 
   _LoggerManager({
     required LoggerRepository loggerRepository,
-    required Alice alice,
+    required Talker talker,
   })  : _loggerRepository = loggerRepository,
-        _alice = alice;
+        _talker = talker;
 
   @override
   Future<Logger> createLogInstance() async {
@@ -86,7 +86,7 @@ final class _LoggerManager implements LoggerManager {
             bool.parse(dotenv.env["IS_CONSOLE_LOGGING_ENABLED"] ?? 'false');
     if (_initialIsConsoleLoggingEnabled) {
       loggerOutputs.add(CustomConsoleOutput());
-      loggerOutputs.add(AliceOutput(alice: _alice));
+      loggerOutputs.add(TalkerOutput(talker: _talker));
     }
     isConsoleLoggingEnabled = _initialIsConsoleLoggingEnabled;
 
