@@ -1,6 +1,10 @@
 # Flutter-related
 **/Flutter/ephemeral/
 **/Flutter/GeneratedPluginRegistrant.swift
+
+# CocoaPods (generated at build time by Flutter for non-SPM plugins)
+Podfile
+Podfile.lock
 **/Pods/
 
 # Xcode-related
