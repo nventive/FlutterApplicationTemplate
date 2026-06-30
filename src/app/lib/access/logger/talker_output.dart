@@ -19,16 +19,22 @@ final class TalkerOutput extends LogOutput {
       case Level.trace:
       case Level.debug:
         _talker.debug(message, error, stackTrace);
+        return;
       case Level.info:
         _talker.info(message, error, stackTrace);
+        return;
       case Level.warning:
         _talker.warning(message, error, stackTrace);
+        return;
       case Level.error:
         _talker.error(message, error, stackTrace);
+        return;
       case Level.fatal:
         _talker.critical(message, error, stackTrace);
+        return;
       default:
         _talker.log(message, exception: error, stackTrace: stackTrace);
+        return;
     }
   }
 }
