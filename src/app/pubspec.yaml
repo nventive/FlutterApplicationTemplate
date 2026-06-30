@@ -29,7 +29,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
-  bugsee_flutter: ^8.6.9
+  bugsee_flutter: ^9.0.3
   talker_flutter: ^5.0.0
   talker_dio_logger: ^5.1.17
 
