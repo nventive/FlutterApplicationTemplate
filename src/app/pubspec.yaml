@@ -26,12 +26,12 @@ dependencies:
   logger: ^2.2.0
   path_provider: ^2.1.3
   share_plus: ^11.1.0
-  alice: ^1.0.0
-  alice_dio: ^1.0.7
   flutter_localizations:
     sdk: flutter
   intl: any
-  bugsee_flutter: ^8.6.9
+  bugsee_flutter: ^9.0.3
+  talker_flutter: ^5.0.0
+  talker_dio_logger: ^5.1.17
 
 dev_dependencies:
   flutter_test:

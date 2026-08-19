@@ -43,10 +43,10 @@ Multiple logging features can be tested from the diagnostics screen. This is con
 - You can see if a log file exists.
 - You can share the logs / app summary by email, etc.
 
-## Alice
+## Talker
 
-We use [alice](https://pub.dev/packages/alice) to track logs in-app without debugger console. 
-It is also configured to intercept HTTP requests made within the app.
+We use [talker_flutter](https://pub.dev/packages/talker_flutter) to track logs in-app without debugger console. 
+It is also configured to intercept HTTP requests made within the app via [talker_dio_logger](https://pub.dev/packages/talker_dio_logger).
 
 It's accessible via the "OPEN CONSOLE" in the `LoggerDiagnosticWidget`.
 

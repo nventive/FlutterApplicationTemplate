@@ -1,8 +1,5 @@
 import 'dart:io';
 
-import 'package:alice/alice.dart';
-import 'package:alice/model/alice_configuration.dart';
-import 'package:alice_dio/alice_dio_adapter.dart';
 import 'package:app/access/bugsee/bugsee_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_mocked_repository.dart';
 import 'package:app/access/dad_jokes/dad_jokes_repository.dart';
@@ -34,6 +31,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 late Logger _logger;
 
@@ -104,15 +103,12 @@ Future _registerAndLoadLoggers() async {
   // Register logging services in the IoC.
   GetIt.I.registerSingleton(LoggerRepository());
   GetIt.I.registerSingleton(
-    Alice(configuration: AliceConfiguration(
-      showNotification: false,
-      navigatorKey: rootNavigatorKey,
-    )),
+    Talker(),
   );
   GetIt.I.registerSingleton(
     LoggerManager(
       loggerRepository: GetIt.I.get<LoggerRepository>(),
-      alice: GetIt.I.get<Alice>(),
+      talker: GetIt.I.get<Talker>(),
     ),
   );
 
@@ -138,9 +134,10 @@ Future _registerBugseeManager() async {
 void _registerHttpClient() {
   final dio = Dio();
 
-  final AliceDioAdapter aliceDioAdapter = AliceDioAdapter();
-  GetIt.I.get<Alice>().addAdapter(aliceDioAdapter);
-  dio.interceptors.add(aliceDioAdapter);
+  final talkerDioLogger = TalkerDioLogger(
+    talker: GetIt.I.get<Talker>(),
+  );
+  dio.interceptors.add(talkerDioLogger);
 
   GetIt.I.registerSingleton<Dio>(dio);
 }

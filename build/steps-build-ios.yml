@@ -32,6 +32,13 @@ steps:
 - template: templates/build-number.yml
 - template: templates/flutter-install.yml
 
+# Flutter's Swift Package Manager support is a per-machine opt-in; enable it on the agent.
+- task: FlutterCommand@0
+  displayName: 'Enable Swift Package Manager'
+  inputs:
+    projectDirectory: '${{ parameters.pathToSrc }}/app'
+    arguments: 'config --enable-swift-package-manager'
+
 - task: InstallAppleCertificate@2
   displayName: Install Certificate
   inputs:
@@ -63,25 +70,6 @@ steps:
 - template: templates/flutter-prepare.yml
   parameters:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
-
-- task: CmdLine@2
-  displayName: 'Clean CocoaPods Cache'
-  inputs:
-    script: |
-      cd '${{ parameters.pathToSrc }}/app/ios'
-      rm -rf Pods
-      rm -rf Podfile.lock
-      pod deintegrate
-      pod cache clean --all
-    workingDirectory: '${{ parameters.pathToSrc }}/app'
-
-- task: CmdLine@2
-  displayName: 'Install CocoaPods Dependencies'
-  inputs:
-    script: |
-      cd '${{ parameters.pathToSrc }}/app/ios'
-      pod install --repo-update
-    workingDirectory: '${{ parameters.pathToSrc }}/app'
 
 - task: PowerShell@2
   displayName: 'Execute Package Rename'
@@ -121,6 +109,22 @@ steps:
     projectDirectory: '${{ parameters.pathToSrc }}/app'
     condition: failed()
 
+# Scope manual signing to the Runner target through its xcconfig. Signing settings must not
+# be passed as xcodebuild command-line arguments (signingOption: manual) because those apply
+# to every target in the workspace, and Swift package targets cannot take a provisioning
+# profile ("X does not support provisioning profiles" -> ARCHIVE FAILED).
+- task: CmdLine@2
+  displayName: 'Set Runner Release Signing'
+  inputs:
+    script: |
+      cat >> '${{ parameters.pathToSrc }}/app/ios/Flutter/Release.xcconfig' << 'EOF'
+
+      CODE_SIGN_STYLE = Manual
+      CODE_SIGN_IDENTITY = $(APPLE_CERTIFICATE_SIGNING_IDENTITY)
+      PROVISIONING_PROFILE_SPECIFIER = $(provisioningProfile.provisioningProfileName)
+      PROVISIONING_PROFILE = $(APPLE_PROV_PROFILE_UUID)
+      EOF
+
 - task: Xcode@5
   condition: succeeded()
   displayName: 'Xcode Archive iOS'
@@ -131,14 +135,12 @@ steps:
     configuration: 'Release'
     xcWorkspacePath: '${{ parameters.pathToSrc }}/app/ios/Runner.xcworkspace'
     packageApp: true
-    signingOption: 'manual'
+    signingOption: 'default'
     exportOptions: 'plist'
     exportOptionsPlist: '$(exportOptions.secureFilePath)'
     archivePath: '${{ parameters.pathToSrc }}/app/build/ios/iphoneos'
     exportPath: '${{ parameters.pathToSrc }}/app/build/ios/iphoneos'
-    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
-    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
-    provisioningProfileName: '$(provisioningProfile.provisioningProfileName)'
+    useXcpretty: false
 
 - task: CopyFiles@2
   condition: succeeded()

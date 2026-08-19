@@ -10,7 +10,6 @@
 **/.vagrant/
 **/DerivedData/
 Icon?
-**/Pods/
 **/.symlinks/
 profile
 xcuserdata
@@ -26,6 +25,11 @@ Flutter/flutter_assets/
 Flutter/flutter_export_environment.sh
 ServiceDefinitions.json
 Runner/GeneratedPluginRegistrant.*
+
+# CocoaPods (generated at build time by Flutter for non-SPM plugins)
+Podfile
+Podfile.lock
+**/Pods/
 
 # Exceptions to above rules.
 !default.mode1v3
